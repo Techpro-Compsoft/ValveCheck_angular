@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CompanyService } from '../core/Services/Company/company.service';
 import { AlertController } from '@ionic/angular';
+import { FarmService } from '../core/Services/Farm/farm.service';
 
 @Component({
   selector: 'app-farms',
@@ -13,7 +14,8 @@ export class FarmsPage implements OnInit {
   companyId: number;
   farmsList: Array<object>;
 
-  constructor(private route: ActivatedRoute, private service: CompanyService, private alertCtlr: AlertController) { }
+  constructor(private route: ActivatedRoute, private companyService: CompanyService, 
+    private alertCtlr: AlertController, private farmService: FarmService) { }
 
   ngOnInit() {
     this.route.queryParamMap.subscribe(params => {
@@ -24,7 +26,7 @@ export class FarmsPage implements OnInit {
 
   getCompanyFarms() {
     try {
-      this.service.getFarmsForCompany({ id: this.companyId }).subscribe(response => {
+      this.companyService.getFarmsForCompany({ id: this.companyId }).subscribe(response => {
         if (response.status === "success") {
           this.farmsList = [];
           this.farmsList = response.data.farms;
@@ -58,7 +60,7 @@ export class FarmsPage implements OnInit {
         }, {
           text: value ? 'EDIT' : 'ADD',
           handler: (data) => {
-            value ? this.editCompany(data.name1, id) : this.createCompany(data.name1);
+            value ? this.editFarm(data.name1, id) : this.createFarm(data.name1);
           }
         }
       ]
@@ -66,10 +68,10 @@ export class FarmsPage implements OnInit {
     await alert.present();
   }
 
-  createCompany(name: string) {
+  createFarm(name: string) {
     if (name != null && name.length > 0) {
       try {
-        this.service.createFarm({
+        this.farmService.createFarm({
           "company": this.companyId,
           "farm_name": name.trim()
         }).subscribe(response => {
@@ -84,22 +86,23 @@ export class FarmsPage implements OnInit {
     }
   }
 
-  editCompany(name, id) {
-    // if (name != null && name.length > 0) {
-    //   try {
-    //     this.companyService.updateCompany({
-    //       "company_name": name.trim(),
-    //       "id": id
-    //     }).subscribe(response => {
-    //       if (response.status === "success") {
-    //         alert('Company added');
-    //         this.getCompanies();
-    //       }
-    //     })
-    //   } catch (error) {
-    //     alert('Something went wrong');
-    //   }
-    // }
+  editFarm(name, id) {
+    if (name != null && name.length > 0) {
+      try {
+        this.farmService.updateFarm({
+            "id": id,
+            "company": this.companyId,
+            "farm_name": name
+        }).subscribe(response => {
+          if (response.status === "success") {
+            alert('Farm updated');
+            this.getCompanyFarms();
+          }
+        })
+      } catch (error) {
+        alert('Something went wrong');
+      }
+    }
   }
 
 

@@ -17,8 +17,10 @@ export class AppComponent {
     private nav: NavController
   ) {
     this.initializeApp();
-    if(localStorage.getItem('myToken')){
+    if (localStorage.getItem('myToken')) {
       this.nav.navigateRoot('home');
+    } else {
+      this.nav.navigateRoot('login');
     }
   }
 

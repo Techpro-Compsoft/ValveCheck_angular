@@ -26,7 +26,5 @@ export class CompanyService {
     return this.http.post(`${environment.base}/getCompanyDetails`, data);
   }
 
-  createFarm(data): Observable<any>{
-    return this.http.post(`${environment.base}/createFarm`, data);
-  }
+ 
 }

@@ -13,4 +13,16 @@ export class BaseService {
   login(data): Observable<any>{
     return this.http.post(`${environment.base}/login`, data);
   }
+
+  createUser(data):Observable<any>{
+    return this.http.post(`${environment.base}/createUser`, data);
+  }
+
+  updateUser(data):Observable<any>{
+    return this.http.put(`${environment.base}/updateUser`, data);
+  }
+
+  getUsers(data): Observable<any>{
+    return this.http.post(`${environment.base}/getUserDetails`, data);
+  }
 }
