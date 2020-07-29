@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Supervisors
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addSupervisor()">
+        <ion-icon name="person-add-outline" style="margin-right: 5px;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Supervisors</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="supList">
+    <ion-card *ngFor="let user of usersList">
+      <ion-item lines="none">
+        <ion-icon name="person-circle-outline"></ion-icon>
+        <ion-label>{{user.fullname | titlecase}}</ion-label>
+        <ion-button (click)="addSupervisor(user, user.id)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-card-content>
+        Company: {{user?.company_name ? user?.company_name : '-' | titlecase}}
+        <div style="text-align: center; margin-top: 5px;">
+          <ion-button *ngIf="!user?.company_name" (click)="openDetails(1)" size="small">
+            Assign
+          </ion-button>
+
+          <ion-button *ngIf="user?.company_name" (click)="openDetails(2)" size="small">
+            Change
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

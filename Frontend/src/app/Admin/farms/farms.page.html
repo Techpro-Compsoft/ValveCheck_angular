@@ -27,10 +27,10 @@
       <ion-icon name="home-outline"></ion-icon>
       <ion-label>{{farm.farm_name}}</ion-label>
       <ion-button (click)="openFarmDialog(farm.farm_name, farm.id)">
-        <ion-icon name="create-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
       </ion-button>
-      <ion-button [routerLink]="['/blocks']" [queryParams]="{ id: farm.id }">
-        <ion-icon name="eye-outline"></ion-icon>
+      <ion-button (click)="viewBlocks(farm.id)">
+        <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
       </ion-button>
     </ion-item>
   </div>

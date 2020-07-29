@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { BaseService } from '../core/Services/base.service';
+import { BaseService } from '../../core/Services/base.service';
 
 @Component({
   selector: 'app-operators',

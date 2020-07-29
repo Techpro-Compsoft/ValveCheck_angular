@@ -8,12 +8,20 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('../app/Admin/home/home.module').then( m => m.HomePageModule)
   },
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
+  },
+  {
+    path: 'supervisorassignment',
+    loadChildren: () => import('./Admin/supervisorassignment/supervisorassignment.module').then( m => m.SupervisorassignmentPageModule)
+  },
+  {
+    path: 'assigncompany',
+    loadChildren: () => import('./Admin/assigncompany/assigncompany.module').then( m => m.AssigncompanyPageModule)
   }
 ];
 

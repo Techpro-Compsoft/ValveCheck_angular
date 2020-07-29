@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FarmService } from '../core/Services/Farm/farm.service';
+import { FarmService } from '../../core/Services/Farm/farm.service';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -13,14 +13,12 @@ export class BlocksPage implements OnInit {
   farmID: number;
   blocksList: Array<object>;
 
-  constructor(private route: ActivatedRoute, private farmService: FarmService,
+  constructor(private activatedRoute: ActivatedRoute, private farmService: FarmService,
     private alertCtrl: AlertController) { }
 
   ngOnInit() {
-    this.route.queryParamMap.subscribe(params => {
-      this.farmID = parseInt(params.get('id'));
-      this.getBlocksForFarm();
-    });
+    this.farmID = +this.activatedRoute.snapshot.paramMap.get('selectedId');
+    this.getBlocksForFarm();
   }
 
   getBlocksForFarm() {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { BaseService } from '../core/Services/base.service';
+import { AlertController, NavController } from '@ionic/angular';
+import { BaseService } from '../../core/Services/base.service';
 
 @Component({
   selector: 'app-supervisors',
@@ -11,7 +11,8 @@ export class SupervisorsPage implements OnInit {
 
   usersList: Array<object>;
 
-  constructor(private alertCtlr: AlertController, private baseService: BaseService) { }
+  constructor(private alertCtlr: AlertController, private baseService: BaseService,
+    private navCtr: NavController) { }
 
   ngOnInit() {
     this.getUsers();
@@ -107,6 +108,10 @@ export class SupervisorsPage implements OnInit {
     } catch (error) {
       alert('Something went wrong');
     }
+  }
+
+  openDetails(id){
+    this.navCtr.navigateForward([`/home/supervisors/assigncompany/${1}/${id}`]);
   }
 
 }

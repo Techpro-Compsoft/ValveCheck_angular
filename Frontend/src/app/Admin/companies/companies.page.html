@@ -25,8 +25,13 @@
       <ion-button (click)="openCompanyDialog(company.company_name, company.id)">
         <ion-icon slot="icon-only" name="create-outline"></ion-icon>
       </ion-button>
-      <ion-button [routerLink]="['/farms']" [queryParams]="{ id: company.id }">
+
+      <ion-button (click)="viewCompany(company.id)">
         <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button (click)="assignSupervisor(company.id)">
+        <ion-icon slot="icon-only" name="person-add-outline"></ion-icon>
       </ion-button>
     </ion-item>
   </div>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CompanyService } from '../core/Services/Company/company.service';
-import { AlertController } from '@ionic/angular';
-import { FarmService } from '../core/Services/Farm/farm.service';
+import { CompanyService } from '../../core/Services/Company/company.service';
+import { AlertController, NavController } from '@ionic/angular';
+import { FarmService } from '../../core/Services/Farm/farm.service';
 
 @Component({
   selector: 'app-farms',
@@ -14,14 +14,13 @@ export class FarmsPage implements OnInit {
   companyId: number;
   farmsList: Array<object>;
 
-  constructor(private route: ActivatedRoute, private companyService: CompanyService, 
-    private alertCtlr: AlertController, private farmService: FarmService) { }
+  constructor(private activatedRoute: ActivatedRoute,
+    private companyService: CompanyService, private alertCtlr: AlertController,
+    private farmService: FarmService, public navCtrl: NavController) { }
 
   ngOnInit() {
-    this.route.queryParamMap.subscribe(params => {
-      this.companyId = parseInt(params.get('id'));
-      this.getCompanyFarms();
-    });
+    this.companyId = +this.activatedRoute.snapshot.paramMap.get('selectedId');
+    this.getCompanyFarms();
   }
 
   getCompanyFarms() {
@@ -55,7 +54,7 @@ export class FarmsPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            // console.log('Confirm Cancel');
           }
         }, {
           text: value ? 'EDIT' : 'ADD',
@@ -90,9 +89,9 @@ export class FarmsPage implements OnInit {
     if (name != null && name.length > 0) {
       try {
         this.farmService.updateFarm({
-            "id": id,
-            "company": this.companyId,
-            "farm_name": name
+          "id": id,
+          "company": this.companyId,
+          "farm_name": name
         }).subscribe(response => {
           if (response.status === "success") {
             alert('Farm updated');
@@ -105,6 +104,8 @@ export class FarmsPage implements OnInit {
     }
   }
 
-
+  viewBlocks(id) {
+    this.navCtrl.navigateForward([`/home/companies/farms/${this.companyId}/blocks/${id}`]);
+  }
 
 }

@@ -18,7 +18,7 @@
 <ion-content>
   <ion-item-group>
     <ion-item *ngFor="let block of blocksList">
-      <ion-icon name="home-outline"></ion-icon>
+      <ion-icon slot="icon-only" name="home-outline"></ion-icon>
       <ion-label>{{block.block_name}}, Irrigation type: {{block.irrigation}}</ion-label>
       <!-- <ion-label></ion-label> -->
       <ion-button (click)="openBlockDialog(block)">

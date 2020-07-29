@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CompanyService } from '../core/Services/Company/company.service';
-import { AlertController } from '@ionic/angular';
+import { CompanyService } from '../../core/Services/Company/company.service';
+import { AlertController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,9 +12,9 @@ export class CompaniesPage implements OnInit {
 
   companiesList: Array<object>;
 
-  constructor(private companyService: CompanyService, private alertCtlr: AlertController,
-    private router: Router) {
-  }
+  constructor(private companyService: CompanyService,
+    private alertCtlr: AlertController, public navCtrl: NavController,
+  ) { }
 
   ngOnInit() {
     this.getCompanies();
@@ -100,7 +100,11 @@ export class CompaniesPage implements OnInit {
   }
 
   viewCompany(id) {
-    this.router.navigate(['/farms', { queryParams: { id: id } }]);
+    this.navCtrl.navigateForward([`/home/companies/farms/${id}`]);
+  }
+
+  assignSupervisor(id){
+    this.navCtrl.navigateForward([`/home/companies/supassign/${id}`]);
   }
 
 }
