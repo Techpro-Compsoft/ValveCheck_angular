@@ -18,12 +18,12 @@ export class SupervisorsPage implements OnInit {
     this.getUsers();
   }
 
-  getUsers(){
+  getUsers() {
     this.baseService.getUsers({
       "role": 2
     }).subscribe(response => {
       if (response.status === "success") {
-        this.usersList= [];
+        this.usersList = [];
         this.usersList = response.data;
       }
     });
@@ -99,7 +99,7 @@ export class SupervisorsPage implements OnInit {
         "fullname": data.fullname,
         "password": data.password,
         "phone": data.phone
-    }).subscribe(response => {
+      }).subscribe(response => {
         if (response.status === "success") {
           alert('Updated');
           this.getUsers();
@@ -110,8 +110,8 @@ export class SupervisorsPage implements OnInit {
     }
   }
 
-  openDetails(id){
-    this.navCtr.navigateForward([`/home/supervisors/assigncompany/${1}/${id}`]);
+  openDetails(uid, mode) {
+    this.navCtr.navigateForward([`/home/supervisors/assigncompany/${uid}/${mode}`]);
   }
 
 }

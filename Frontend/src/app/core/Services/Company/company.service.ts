@@ -26,5 +26,8 @@ export class CompanyService {
     return this.http.post(`${environment.base}/getCompanyDetails`, data);
   }
 
+  getCompanies(data):Observable<any>{
+    return this.http.post(`${environment.base}/getEmptyCompanies`, data);
+  }
  
 }

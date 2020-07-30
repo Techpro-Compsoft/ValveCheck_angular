@@ -3,11 +3,12 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, Htt
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs/internal/observable/throwError';
+import { NavController } from '@ionic/angular';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
 
-    constructor() { }
+    constructor(private nav: NavController) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -17,19 +18,20 @@ export class AppInterceptor implements HttpInterceptor {
                 'token': token,
                 'user_id': '1'
             })
-            req = req.clone({headers});
+            req = req.clone({ headers });
         }
 
         return next.handle(req).pipe(
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
-                    
+
                 }
                 return event;
             }),
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401) {
-                    alert('Not authorized');
+                    localStorage.removeItem('myToken');
+                    this.nav.navigateRoot('login');
                 }
                 return throwError(error);
             }));
