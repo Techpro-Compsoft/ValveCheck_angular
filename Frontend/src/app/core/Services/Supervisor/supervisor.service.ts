@@ -18,4 +18,8 @@ export class SupervisorService {
     return this.http.post(`${environment.base}/assignCompany`, data);
   }
 
+  removeRole(data): Observable<any>{
+    return this.http.post(`${environment.base}/deleteAssignCompany`, data);
+  }
+
 }

@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: OperatorsPage
+  },
+  {
+    path: 'assigncompany/:id/:mode',
+    loadChildren:() => import('../assigncompany/assigncompany.module').then(m => m.AssigncompanyPageModule)
   }
 ];
 

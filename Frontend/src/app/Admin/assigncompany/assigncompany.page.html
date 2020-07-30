@@ -18,13 +18,13 @@
     </ion-item>
     <ion-card-content>
       <div style="text-align: center; margin-top: 5px;">
-        <ion-button *ngIf="modeType === 1" (click)="openDetails(user.id, 1)" size="small">
+        <ion-button (click)="assignCompany(val.value)" size="small">
           Assign
         </ion-button>
 
-        <ion-button *ngIf="modeType === 1" (click)="openDetails(user.id, 2)" size="small">
+        <!-- <ion-button *ngIf="modeType === 1" (click)="openDetails(user.id, 2)" size="small">
           Change
-        </ion-button>
+        </ion-button> -->
       </div>
     </ion-card-content>
   </ion-card>

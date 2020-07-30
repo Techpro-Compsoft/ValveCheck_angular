@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CompanyService } from 'src/app/core/Services/Company/company.service';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-supervisorassignment',
@@ -12,15 +13,18 @@ export class SupervisorassignmentPage implements OnInit {
 
   compId: any;
   companyDetails: any;
-  supervisorsList: Array<object>;
+  usersList: Array<object>;
+  modeId: number;
+  assignedUsers: Array<object>;
 
   constructor(private activatedRoute: ActivatedRoute, private companyService: CompanyService,
-    private supService: SupervisorService) { }
+    private supService: SupervisorService, private alertCtrl: AlertController) { }
 
   ngOnInit() {
     this.compId = +this.activatedRoute.snapshot.paramMap.get('compId');
+    this.modeId = +this.activatedRoute.snapshot.paramMap.get('mode');
     this.getCompanyDetails();
-    this.getSupervisors();
+    this.getUsers();
   }
 
   getCompanyDetails() {
@@ -28,6 +32,7 @@ export class SupervisorassignmentPage implements OnInit {
       this.companyService.getFarmsForCompany({ id: this.compId }).subscribe(response => {
         if (response.status === "success") {
           this.companyDetails = response.data.company;
+          this.assignedUsers = this.modeId === 1 ? response.data.supervisor : response.data.operator;
         }
       })
     } catch (error) {
@@ -35,11 +40,11 @@ export class SupervisorassignmentPage implements OnInit {
     }
   }
 
-  getSupervisors() {
+  getUsers() {
     try {
-      this.supService.getUsers({ role: 2 }).subscribe(response => {
+      this.supService.getUsers({ role: this.modeId === 1 ? 2 : 3 }).subscribe(response => {
         if (response.status === "success") {
-          this.supervisorsList = response.data;
+          this.usersList = response.data;
         }
       })
     } catch (error) {
@@ -52,11 +57,12 @@ export class SupervisorassignmentPage implements OnInit {
       this.supService.assignOperator({
         "company": this.compId,
         "user_id": vl,
-        "role": 2
+        "role": this.modeId === 1 ? 2 : 3
       }).subscribe(response => {
         if (response.status === "success") {
           alert('Assigned successfully');
           this.getCompanyDetails();
+          this.getUsers();
         }
       })
     } catch (error) {
@@ -65,8 +71,48 @@ export class SupervisorassignmentPage implements OnInit {
   }
   //2 for supervisor
 
-  changeSupervisor(val) {
-    console.log(val);
+  async presentAlertConfirm(userId) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm',
+      message: 'Are you sure you want to remove this person',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            // console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.removeRole(userId)
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  removeRole(userId) {
+    try {
+      this.supService.removeRole({
+        "company": this.compId,
+        "user_id": userId,
+        "role": this.modeId === 1 ? 2 : 3
+      }).subscribe(response => {
+        if (response.status === "success") {
+          alert('Removed');
+          this.getCompanyDetails();
+          this.getUsers();
+        }
+      });
+    } catch (error) {
+      alert('Something went wrong');
+    }
   }
 
 }

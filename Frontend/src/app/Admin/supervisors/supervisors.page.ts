@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { BaseService } from '../../core/Services/base.service';
+import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
 
 @Component({
   selector: 'app-supervisors',
@@ -11,11 +12,11 @@ export class SupervisorsPage implements OnInit {
 
   usersList: Array<object>;
 
-  constructor(private alertCtlr: AlertController, private baseService: BaseService,
-    private navCtr: NavController) { }
+  constructor(private baseService: BaseService,
+    private navCtr: NavController, private supService: SupervisorService,
+    private alertCtrl: AlertController) { }
 
   ngOnInit() {
-    this.getUsers();
   }
 
   getUsers() {
@@ -30,7 +31,7 @@ export class SupervisorsPage implements OnInit {
   }
 
   async addSupervisor(value?, id?) {
-    const alert = await this.alertCtlr.create({
+    const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
       header: value ? 'Edit Supervisor' : 'New Supervisor',
       inputs: [
@@ -112,6 +113,53 @@ export class SupervisorsPage implements OnInit {
 
   openDetails(uid, mode) {
     this.navCtr.navigateForward([`/home/supervisors/assigncompany/${uid}/${mode}`]);
+  }
+
+  ionViewWillEnter() {
+    this.getUsers();
+  }
+
+  async presentAlertConfirm(companyId, userId) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm',
+      message: 'Are you sure you want to remove this person',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            // console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.removeRole(companyId, userId)
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  removeRole(companyId, userId) {
+    try {
+      this.supService.removeRole({
+        "company": companyId,
+        "user_id": userId,
+        "role": 2
+      }).subscribe(response => {
+        if (response.status === "success") {
+          alert('Removed');
+          this.getUsers();
+        }
+      });
+    } catch (error) {
+      alert('Something went wrong');
+    }
   }
 
 }
