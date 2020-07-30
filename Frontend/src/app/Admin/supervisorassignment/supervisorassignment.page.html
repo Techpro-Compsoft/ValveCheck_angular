@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Assign Supervisor</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-icon name="business-outline" slot="start"></ion-icon>
+      <ion-label>Company Name: {{companyDetails?.company_name | titlecase}}</ion-label>
+      <!-- <ion-button fill="outline" slot="end">View</ion-button> -->
+    </ion-item>
+
+    <ion-card-content>
+      <span *ngIf="companyDetails?.supervisor">Current Supervisor - {{companyDetails?.supervisor_name}}</span>
+
+      <ion-item *ngIf="supervisorsList?.length > 0">
+        <ion-label>Select supervisor</ion-label>
+        <ion-select #val>
+          <ion-select-option *ngFor="let user of supervisorsList" [value]="user.id">{{user?.fullname}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div style="text-align: center;">
+        <ion-button *ngIf="supervisorsList?.length > 0 && !companyDetails?.supervisor" (click)="assignSupervisor(val.value)">
+          Assign
+        </ion-button>
+
+        <ion-button *ngIf="supervisorsList?.length > 0 && companyDetails?.supervisor" (click)="changeSupervisor(val.value)">
+          Change
+        </ion-button>
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Farms
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openFarmDialog()">
+        <ion-icon slot="start" name="add-outline"></ion-icon>Farm
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Farms</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="farmList">
+    <ion-item *ngFor="let farm of farmsList" lines="none">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>{{farm.farm_name}}</ion-label>
+      <ion-button (click)="openFarmDialog(farm.farm_name, farm.id)">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="viewBlocks(farm.id)">
+        <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </div>
+</ion-content>

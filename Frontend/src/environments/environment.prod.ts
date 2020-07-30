@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  base: 'https://www.techprodevcenter.co.in/valvecheck/api'
 };

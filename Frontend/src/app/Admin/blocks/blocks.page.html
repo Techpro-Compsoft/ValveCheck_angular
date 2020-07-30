@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blocks
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openBlockDialog()">
+        <ion-icon slot="start" name="add-outline"></ion-icon>Block
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group>
+    <ion-item *ngFor="let block of blocksList">
+      <ion-icon slot="icon-only" name="home-outline"></ion-icon>
+      <ion-label>{{block.block_name}}, Irrigation type: {{block.irrigation}}</ion-label>
+      <!-- <ion-label></ion-label> -->
+      <ion-button (click)="openBlockDialog(block)">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+      <!-- <ion-button [routerLink]="['/blocks']" [queryParams]="{ id: farm.id }">
+        <ion-icon name="eye-outline"></ion-icon>
+      </ion-button> -->
+    </ion-item>
+  </ion-item-group>
+</ion-content>
