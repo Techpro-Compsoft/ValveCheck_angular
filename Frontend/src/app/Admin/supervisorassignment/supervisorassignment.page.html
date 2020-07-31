@@ -28,11 +28,13 @@
             <ion-select-option *ngFor="let user of usersList" [value]="user.id">{{user?.fullname}}
             </ion-select-option>
           </ion-select>
-
-          <ion-button *ngIf="usersList?.length > 0" (click)="assignSupervisor(val.value)">
-            Assign
-          </ion-button>
         </ion-item>
+
+       <div style="text-align: center;">
+        <ion-button *ngIf="usersList?.length > 0" (click)="assignSupervisor(val.value)" size="small" fill="outline">
+          Assign
+        </ion-button>
+       </div>
 
         <!-- <ion-button *ngIf="supervisorsList?.length > 0 && companyDetails?.supervisor" (click)="changeSupervisor(val.value)">
           Change

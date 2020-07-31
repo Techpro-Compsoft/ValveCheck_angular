@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FarmService } from '../../core/Services/Farm/farm.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-blocks',
@@ -11,13 +12,18 @@ import { AlertController } from '@ionic/angular';
 export class BlocksPage implements OnInit {
 
   farmID: number;
+  companyId: number;
   blocksList: Array<object>;
 
   constructor(private activatedRoute: ActivatedRoute, private farmService: FarmService,
-    private alertCtrl: AlertController) { }
+    private alertCtrl: AlertController, private nav: NavController) { }
 
   ngOnInit() {
     this.farmID = +this.activatedRoute.snapshot.paramMap.get('selectedId');
+    this.companyId = +this.activatedRoute.snapshot.paramMap.get('compId');
+  }
+
+  ionViewWillEnter() {
     this.getBlocksForFarm();
   }
 
@@ -121,6 +127,50 @@ export class BlocksPage implements OnInit {
           this.getBlocksForFarm();
         }
       });
+    } catch (error) {
+      alert('Something went wrong');
+    }
+  }
+
+  assignOperator(blockId) {
+    this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${blockId}/farmoperator/${blockId}/${this.farmID}`])
+  }
+
+  async presentAlertConfirm(blockId) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm',
+      message: 'Are you sure you want to remove this person',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            // console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            // console.log('Confirm Okay');
+            this.removeOperator(blockId)
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  removeOperator(id) {
+    try {
+      this.farmService.removeOperator({
+        "block": id
+      }).subscribe(response => {
+        if (response.status === "success") {
+          alert('Operator removed');
+          this.getBlocksForFarm();
+        }
+      })
     } catch (error) {
       alert('Something went wrong');
     }

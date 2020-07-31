@@ -108,4 +108,8 @@ export class FarmsPage implements OnInit {
     this.navCtrl.navigateForward([`/home/companies/farms/${this.companyId}/blocks/${id}`]);
   }
 
+  viewFarmDetails(farmId, mode) {
+    this.navCtrl.navigateForward([`/home/companies/farms/${this.companyId}/assigntofarm/${farmId}/${mode}/${this.companyId}`]);
+  }
+
 }

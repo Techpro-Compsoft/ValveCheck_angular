@@ -16,17 +16,21 @@
 </ion-header>
 
 <ion-content>
-  <ion-item-group>
-    <ion-item *ngFor="let block of blocksList">
-      <ion-icon slot="icon-only" name="home-outline"></ion-icon>
-      <ion-label>{{block.block_name}}, Irrigation type: {{block.irrigation}}</ion-label>
-      <!-- <ion-label></ion-label> -->
-      <ion-button (click)="openBlockDialog(block)">
-        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+  <ion-card *ngFor="let block of blocksList">
+    <ion-card-header>
+      <ion-card-title>{{block.block_name}}</ion-card-title>
+      <ion-card-subtitle>Irrigation type: {{block.irrigation}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      Assigned operator: {{block?.operator_name ? block?.operator_name : 'None'}}
+    </ion-card-content>
+    <div style="text-align: center;">
+      <ion-button *ngIf="block.operator" size="small" fill="outline" (click)="presentAlertConfirm(block.id)">Remove Operator
       </ion-button>
-      <!-- <ion-button [routerLink]="['/blocks']" [queryParams]="{ id: farm.id }">
-        <ion-icon name="eye-outline"></ion-icon>
-      </ion-button> -->
-    </ion-item>
-  </ion-item-group>
+      <ion-button *ngIf="!block.operator" size="small" fill="outline" (click)="assignOperator(block.id)">Assign Operator
+      </ion-button>
+    </div>
+  </ion-card>
+
 </ion-content>

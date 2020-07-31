@@ -22,6 +22,14 @@ const routes: Routes = [
   {
     path: 'assigncompany',
     loadChildren: () => import('./Admin/assigncompany/assigncompany.module').then( m => m.AssigncompanyPageModule)
+  },
+  {
+    path: 'assignfarm',
+    loadChildren: () => import('./Admin/assignfarm/assignfarm.module').then( m => m.AssignfarmPageModule)
+  },
+  {
+    path: 'farmoperator',
+    loadChildren: () => import('./Admin/farmoperator/farmoperator.module').then( m => m.FarmoperatorPageModule)
   }
 ];
 

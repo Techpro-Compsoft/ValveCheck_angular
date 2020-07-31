@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Assign operator</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <ion-item>
+      <ion-label>Select Operator</ion-label>
+      <ion-select #sl>
+        <ion-select-option *ngFor="let user of availableUsers" [value]="user.id">{{user?.fullname}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <div style="text-align: center;">
+    <ion-button fill="outline" size="small" (click)="assignOperator(sl)">Assign</ion-button>
+  </div>
+</ion-content>

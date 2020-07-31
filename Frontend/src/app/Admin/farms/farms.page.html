@@ -23,15 +23,32 @@
   </ion-header>
 
   <div id="farmList">
-    <ion-item *ngFor="let farm of farmsList" lines="none">
-      <ion-icon name="home-outline"></ion-icon>
-      <ion-label>{{farm.farm_name}}</ion-label>
-      <ion-button (click)="openFarmDialog(farm.farm_name, farm.id)">
-        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-      </ion-button>
-      <ion-button (click)="viewBlocks(farm.id)">
-        <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
-      </ion-button>
-    </ion-item>
+
+    <ion-card *ngFor="let farm of farmsList">
+      <ion-item lines="none">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>{{farm.farm_name}}</ion-label>
+        <ion-button (click)="openFarmDialog(farm.farm_name, farm.id)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-card-content>
+        <div style="text-align: center;">
+          <ion-button size="small" fill="outline" (click)="viewFarmDetails(farm.id,1)">
+            Supervisor
+          </ion-button>
+
+          <ion-button size="small" fill="outline" (click)="viewFarmDetails(farm.id,2)">
+            Operator
+          </ion-button>
+
+          <ion-button (click)="viewBlocks(farm.id)" size="small" fill="outline">
+            Blocks
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
   </div>
 </ion-content>
