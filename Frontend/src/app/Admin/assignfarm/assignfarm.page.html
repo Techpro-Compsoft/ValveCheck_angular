@@ -15,7 +15,7 @@
 
   <div>
 
-    <ion-item>
+    <ion-item lines="none" class="select-header">
       <ion-label>Select {{modeId === 1 ? 'Supervisor' : 'Operator'}}</ion-label>
       <ion-select #sl multiple>
         <ion-select-option *ngFor="let user of availableUsers" [value]="user.id">{{user?.fullname}}</ion-select-option>
@@ -23,7 +23,7 @@
     </ion-item>
 
     <div style="text-align: center;margin-top: 10px;">
-      <ion-button size="small" fill="outline" (click)="assignToFarm(sl)">Assign</ion-button>
+      <ion-button size="small" fill="outline" (click)="assignToFarm(sl)" class="assign">Assign</ion-button>
     </div>
 
     <ion-card>
@@ -32,10 +32,10 @@
       </ion-card-header>
       <ion-card-content>
         <ion-list>
-          <ion-item *ngFor="let user of assignedUsers">
+          <ion-item lines="none" *ngFor="let user of assignedUsers">
             <ion-label>{{user.fullname}} - {{user.email}}</ion-label>
-            <ion-button size="small" (click)="presentAlertConfirm(user.id)">
-              <ion-icon slot="icon-only" name="person-remove-outline"></ion-icon>
+            <ion-button size="small" (click)="presentAlertConfirm(user.id)" fill="clear">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
             </ion-button>
           </ion-item>
         </ion-list>

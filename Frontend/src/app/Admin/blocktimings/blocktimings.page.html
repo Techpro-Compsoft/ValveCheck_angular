@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Block Timings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Select hours for valve</ion-label>
+    <ion-select [(ngModel)]="valveTime">
+      <ion-select-option *ngFor="let hours of [1,2,3,4,5,6,7,8,9,10];let i=index" [value]="i+1">{{i+1}}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <div style="text-align: center;margin-top: 10px;">
+    <ion-button *ngIf="!valveDetails?.instruction" size="small" fill="outline" (click)="assignTime(valveTime)">Assign
+      time</ion-button>
+    <ion-button *ngIf="valveDetails?.instruction && !valveDetails?.start_time" size="small" fill="outline"
+      (click)="presentAlertConfirm(valveTime)">Update
+      time</ion-button>
+  </div>
+
+  <div *ngIf="valveDetails?.start_time">
+    <div style="text-align: center;"><ion-label>Valve Details</ion-label></div>
+    <ion-item>
+      <ion-label>Valve Start Time:</ion-label>
+      <ion-input type="text" [value]="valveDetails?.start_time" readonly></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Valve Stop Time:</ion-label>
+      <ion-input type="text" [value]="valveDetails?.stop_time ? valveDetails?.stop_time : '-'" readonly></ion-input>
+    </ion-item>
+  </div>
+</ion-content>

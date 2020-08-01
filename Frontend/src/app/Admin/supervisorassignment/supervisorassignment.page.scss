@@ -1,0 +1,23 @@
+ion-card{
+    box-shadow: none;
+    background: #f3f3f3;
+    margin-bottom:15px;
+}
+ion-card .header{
+    --background:#1f4e79;
+    color:#ffffff;
+}
+ion-card .header ion-icon{
+    color:#ffffff;
+}
+.delete-btn{
+    color:#1f4e79;
+}
+.asign{
+    border: none;
+    outline: none;
+    --border-color: transparent;
+    background: #1f4e79;
+    height: 40px;
+    color: #ffffff;
+}

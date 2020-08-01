@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-card>
-    <ion-item>
+    <ion-item class="header">
       <ion-icon name="business-outline" slot="start"></ion-icon>
       <ion-label>Company Name: {{companyDetails?.company_name | titlecase}}</ion-label>
       <!-- <ion-button fill="outline" slot="end">View</ion-button> -->
@@ -31,7 +31,7 @@
         </ion-item>
 
        <div style="text-align: center;">
-        <ion-button *ngIf="usersList?.length > 0" (click)="assignSupervisor(val.value)" size="small" fill="outline">
+        <ion-button *ngIf="usersList?.length > 0" (click)="assignSupervisor(val.value)" size="small" fill="outline" class="asign">
           Assign
         </ion-button>
        </div>
@@ -48,8 +48,8 @@
 
         <ion-item lines="none" *ngFor="let user of assignedUsers">
           <ion-label>{{user.fullname | titlecase}} - {{user.email}}</ion-label>
-          <ion-button size="small" (click)="presentAlertConfirm(user.id)">
-            <ion-icon slot="icon-only" name="person-remove-outline"></ion-icon>
+          <ion-button size="small" (click)="presentAlertConfirm(user.id)" fill="clear" class="delete-btn">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
           </ion-button>
           <!-- <ion-label></ion-label> -->
         </ion-item>

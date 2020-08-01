@@ -27,11 +27,11 @@ export class ResetPasswordPage implements OnInit {
   }
 
   getUserDetails() {
-    this.base.userData.subscribe((data) => {
-      this.fullName = data['fullname']
-      this.phone = data['phone']
-      this.roleId = data['id']
-    });
+    // this.base.userData.subscribe((data) => {
+    //   this.fullName = data['fullname']
+    //   this.phone = data['phone']
+    //   this.roleId = data['id']
+    // });
   }
 
   initResetPasswordForm() {

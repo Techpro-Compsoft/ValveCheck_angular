@@ -50,4 +50,16 @@ export class FarmService {
     return this.http.post(`${environment.base}/deleteAssignBlock`, data);
   }
 
+  valveDetails(data): Observable<any> {
+    return this.http.post(`${environment.base}/getCycle`, data);
+  }
+
+  assignHours(data): Observable<any> {
+    return this.http.post(`${environment.base}/assignHours`, data);
+  }
+
+  updateHours(data): Observable<any> {
+    return this.http.put(`${environment.base}/updateHours`, data);
+  }
+
 }

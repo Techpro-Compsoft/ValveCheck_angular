@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'farmoperator/:blockId/:farmId',
     loadChildren: () => import('../farmoperator/farmoperator.module').then(m=> m.FarmoperatorPageModule)
+  },
+  {
+    path: 'blocktimings/:id',
+    loadChildren: () => import('../blocktimings/blocktimings.module').then( m => m.BlocktimingsPageModule)
   }
 ];
 

@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-card>
-    <ion-item>
+    <ion-item lines="none" class="header">
       <ion-label>Select Company</ion-label>
       <ion-select #val>
         <ion-select-option *ngFor="let company of companiesList" [value]="company.id">{{company?.company_name}}
@@ -18,7 +18,7 @@
     </ion-item>
     <ion-card-content>
       <div style="text-align: center; margin-top: 5px;">
-        <ion-button (click)="assignCompany(val.value)" size="small">
+        <ion-button (click)="assignCompany(val.value)" size="small" fill="clear" class="assign">
           Assign
         </ion-button>
 

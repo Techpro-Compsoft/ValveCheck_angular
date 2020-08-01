@@ -28,12 +28,12 @@
       <ion-item lines="none">
         <ion-icon name="home-outline"></ion-icon>
         <ion-label>{{farm.farm_name}}</ion-label>
-        <ion-button (click)="openFarmDialog(farm.farm_name, farm.id)">
+        <ion-button (click)="openFarmDialog(farm.farm_name, farm.id)" fill="clear">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>
         </ion-button>
       </ion-item>
 
-      <ion-card-content>
+      <ion-card-content class="footer-btn">
         <div style="text-align: center;">
           <ion-button size="small" fill="outline" (click)="viewFarmDetails(farm.id,1)">
             Supervisor

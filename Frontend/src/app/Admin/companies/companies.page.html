@@ -26,24 +26,24 @@
   
   <div id="compList">
     <ion-card *ngFor="let company of companiesList">
-      <ion-item lines="none">
+      <ion-item lines="none" class="business-outline">
         <ion-icon name="business-outline"></ion-icon>
         <ion-label>{{company.company_name}}</ion-label>
-        <ion-button (click)="openCompanyDialog(company.company_name, company.id)">
+        <ion-button (click)="openCompanyDialog(company.company_name, company.id)" fill="clear">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>
         </ion-button>
-        <ion-button (click)="viewCompany(company.id)" size="small">
+        <ion-button (click)="viewCompany(company.id)" size="small" fill="clear">
           <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
         </ion-button>
       </ion-item>
 
-      <ion-card-content style="text-align: center;">
+      <ion-card-content class="footer-btn">
 
-        <ion-button (click)="assignSupervisor(company.id,1)" size="small" fill="outline">
+        <ion-button (click)="assignSupervisor(company.id,1)" size="small" fill="outline" class="supervisor-btn">
           Supervisors
         </ion-button>
 
-        <ion-button (click)="assignSupervisor(company.id,2)" size="small" fill="outline">
+        <ion-button (click)="assignSupervisor(company.id,2)" size="small" fill="outline" class="operator-btn">
           Operators
         </ion-button>
       </ion-card-content>

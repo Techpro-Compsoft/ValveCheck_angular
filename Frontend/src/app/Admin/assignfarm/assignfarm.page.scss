@@ -1,0 +1,21 @@
+ion-card{
+    box-shadow: none;
+    background: #f3f3f3;
+}
+.assign{
+    border: none;
+    outline: none;
+    --border-color: transparent;
+    background: #1f4e79;
+    height: 40px;
+    color: #ffffff;
+}
+.select-header{
+    margin: 10px;
+    color: #ffffff;
+    --background: #1f4e79;
+    border-radius: 4px 4px 0 0;
+}
+ion-card-content ion-icon{
+    color:#1f4e79;
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-adminprofile',
@@ -8,9 +9,21 @@ import { NavController } from '@ionic/angular';
 })
 export class AdminprofilePage implements OnInit {
 
-  constructor(private nav: NavController) { }
+  profileForm: FormGroup;
+
+  constructor(private nav: NavController, private fb: FormBuilder) { }
 
   ngOnInit() {
+    const user = JSON.parse(localStorage.getItem('myUser'));
+    this.initForm(user);
+  }
+
+  initForm(data) {
+    this.profileForm = this.fb.group({
+      name: [data.fullname],
+      email: [data.email],
+      phone: [data.phone]
+    });
   }
 
   logoutMe() {

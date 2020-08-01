@@ -24,12 +24,12 @@ export class OperatorProfilePage implements OnInit {
   }
 
   getOperatorDetails() {
-    this.base.userData.subscribe((data) => {
-      console.log(data);
-      this.fullName = data['fullname']
-      this.phone = data['phone']
-      this.operatorId = data['id']
-    });
+    // this.base.userData.subscribe((data) => {
+    //   console.log(data);
+    //   this.fullName = data['fullname']
+    //   this.phone = data['phone']
+    //   this.operatorId = data['id']
+    // });
   }
 
   async openOperatorDialog() {
@@ -77,9 +77,9 @@ export class OperatorProfilePage implements OnInit {
         "fullname": data.name,
         "phone": data.phone
       }
-      this.supervisorService.editSupervisorProfileCall(operatorObj).subscribe(response => {
-        this.base.setUser(operatorObj)
-      });
+      // this.supervisorService.editSupervisorProfileCall(operatorObj).subscribe(response => {
+      //   this.base.setUser(operatorObj)
+      // });
     } catch (error) {
       console.log(error)
     }

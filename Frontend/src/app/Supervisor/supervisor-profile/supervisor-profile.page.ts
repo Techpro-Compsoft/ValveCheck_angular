@@ -24,12 +24,12 @@ export class SupervisorProfilePage implements OnInit {
   }
 
   getSupervisorDetails() {
-    this.base.userData.subscribe((data) => {
-      console.log(data);
-      this.fullName = data['fullname']
-      this.phone = data['phone']
-      this.supervisorId = data['id']
-    });
+    // this.base.userData.subscribe((data) => {
+    //   console.log(data);
+    //   this.fullName = data['fullname']
+    //   this.phone = data['phone']
+    //   this.supervisorId = data['id']
+    // });
   }
 
   async openSupervisorDialog() {
@@ -77,9 +77,9 @@ export class SupervisorProfilePage implements OnInit {
         "fullname": data.name,
         "phone": data.phone
       }
-      this.supervisorService.editSupervisorProfileCall(supObj).subscribe(response => {
-        this.base.setUser(supObj)
-      });
+      // this.supervisorService.editSupervisorProfileCall(supObj).subscribe(response => {
+      //   this.base.setUser(supObj)
+      // });
     } catch (error) {
       console.log(error)
     }

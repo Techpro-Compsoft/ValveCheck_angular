@@ -133,7 +133,7 @@ export class BlocksPage implements OnInit {
   }
 
   assignOperator(blockId) {
-    this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${blockId}/farmoperator/${blockId}/${this.farmID}`])
+    this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${blockId}/farmoperator/${blockId}/${this.farmID}`]);
   }
 
   async presentAlertConfirm(blockId) {
@@ -174,6 +174,10 @@ export class BlocksPage implements OnInit {
     } catch (error) {
       alert('Something went wrong');
     }
+  }
+
+  blockTimings(id) {
+    this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${id}/blocktimings/${id}`]);
   }
 
 }

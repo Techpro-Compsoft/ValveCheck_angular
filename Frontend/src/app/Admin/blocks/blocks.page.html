@@ -26,9 +26,14 @@
       Assigned operator: {{block?.operator_name ? block?.operator_name : 'None'}}
     </ion-card-content>
     <div style="text-align: center;">
-      <ion-button *ngIf="block.operator" size="small" fill="outline" (click)="presentAlertConfirm(block.id)">Remove Operator
+      <ion-button *ngIf="block.operator" size="small" fill="clear" (click)="presentAlertConfirm(block.id)">Remove
+        Operator
       </ion-button>
-      <ion-button *ngIf="!block.operator" size="small" fill="outline" (click)="assignOperator(block.id)">Assign Operator
+      <ion-button *ngIf="!block.operator" size="small" fill="clear" (click)="assignOperator(block.id)">Assign Operator
+      </ion-button>
+
+      <ion-button size="small" fill="clear" (click)="blockTimings(block.id)">
+        View
       </ion-button>
     </div>
   </ion-card>

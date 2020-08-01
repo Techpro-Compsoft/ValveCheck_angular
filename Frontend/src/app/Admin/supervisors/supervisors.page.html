@@ -29,19 +29,19 @@
       <ion-item lines="none">
         <ion-icon name="person-circle-outline"></ion-icon>
         <ion-label>{{user.fullname | titlecase}}</ion-label>
-        <ion-button (click)="addSupervisor(user, user.id)">
+        <ion-button (click)="addSupervisor(user, user.id)" fill="clear" style="color:#1f4e79">
           <ion-icon slot="icon-only" name="create-outline"></ion-icon>
         </ion-button>
       </ion-item>
 
-      <ion-card-content>
+      <ion-card-content class="footer-btn">
         Company: {{user?.company_name ? user?.company_name : '-' | titlecase}}
-        <div style="text-align: center; margin-top: 5px;">
-          <ion-button *ngIf="!user?.company_name" (click)="openDetails(user.id, 1)" size="small" fill="outline">
+        <div style="text-align: center;">
+          <ion-button *ngIf="!user?.company_name" (click)="openDetails(user.id, 1)" size="small" fill="clear">
             Assign
           </ion-button>
 
-          <ion-button *ngIf="user?.company_name" size="small" fill="outline" (click)="presentAlertConfirm(user?.company_id, user?.id)">
+          <ion-button *ngIf="user?.company_name" size="small" fill="clear" (click)="presentAlertConfirm(user?.company_id, user?.id)">
             Remove
           </ion-button>
         </div>

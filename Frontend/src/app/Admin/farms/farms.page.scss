@@ -1,15 +1,42 @@
 #farmList {
 
   ion-card{
-    border: 1px solid black;
+    box-shadow: none;
     // border-radius: 10px;
+    margin-bottom:15px;
+    --background:#f3f3f3;
   }
     ion-item {
-      display: flex;
-      padding: 10px;
+      --background: #eaeaea;
+      color: #1f4e79;
+      font-weight: 600;
     }
-  
+   ion-item ion-icon{
+     color:#1f4e79
+   }
     ion-label{
       margin-left: 10px;
+    }
+    .footer-btn {
+      overflow: auto;
+      padding: 15px 5px 7px 5px;
+     }
+     .footer-btn ion-button{
+      background: #c9ced2;
+      color: #1f4e79;
+      border-radius: 2px;
+      height: 35px;
+      font-weight: 600;
+      margin: 0 8px;
+      font-size: 12px;
+      --border-color: transparent;
+     }
+     .footer-btn .supervisor-btn{
+       float:left;
+    
+     }
+     .footer-btn .operator-btn{
+      float:right;
+      
     }
   }

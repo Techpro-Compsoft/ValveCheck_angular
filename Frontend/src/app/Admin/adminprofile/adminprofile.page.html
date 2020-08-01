@@ -9,9 +9,26 @@
 
 <ion-content>
 
-  <div style="text-align: center;">
-    <ion-button (click)="logoutMe()">
-      <ion-icon name="power-outline"></ion-icon>Log out
+  <form [formGroup]="profileForm">
+    <ion-item>
+      <ion-label>Name: </ion-label>
+      <ion-input type="text" readonly formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Email: </ion-label>
+      <ion-input type="text" readonly formControlName="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Phone: </ion-label>
+      <ion-input type="text" readonly formControlName="phone"></ion-input>
+    </ion-item>
+  </form>
+
+  <div style="text-align: center; margin-top: 10px;">
+    <ion-button (click)="logoutMe()" fill="clear" class="logout-btn">
+      <ion-icon name="power-outline" style="margin-right: 5px;"></ion-icon>Log out
     </ion-button>
   </div>
 </ion-content>
