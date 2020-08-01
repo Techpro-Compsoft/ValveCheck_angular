@@ -161,4 +161,8 @@ export class OperatorsPage implements OnInit {
     }
   }
 
+  toProfile(){
+    this.navCtr.navigateForward(['/adminprofile']);
+  }
+
 }

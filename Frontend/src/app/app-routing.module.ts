@@ -34,6 +34,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
+  },
+  {
+    path: 'adminprofile',
+    loadChildren: () => import('./Admin/adminprofile/adminprofile.module').then( m => m.AdminprofilePageModule)
   }
 ];
 

@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BaseService {
 
-  public userData: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  // public userData: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   constructor(private http: HttpClient) { }
 
@@ -32,8 +32,8 @@ export class BaseService {
     return this.http.put(`${environment.base}/updateUser`, data);
   }
 
-  setUser(value: any) {
-    this.userData.next(value);
-  }
+  // setUser(value: any) {
+  //   this.userData.next(value);
+  // }
 
 }

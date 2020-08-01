@@ -29,8 +29,7 @@ export class LoginPage implements OnInit {
           if (response.status === "success") {
             alert('login success');
             localStorage.setItem('myToken', response.data.token);
-            localStorage.setItem('myUser', response.data.user.role);
-            this.base.setUser(response.data.user);
+            localStorage.setItem('myUser', JSON.stringify(response.data.user));
             if (response.data.user.role === "1") {
               this.nav.navigateRoot('/home');
             }

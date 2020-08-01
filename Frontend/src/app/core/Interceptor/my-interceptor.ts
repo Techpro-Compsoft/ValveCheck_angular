@@ -13,18 +13,16 @@ export class AppInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        this.base.userData.subscribe(data => {
-            console.log(data);
-            let token = localStorage.getItem('myToken');
-            if (token) {
-                const headers = new HttpHeaders({
-                    'token': token,
-                    'user_id': data.id
-                });
-                req = req.clone({ headers });
-            }
-        });
 
+        const user = JSON.parse(localStorage.getItem('myUser'));
+        let token = localStorage.getItem('myToken');
+        if (token && user) {
+            const headers = new HttpHeaders({
+                'token': token,
+                'user_id': user['id']
+            });
+            req = req.clone({ headers });
+        }
 
         return next.handle(req).pipe(
             map((event: HttpEvent<any>) => {

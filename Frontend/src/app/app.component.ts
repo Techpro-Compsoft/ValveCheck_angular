@@ -17,13 +17,13 @@ export class AppComponent {
     private nav: NavController
   ) {
     this.initializeApp();
-    const role = localStorage.getItem('myUser');
-    if (role === "1") {
+    const user = JSON.parse(localStorage.getItem('myUser'));
+    if (user && user['role'] === "1") {
       this.nav.navigateRoot('/home');
-    } else if (role === "2") {
+    } else if (user && user['role'] === "2") {
       this.nav.navigateRoot('/supervisor-dashboard');
     }
-    else if (role === "3") {
+    else if (user && user['role'] === "3") {
       this.nav.navigateRoot('/operator-dashboard');
     }
     else {
@@ -37,4 +37,5 @@ export class AppComponent {
       this.splashScreen.hide();
     });
   }
+
 }

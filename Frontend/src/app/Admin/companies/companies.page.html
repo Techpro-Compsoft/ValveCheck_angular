@@ -18,6 +18,12 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="toProfile()">
+      <ion-icon name="person-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
   <div id="compList">
     <ion-card *ngFor="let company of companiesList">
       <ion-item lines="none">

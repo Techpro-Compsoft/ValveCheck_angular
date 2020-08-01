@@ -110,4 +110,8 @@ export class CompaniesPage implements OnInit {
     this.getCompanies();
   }
 
+  toProfile(){
+    this.navCtrl.navigateForward(['/adminprofile']);
+  }
+
 }

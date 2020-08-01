@@ -162,4 +162,8 @@ export class SupervisorsPage implements OnInit {
     }
   }
 
+  toProfile(){
+    this.navCtr.navigateForward(['/adminprofile']);
+  }
+
 }
