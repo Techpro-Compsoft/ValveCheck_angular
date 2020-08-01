@@ -29,7 +29,17 @@ export class LoginPage implements OnInit {
           if (response.status === "success") {
             alert('login success');
             localStorage.setItem('myToken', response.data.token);
-            this.nav.navigateRoot('/home');
+            localStorage.setItem('myUser', response.data.user.role);
+            this.base.setUser(response.data.user);
+            if (response.data.user.role === "1") {
+              this.nav.navigateRoot('/home');
+            }
+            else if (response.data.user.role === "2") {
+              this.nav.navigateRoot('/supervisor-dashboard');
+            }
+            else if (response.data.user.role === "3") {
+              this.nav.navigateRoot('/operator-dashboard');
+            }
           }
           else if (response.status === "error") {
             alert(response.txt);
@@ -39,7 +49,7 @@ export class LoginPage implements OnInit {
         alert('Something went wrong');
       }
     }
-    else{
+    else {
       alert('Please enter valid information');
     }
   }

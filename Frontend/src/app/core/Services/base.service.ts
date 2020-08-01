@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BaseService {
+
+  public userData: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   constructor(private http: HttpClient) { }
 
@@ -25,4 +27,13 @@ export class BaseService {
   getUsers(data): Observable<any>{
     return this.http.post(`${environment.base}/getUserDetails`, data);
   }
+
+  resetPasswordCall(data): Observable<any> {
+    return this.http.put(`${environment.base}/updateUser`, data);
+  }
+
+  setUser(value: any) {
+    this.userData.next(value);
+  }
+
 }

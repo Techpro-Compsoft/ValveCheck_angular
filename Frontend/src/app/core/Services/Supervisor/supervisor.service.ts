@@ -22,4 +22,8 @@ export class SupervisorService {
     return this.http.post(`${environment.base}/deleteAssignCompany`, data);
   }
 
+  editSupervisorProfileCall(data): Observable<any> {
+    return this.http.put(`${environment.base}/updateUser`, data);
+  }
+  
 }
