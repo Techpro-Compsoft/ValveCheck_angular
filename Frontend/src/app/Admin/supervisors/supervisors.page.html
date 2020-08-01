@@ -31,12 +31,12 @@
       <ion-card-content>
         Company: {{user?.company_name ? user?.company_name : '-' | titlecase}}
         <div style="text-align: center; margin-top: 5px;">
-          <ion-button *ngIf="!user?.company_name" (click)="openDetails(user.id, 1)" size="small">
+          <ion-button *ngIf="!user?.company_name" (click)="openDetails(user.id, 1)" size="small" fill="outline">
             Assign
           </ion-button>
 
-          <ion-button *ngIf="user?.company_name" (click)="openDetails(user.id, 2)" size="small">
-            Change
+          <ion-button *ngIf="user?.company_name" size="small" fill="outline" (click)="presentAlertConfirm(user?.company_id, user?.id)">
+            Remove
           </ion-button>
         </div>
       </ion-card-content>

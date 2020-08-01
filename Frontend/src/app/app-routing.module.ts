@@ -4,24 +4,36 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'home',
-    loadChildren: () => import('../app/Admin/home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('../app/Admin/home/home.module').then(m => m.HomePageModule)
+  },
+  {
+    path: 'supervisor-dashboard',
+    loadChildren: () => import('./Supervisor/supervisor-dashboard/supervisor-dashboard.module').then(m => m.SupervisorDashboardPageModule)
+  },
+  {
+    path: 'supervisor-profile',
+    loadChildren: () => import('./Supervisor/supervisor-profile/supervisor-profile.module').then(m => m.SupervisorProfilePageModule)
+  },
+  {
+    path: 'reset-password',
+    loadChildren: () => import('./reset-password/reset-password.module').then(m => m.ResetPasswordPageModule)
+  },
+  {
+    path: 'operator-dashboard',
+    loadChildren: () => import('./Operator/operator-dashboard/operator-dashboard.module').then(m => m.OperatorDashboardPageModule)
+  },
+  {
+    path: 'operator-profile',
+    loadChildren: () => import('./Operator/operator-profile/operator-profile.module').then(m => m.OperatorProfilePageModule)
   },
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
-  },
-  {
-    path: 'supervisorassignment',
-    loadChildren: () => import('./Admin/supervisorassignment/supervisorassignment.module').then( m => m.SupervisorassignmentPageModule)
-  },
-  {
-    path: 'assigncompany',
-    loadChildren: () => import('./Admin/assigncompany/assigncompany.module').then( m => m.AssigncompanyPageModule)
   }
 ];
 

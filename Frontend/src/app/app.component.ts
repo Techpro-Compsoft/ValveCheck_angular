@@ -17,10 +17,17 @@ export class AppComponent {
     private nav: NavController
   ) {
     this.initializeApp();
-    if (localStorage.getItem('myToken')) {
-      this.nav.navigateRoot('home');
-    } else {
-      this.nav.navigateRoot('login');
+    const role = localStorage.getItem('myUser');
+    if (role === "1") {
+      this.nav.navigateRoot('/home');
+    } else if (role === "2") {
+      this.nav.navigateRoot('/supervisor-dashboard');
+    }
+    else if (role === "3") {
+      this.nav.navigateRoot('/operator-dashboard');
+    }
+    else {
+      this.nav.navigateRoot('/login');
     }
   }
 

@@ -17,7 +17,6 @@ export class CompaniesPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getCompanies();
   }
 
   getCompanies() {
@@ -103,8 +102,12 @@ export class CompaniesPage implements OnInit {
     this.navCtrl.navigateForward([`/home/companies/farms/${id}`]);
   }
 
-  assignSupervisor(id){
-    this.navCtrl.navigateForward([`/home/companies/supassign/${id}`]);
+  assignSupervisor(id, mode){
+    this.navCtrl.navigateForward([`/home/companies/supassign/${id}/${mode}`]);
+  }
+
+  ionViewWillEnter(){
+    this.getCompanies();
   }
 
 }

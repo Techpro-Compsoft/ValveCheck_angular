@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('../farms/farms.module').then(m => m.FarmsPageModule)
   },
   {
-    path: 'supassign/:compId',
+    path: 'supassign/:compId/:mode',
     loadChildren: () => import('../supervisorassignment/supervisorassignment.module').then(m => m.SupervisorassignmentPageModule)
   }
 ];

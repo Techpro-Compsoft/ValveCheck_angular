@@ -19,20 +19,29 @@
   </ion-header>
 
   <div id="compList">
-    <ion-item *ngFor="let company of companiesList" lines="none">
-      <ion-icon name="business-outline"></ion-icon>
-      <ion-label>{{company.company_name}}</ion-label>
-      <ion-button (click)="openCompanyDialog(company.company_name, company.id)">
-        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-      </ion-button>
+    <ion-card *ngFor="let company of companiesList">
+      <ion-item lines="none">
+        <ion-icon name="business-outline"></ion-icon>
+        <ion-label>{{company.company_name}}</ion-label>
+        <ion-button (click)="openCompanyDialog(company.company_name, company.id)">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="viewCompany(company.id)" size="small">
+          <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
 
-      <ion-button (click)="viewCompany(company.id)">
-        <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
-      </ion-button>
+      <ion-card-content style="text-align: center;">
 
-      <ion-button (click)="assignSupervisor(company.id)">
-        <ion-icon slot="icon-only" name="person-add-outline"></ion-icon>
-      </ion-button>
-    </ion-item>
+        <ion-button (click)="assignSupervisor(company.id,1)" size="small" fill="outline">
+          Supervisors
+        </ion-button>
+
+        <ion-button (click)="assignSupervisor(company.id,2)" size="small" fill="outline">
+          Operators
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
   </div>
 </ion-content>

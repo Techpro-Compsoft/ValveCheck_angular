@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: BlocksPage
+  },
+  {
+    path: 'farmoperator/:blockId/:farmId',
+    loadChildren: () => import('../farmoperator/farmoperator.module').then(m=> m.FarmoperatorPageModule)
   }
 ];
 

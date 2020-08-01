@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Assign Supervisor</ion-title>
+    <ion-title>Assign {{ modeId === 1 ? 'Supervisor' : "Operator"}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,25 +16,45 @@
     </ion-item>
 
     <ion-card-content>
-      <span *ngIf="companyDetails?.supervisor">Current Supervisor - {{companyDetails?.supervisor_name}}</span>
+      <!-- <span *ngIf="companyDetails?.supervisor">Current Supervisor - {{companyDetails?.supervisor_name}}</span> -->
+      <!-- To be managed for multiple -->
 
-      <ion-item *ngIf="supervisorsList?.length > 0">
-        <ion-label>Select supervisor</ion-label>
-        <ion-select #val>
-          <ion-select-option *ngFor="let user of supervisorsList" [value]="user.id">{{user?.fullname}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
 
-      <div style="text-align: center;">
-        <ion-button *ngIf="supervisorsList?.length > 0 && !companyDetails?.supervisor" (click)="assignSupervisor(val.value)">
+
+      <div>
+        <ion-item lines="none">
+          <ion-label>{{ modeId === 1 ? 'Select supervisor' : "Select operator"}}</ion-label>
+          <ion-select #val multiple style="margin-right: 10px;">
+            <ion-select-option *ngFor="let user of usersList" [value]="user.id">{{user?.fullname}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+       <div style="text-align: center;">
+        <ion-button *ngIf="usersList?.length > 0" (click)="assignSupervisor(val.value)" size="small" fill="outline">
           Assign
         </ion-button>
+       </div>
 
-        <ion-button *ngIf="supervisorsList?.length > 0 && companyDetails?.supervisor" (click)="changeSupervisor(val.value)">
+        <!-- <ion-button *ngIf="supervisorsList?.length > 0 && companyDetails?.supervisor" (click)="changeSupervisor(val.value)">
           Change
-        </ion-button>
+        </ion-button> -->
       </div>
+
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>{{ modeId === 1 ? 'Supervisors' : "Operators"}}</ion-label>
+        </ion-item-divider>
+
+        <ion-item lines="none" *ngFor="let user of assignedUsers">
+          <ion-label>{{user.fullname | titlecase}} - {{user.email}}</ion-label>
+          <ion-button size="small" (click)="presentAlertConfirm(user.id)">
+            <ion-icon slot="icon-only" name="person-remove-outline"></ion-icon>
+          </ion-button>
+          <!-- <ion-label></ion-label> -->
+        </ion-item>
+
+      </ion-item-group>
 
     </ion-card-content>
   </ion-card>
