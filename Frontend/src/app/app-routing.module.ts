@@ -15,10 +15,6 @@ const routes: Routes = [
     loadChildren: () => import('./Supervisor/supervisor-dashboard/supervisor-dashboard.module').then(m => m.SupervisorDashboardPageModule)
   },
   {
-    path: 'supervisor-profile',
-    loadChildren: () => import('./Supervisor/supervisor-profile/supervisor-profile.module').then(m => m.SupervisorProfilePageModule)
-  },
-  {
     path: 'reset-password',
     loadChildren: () => import('./reset-password/reset-password.module').then(m => m.ResetPasswordPageModule)
   },
@@ -27,17 +23,13 @@ const routes: Routes = [
     loadChildren: () => import('./Operator/operator-dashboard/operator-dashboard.module').then(m => m.OperatorDashboardPageModule)
   },
   {
-    path: 'operator-profile',
-    loadChildren: () => import('./Operator/operator-profile/operator-profile.module').then(m => m.OperatorProfilePageModule)
-  },
-  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
   {
     path: 'adminprofile',
-    loadChildren: () => import('./Admin/adminprofile/adminprofile.module').then( m => m.AdminprofilePageModule)
+    loadChildren: () => import('./Admin/adminprofile/adminprofile.module').then(m => m.AdminprofilePageModule)
   }
 ];
 

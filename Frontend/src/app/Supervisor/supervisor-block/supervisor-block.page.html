@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Supervisor Blocks
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div id="compList">
+    <ion-card *ngFor="let block of blocksList">
+
+      <ion-item lines="none">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>{{block.block_name}}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon name="pie-chart-outline"></ion-icon>
+        <ion-label>{{block.hectares}}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>{{block.operator}}</ion-label>
+      </ion-item>
+
+
+    </ion-card>
+
+  </div>
+</ion-content>

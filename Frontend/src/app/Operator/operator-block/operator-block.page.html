@@ -1,0 +1,63 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Operator Blocks
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div id="compList">
+    <ion-card *ngFor="let block of blocksList">
+
+      <ion-item lines="none">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>{{block.block_name}}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon name="pie-chart-outline"></ion-icon>
+        <ion-label>{{block.hectares}}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>{{block.operator}}</ion-label>
+      </ion-item>
+
+
+    </ion-card>
+    <ion-card *ngFor="let inst of instructionData">
+
+      <ion-item lines="none">
+        <ion-label>Duration :{{inst.instruction}}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>Start Time :{{inst.instruction_start_time}}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>End Time :{{inst.instruction_end_time}}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>Actual Start Time :{{inst.actual_start_time}}</ion-label>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-label>Actual End Time :{{inst.actual_stop_time}}</ion-label>
+      </ion-item>
+      <ion-button fill="clear" *ngIf="timeCheckBool" expand="full" (click)="startTime()">Start</ion-button>
+      <ion-button fill="clear" expand="full" (click)="endTime()">Stop</ion-button>
+      <ion-button fill="clear" expand="full" *ngIf="!timeCheckBool" (click)="openInterruption()">Report</ion-button>
+      <ion-button fill="clear" expand="full" *ngIf="resumeInterruptBool" (click)="resumeInterruption()">Resume
+      </ion-button>
+    </ion-card>
+
+  </div>
+</ion-content>

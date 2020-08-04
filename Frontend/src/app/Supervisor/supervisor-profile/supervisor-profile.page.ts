@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseService } from 'src/app/core/Services/base.service';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, NavController } from '@ionic/angular';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
 import { ResetPasswordPage } from 'src/app/reset-password/reset-password.page';
 
@@ -10,13 +10,15 @@ import { ResetPasswordPage } from 'src/app/reset-password/reset-password.page';
   styleUrls: ['./supervisor-profile.page.scss'],
 })
 export class SupervisorProfilePage implements OnInit {
-  fullName: any;
-  phone: any;
+  fullName: string;
+  phone: string;
   supervisorId: any;
+  supervisorData: any;
   constructor(public base: BaseService,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public supervisorService: SupervisorService) {
+    public supervisorService: SupervisorService,
+    public nav: NavController) {
   }
 
   ngOnInit() {
@@ -24,18 +26,16 @@ export class SupervisorProfilePage implements OnInit {
   }
 
   getSupervisorDetails() {
-    // this.base.userData.subscribe((data) => {
-    //   console.log(data);
-    //   this.fullName = data['fullname']
-    //   this.phone = data['phone']
-    //   this.supervisorId = data['id']
-    // });
+    this.supervisorData = JSON.parse(localStorage.getItem('myUser'));
+    this.fullName = this.supervisorData.fullname;
+    this.phone = this.supervisorData.phone;
+    this.supervisorId = this.supervisorData.id;
   }
 
   async openSupervisorDialog() {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Edit Farm',
+      header: 'Edit Profile',
       inputs: [
         {
           name: 'name',
@@ -77,9 +77,12 @@ export class SupervisorProfilePage implements OnInit {
         "fullname": data.name,
         "phone": data.phone
       }
-      // this.supervisorService.editSupervisorProfileCall(supObj).subscribe(response => {
-      //   this.base.setUser(supObj)
-      // });
+      this.supervisorService.editSupervisorProfileCall(supObj).subscribe(response => {
+        this.supervisorData.fullname = data.name;
+        this.supervisorData.phone = data.phone
+        localStorage.setItem('myUser', JSON.stringify(this.supervisorData));
+        this.getSupervisorDetails();
+      });
     } catch (error) {
       console.log(error)
     }
@@ -92,6 +95,13 @@ export class SupervisorProfilePage implements OnInit {
     modal.onDidDismiss().then(res => {
     });
     return await modal.present();
+  }
+
+
+  logout() {
+    localStorage.removeItem('myToken');
+    localStorage.removeItem('myUser');
+    this.nav.navigateRoot(['/login']);
   }
 
 

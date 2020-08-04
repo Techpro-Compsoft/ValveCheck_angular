@@ -27,6 +27,9 @@
     <ion-button class="editBtn" (click)="openSupervisorDialog()" fill="clear">
       <ion-label color="dark">Edit</ion-label>
     </ion-button>
-    <ion-button color="dark" expand="full" class="rstBtn" (click)="resetPassword()">Reset Password</ion-button>
+    <div class="footerBtn">
+      <ion-button fill="clear" expand="full" class="rstBtn" (click)="resetPassword()">Reset Password</ion-button>
+      <ion-button fill="clear" expand="full" class="rstBtn" (click)="logout()">Logout</ion-button>
+    </div>
   </ion-card>
 </ion-content>

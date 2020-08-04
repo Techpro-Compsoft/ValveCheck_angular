@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseService } from 'src/app/core/Services/base.service';
-import { ModalController, AlertController } from '@ionic/angular';
-import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
+import { ModalController, AlertController, NavController } from '@ionic/angular';
 import { ResetPasswordPage } from 'src/app/reset-password/reset-password.page';
+import { OperatorService } from 'src/app/core/Services/Operator/operator.service';
 
 @Component({
   selector: 'app-operator-profile',
@@ -10,13 +10,15 @@ import { ResetPasswordPage } from 'src/app/reset-password/reset-password.page';
   styleUrls: ['./operator-profile.page.scss'],
 })
 export class OperatorProfilePage implements OnInit {
-  fullName: any;
-  phone: any;
+  fullName: string;
+  phone: string;
   operatorId: any;
+  operatorData: any;
   constructor(public base: BaseService,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public supervisorService: SupervisorService) {
+    public operatorService: OperatorService,
+    private nav: NavController) {
   }
 
   ngOnInit() {
@@ -24,18 +26,16 @@ export class OperatorProfilePage implements OnInit {
   }
 
   getOperatorDetails() {
-    // this.base.userData.subscribe((data) => {
-    //   console.log(data);
-    //   this.fullName = data['fullname']
-    //   this.phone = data['phone']
-    //   this.operatorId = data['id']
-    // });
+    this.operatorData = JSON.parse(localStorage.getItem('myUser'));
+    this.fullName = this.operatorData.fullname;
+    this.phone = this.operatorData.phone;
+    this.operatorId = this.operatorData.id;
   }
 
   async openOperatorDialog() {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Edit Farm',
+      header: 'Edit Profile',
       inputs: [
         {
           name: 'name',
@@ -77,9 +77,12 @@ export class OperatorProfilePage implements OnInit {
         "fullname": data.name,
         "phone": data.phone
       }
-      // this.supervisorService.editSupervisorProfileCall(operatorObj).subscribe(response => {
-      //   this.base.setUser(operatorObj)
-      // });
+      this.operatorService.editOperatorProfileCall(operatorObj).subscribe(response => {
+        this.operatorData.fullname = data.name;
+        this.operatorData.phone = data.phone
+        localStorage.setItem('myUser', JSON.stringify(this.operatorData));
+        this.getOperatorDetails();
+      });
     } catch (error) {
       console.log(error)
     }
@@ -94,6 +97,11 @@ export class OperatorProfilePage implements OnInit {
     return await modal.present();
   }
 
+  logout() {
+    localStorage.removeItem('myToken');
+    localStorage.removeItem('myUser');
+    this.nav.navigateRoot(['/login']);
+  }
 
 
 }
