@@ -16,6 +16,19 @@
     </ion-select>
   </ion-item>
 
+  <ion-item>
+    <ion-label>Start time</ion-label>
+    <ion-datetime displayFormat="h:mm a" #st></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Stop time</ion-label>
+    <ion-datetime displayFormat="h:mm a" #sp></ion-datetime>
+  </ion-item>
+
+  <ion-button size="small" fill="outline" (click)="test12(st.value, sp.value)">Check
+    time</ion-button>
+
   <div style="text-align: center;margin-top: 10px;">
     <ion-button *ngIf="!valveDetails?.instruction" size="small" fill="outline" (click)="assignTime(valveTime)">Assign
       time</ion-button>

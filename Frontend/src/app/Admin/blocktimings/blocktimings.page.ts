@@ -30,8 +30,8 @@ export class BlocktimingsPage implements OnInit {
         block: this.blockId
       }).subscribe(response => {
         if (response.status === "success") {
-          this.valveDetails = response.data[0];
-          this.valveTime = this.valveDetails['instruction'] ? parseInt(this.valveDetails['instruction']) : 1;
+          this.valveDetails = response.data ? response.data[0] : null;
+          this.valveTime = this.valveDetails ? parseInt(this.valveDetails['instruction']) : 1;
         }
       });
     } catch (error) {
@@ -97,6 +97,10 @@ export class BlocktimingsPage implements OnInit {
         alert('something went wrong');
       }
     }
+  }
+
+  test12(a,b){
+    console.log(a + ' ' + b);
   }
 
 }
