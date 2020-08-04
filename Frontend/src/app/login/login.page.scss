@@ -1,10 +1,32 @@
-#container{
-    ion-item{
-        width: 100%;
-        padding: 10px;
-    }
 
-    #btnDiv{
-        float: right;
-    }
+img{
+    width: 120px;
+    display: block;
+    margin: auto;
+    margin-top: 42px;
+    margin-bottom: 20px;
+}
+ion-input{
+    border-bottom:2px solid #1f4e79 ;
+}
+.login-btn{
+    display: block;
+    width: 140px;
+    color: #ffffff;
+    background: #1f4e79;
+    margin: auto;
+    margin-top: 50px;
+    text-align: center;
+    height: 50px;
+    font-size: 17px;
+    border-radius: 6px;
+}
+ion-label{
+    font-size: 18px !important;
+}
+ion-input{
+    padding:5px 0 !important
+}
+ion-item{
+    padding:0 25px;
 }

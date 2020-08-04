@@ -39,7 +39,7 @@ export class BlocksPage implements OnInit {
   async openBlockDialog(value?) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: value ? 'Edit Farm' : 'New Farm',
+      header: value ? 'Edit Block' : 'New Block',
       inputs: [
         {
           name: 'name',
