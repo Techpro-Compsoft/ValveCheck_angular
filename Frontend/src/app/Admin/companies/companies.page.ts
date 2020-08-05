@@ -77,6 +77,9 @@ export class CompaniesPage implements OnInit {
       } catch (error) {
         alert('Something went wrong');
       }
+    } 
+    else{
+      alert('Company name can not be empty');
     }
   }
 
@@ -95,6 +98,9 @@ export class CompaniesPage implements OnInit {
       } catch (error) {
         alert('Something went wrong');
       }
+    }
+    else{
+      alert('Company name can not be empty');
     }
   }
 

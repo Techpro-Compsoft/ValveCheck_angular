@@ -83,6 +83,9 @@ export class FarmsPage implements OnInit {
         alert('Something went wrong');
       }
     }
+    else {
+      alert('Farm name can not be empty');
+    }
   }
 
   editFarm(name, id) {
@@ -101,6 +104,9 @@ export class FarmsPage implements OnInit {
       } catch (error) {
         alert('Something went wrong');
       }
+    }
+    else {
+      alert('Farm name can not be empty');
     }
   }
 

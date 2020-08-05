@@ -78,35 +78,59 @@ export class OperatorsPage implements OnInit {
     await alert.present();
   }
 
+  checkValidation(name: string, email: string, password: string): boolean {
+    const regEx = new RegExp(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    if (name.trim().length === 0) {
+      return false;
+    } else if (!email.match(regEx) || email.length == 0) {
+      return false;
+    }
+    else if (password.trim().length === 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   createOperator(data) {
     data.role = 3;
-    try {
-      this.baseService.createUser(data).subscribe(response => {
-        if (response.status === "success") {
-          alert('Created');
-          this.getUsers();
-        }
-      });
-    } catch (error) {
-      alert('Something went wrong');
+    if (this.checkValidation(data.fullname, data.email, data.password)) {
+      try {
+        this.baseService.createUser(data).subscribe(response => {
+          if (response.status === "success") {
+            alert('Created');
+            this.getUsers();
+          }
+        });
+      } catch (error) {
+        alert('Something went wrong');
+      }
+    }
+    else {
+      alert('Please enter valid details');
     }
   }
 
   editOperator(data, id) {
-    try {
-      this.baseService.updateUser({
-        "id": id,
-        "fullname": data.fullname,
-        "password": data.password,
-        "phone": data.phone
-      }).subscribe(response => {
-        if (response.status === "success") {
-          alert('Updated');
-          this.getUsers();
-        }
-      });
-    } catch (error) {
-      alert('Something went wrong');
+    if (this.checkValidation(data.fullname, data.email, data.password)) {
+      try {
+        this.baseService.updateUser({
+          "id": id,
+          "fullname": data.fullname,
+          "password": data.password,
+          "phone": data.phone
+        }).subscribe(response => {
+          if (response.status === "success") {
+            alert('Updated');
+            this.getUsers();
+          }
+        });
+      } catch (error) {
+        alert('Something went wrong');
+      }
+    }
+    else {
+      alert('Please enter valid details');
     }
   }
 
@@ -161,7 +185,7 @@ export class OperatorsPage implements OnInit {
     }
   }
 
-  toProfile(){
+  toProfile() {
     this.navCtr.navigateForward(['/adminprofile']);
   }
 
