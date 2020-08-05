@@ -19,13 +19,17 @@ export class OperatorDashboardPage implements OnInit {
 
   getDashboardDetails() {
     let data = JSON.parse(localStorage.getItem('myUser'));
-    this.operatorService.getFarmDetailsCall({
-      "user_id": data.id,
-      "role": data.role
-    }).subscribe(response => {
-      console.log(response);
-      this.farmsList = response.data
-    });
+    try {
+      this.operatorService.getFarmDetailsCall({
+        "user_id": data.id,
+        "role": data.role
+      }).subscribe(response => {
+        console.log(response);
+        this.farmsList = response.data
+      });
+    } catch (error) {
+      alert('Something went wrong')
+    }
   }
 
   viewBlocks(id) {

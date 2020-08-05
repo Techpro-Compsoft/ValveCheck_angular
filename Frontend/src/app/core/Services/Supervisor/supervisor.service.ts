@@ -34,5 +34,14 @@ export class SupervisorService {
     return this.http.post(`${environment.base}/getBlockForUsers`, data);
   }
 
+  getCycleCall(data): Observable<any> {
+    return this.http.post(`${environment.base}/getCycle`, data);
+  }
+
+  closeBlockCall(data): Observable<any> {
+    return this.http.put(`${environment.base}/closeBlock`, data);
+  }
+
+
 
 }

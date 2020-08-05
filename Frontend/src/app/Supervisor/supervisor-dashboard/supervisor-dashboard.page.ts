@@ -18,14 +18,18 @@ export class SupervisorDashboardPage implements OnInit {
   }
 
   getDashboardDetails() {
-    let data = JSON.parse(localStorage.getItem('myUser'));
-    this.supervisorService.getFarmDetailsCall({
-      "user_id": data.id,
-      "role": data.role
-    }).subscribe(response => {
-      console.log(response);
-      this.farmsList = response.data
-    });
+    try {
+      let data = JSON.parse(localStorage.getItem('myUser'));
+      this.supervisorService.getFarmDetailsCall({
+        "user_id": data.id,
+        "role": data.role
+      }).subscribe(response => {
+        console.log(response);
+        this.farmsList = response.data
+      });
+    } catch (error) {
+      alert('something went wrong');
+    }
   }
 
   viewBlocks(id) {

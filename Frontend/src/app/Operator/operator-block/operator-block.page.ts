@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OperatorService } from 'src/app/core/Services/Operator/operator.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { AlertController } from '@ionic/angular';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-operator-block',
@@ -13,144 +13,59 @@ export class OperatorBlockPage implements OnInit {
   farmId: number;
   role: any;
   blocksList: Array<object>;
-  instructionData: Array<object>;
-  blockId: number;
-  timeCheckBool: boolean = true;
-  checkTimeId: number;
-  resumeInterruptBool: boolean = false;
 
   constructor(public activatedRoute: ActivatedRoute,
     public operatorService: OperatorService,
-    public alertCtrl: AlertController) { }
+    public alertCtrl: AlertController,
+    private geolocation: Geolocation,
+    public navCtrl: NavController) { }
 
   ngOnInit() {
     this.farmId = +this.activatedRoute.snapshot.paramMap.get('farmId');
     let data = JSON.parse(localStorage.getItem('myUser'));
     this.role = data.role;
-    this.getBlockDetails()
+    this.getLocation();
+    this.getBlockDetails();
+  }
+
+  getLocation() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp.coords.latitude)
+      console.log(resp.coords.longitude)
+      this.calculateDistance(resp.coords.latitude, resp.coords.longitude)
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+  }
+
+  calculateDistance(lat1: number, long1: number) {
+    let lat2 = 28.6509;
+    let long2 = 77.1207;
+    let p = 0.017453292519943295;    // Math.PI / 180
+    let c = Math.cos;
+    let a = 0.5 - c((lat1 - lat2) * p) / 2 + c(lat2 * p) * c((lat1) * p) * (1 - c(((long1 - long2) * p))) / 2;
+    let dis = (12742 * Math.asin(Math.sqrt(a))); // 2 * R; R = 6371 km
+    console.log(dis);
+    return dis;
   }
 
   getBlockDetails() {
-    this.operatorService.getBlockDetailsCall({
-      "farm": this.farmId,
-      "role": this.role
-    }).subscribe(response => {
-      console.log(response);
-      this.blocksList = response.data
-      this.blockId = response.data[0]['id'];
-      this.getCycle();
-    });
-  }
-
-  getCycle() {
-    this.operatorService.getCycleCall({
-      "block": this.blockId
-    }).subscribe(response => {
-      console.log(response);
-      this.checkTimeId = response.data[0]['id']
-      this.instructionData = response.data
-    })
-  }
-
-  startTime() {
-    var x = new Date();
-    var h = x.getHours();
-    var m = x.getMinutes();
-    let startTime = h + ':' + m;
-    this.operatorService.openBlockCall({
-      "id": this.checkTimeId,
-      "start_time": startTime
-    }).subscribe(response => {
-      console.log(response);
-      if (response.status = "success") {
-        this.timeCheckBool = false;
-        this.getCycle();
-      }
-    });
-  }
-
-  endTime() {
-    var x = new Date();
-    var h = x.getHours();
-    var m = x.getMinutes();
-    let endTime = h + ':' + m;
-    this.operatorService.closeBlockCall({
-      "id": this.checkTimeId,
-      "stop_time": endTime
-    }).subscribe(response => {
-      if (response.status == "success") {
-        this.getCycle();
-      }
-    });
-  }
-
-  async openInterruption() {
-    const alert = await this.alertCtrl.create({
-      cssClass: 'my-custom-class',
-      header: 'Interruption ',
-      inputs: [
-        {
-          name: 'name',
-          type: 'text',
-          placeholder: 'Reason',
-          value: ''
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'EDIT',
-          handler: (data) => {
-            this.submitInterruption(data)
-          }
-        }
-      ]
-    });
-    await alert.present();
+    try {
+      this.operatorService.getBlockDetailsCall({
+        "farm": this.farmId,
+        "role": this.role
+      }).subscribe(response => {
+        console.log(response);
+        this.blocksList = response.data;
+      });
+    } catch (error) {
+      alert('something went wrong')
+    }
   }
 
 
-
-
-  submitInterruption(data) {
-    var x = new Date();
-    var h = x.getHours();
-    var m = x.getMinutes();
-    let interruptTime = h + ':' + m;
-    this.operatorService.interruptBlockCall({
-      "id": this.checkTimeId,
-      "time": interruptTime,
-      "interruption_reason": data.name
-    }).subscribe(response => {
-      console.log(response);
-      if (response.status == "success") {
-        this.resumeInterruptBool = true;
-        this.getCycle();
-      }
-    });
-  }
-
-  resumeInterruption() {
-    var x = new Date();
-    var h = x.getHours();
-    var m = x.getMinutes();
-    let interruptTime = h + ':' + m;
-    this.operatorService.resumeBlockCall({
-      "id": this.checkTimeId,
-      "start_time": interruptTime,
-    }).subscribe(response => {
-      console.log(response);
-      if (response.status == "success") {
-        this.resumeInterruptBool = false;
-        this.getCycle();
-      }
-    });
+  viewValves(id) {
+    this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}`]);
   }
 
 }

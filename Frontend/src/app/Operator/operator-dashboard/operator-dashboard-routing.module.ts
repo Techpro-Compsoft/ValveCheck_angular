@@ -16,6 +16,11 @@ const routes: Routes = [
     path: 'operator-block/:farmId',
     loadChildren: () => import('../operator-block/operator-block.module').then(m => m.OperatorBlockPageModule)
   },
+  {
+    path: 'operator-blocktimings/:blockId',
+    loadChildren: () => import('../operator-blocktimings/operator-blocktimings.module').then(m => m.OperatorBlocktimingsPageModule)
+  }
+
 ];
 
 @NgModule({

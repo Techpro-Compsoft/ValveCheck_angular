@@ -1,0 +1,20 @@
+ion-card{
+    margin-top: 10px;
+    box-shadow: none;
+    background: #e8e8e8;
+}
+ion-card ion-item{
+    --background: transparent;
+    font-weight: 600;
+}
+ion-item{
+    margin:0 10px;
+    font-weight: 600;
+}
+ion-card ion-card-header{
+    background: #1f4e79;
+    color: #ffffff;
+}
+ion-card ion-card-header ion-card-title{
+    color: #ffffff;
+}
