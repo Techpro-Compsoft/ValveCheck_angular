@@ -49,6 +49,9 @@ export class SupervisorBlockPage implements OnInit {
           if (response.data[0]['actual_stop_time'] !== null) {
             alert('already stopped')
           }
+          else if (response.data[0]['actual_start_time'] == null) {
+            alert('valve not started')
+          }
           else {
             this.presentAlertConfirm(response.data[0]['id'])
           }
