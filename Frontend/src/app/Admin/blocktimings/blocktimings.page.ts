@@ -11,6 +11,7 @@ import { FarmService } from 'src/app/core/Services/Farm/farm.service';
 export class BlocktimingsPage implements OnInit {
 
   blockId: number;
+  operatorId: number;
   valveDetails: object;
   valveTime: number;
   startTime: string;
@@ -22,6 +23,7 @@ export class BlocktimingsPage implements OnInit {
 
   ngOnInit() {
     this.blockId = +this.activatedRoute.snapshot.paramMap.get('id');
+    this.operatorId = +this.activatedRoute.snapshot.paramMap.get('operatorId');
     this.getBlockValveDetails();
   }
 
@@ -30,6 +32,7 @@ export class BlocktimingsPage implements OnInit {
       this.farm.valveDetails({
         block: this.blockId
       }).subscribe(response => {
+        console.log(response);
         if (response.status === "success") {
           this.valveDetails = response.data ? response.data[0] : null;
           this.valveTime = this.valveDetails ? parseInt(this.valveDetails['instruction']) : 1;
@@ -56,7 +59,8 @@ export class BlocktimingsPage implements OnInit {
             block: this.blockId,
             time: valveTime,
             start_time: `${new Date(st).getHours()}:${new Date(st).getMinutes()}`,
-            end_time: `${new Date(end).getHours()}:${new Date(end).getMinutes()}`
+            end_time: `${new Date(end).getHours()}:${new Date(end).getMinutes()}`,
+            operator: this.operatorId
           }).subscribe(response => {
             if (response.status === "success") {
               this.getBlockValveDetails();

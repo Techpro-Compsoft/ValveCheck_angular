@@ -10,11 +10,11 @@ const routes: Routes = [
   },
   {
     path: 'farmoperator/:blockId/:farmId',
-    loadChildren: () => import('../farmoperator/farmoperator.module').then(m=> m.FarmoperatorPageModule)
+    loadChildren: () => import('../farmoperator/farmoperator.module').then(m => m.FarmoperatorPageModule)
   },
   {
-    path: 'blocktimings/:id',
-    loadChildren: () => import('../blocktimings/blocktimings.module').then( m => m.BlocktimingsPageModule)
+    path: 'blocktimings/:id/:operatorId',
+    loadChildren: () => import('../blocktimings/blocktimings.module').then(m => m.BlocktimingsPageModule)
   }
 ];
 
@@ -22,4 +22,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class BlocksPageRoutingModule {}
+export class BlocksPageRoutingModule { }

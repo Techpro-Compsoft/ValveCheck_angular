@@ -176,8 +176,8 @@ export class BlocksPage implements OnInit {
     }
   }
 
-  blockTimings(id) {
-    this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${id}/blocktimings/${id}`]);
+  blockTimings(id, operatorId) {
+    this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${id}/blocktimings/${id}/${operatorId}`]);
   }
 
 }
