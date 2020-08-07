@@ -39,12 +39,16 @@
 
       <ion-card-content class="footer-btn">
 
-        <ion-button (click)="assignSupervisor(company.id,1)" size="small" fill="outline" class="supervisor-btn">
+        <ion-button (click)="assignUser(company.id,1)" size="small" fill="outline" class="supervisor-btn">
           Supervisors
         </ion-button>
 
-        <ion-button (click)="assignSupervisor(company.id,2)" size="small" fill="outline" class="operator-btn">
+        <ion-button (click)="assignUser(company.id,2)" size="small" fill="outline" class="operator-btn">
           Operators
+        </ion-button>
+
+        <ion-button (click)="viewReport(company.id)" size="small" fill="outline">
+          Report
         </ion-button>
       </ion-card-content>
     </ion-card>

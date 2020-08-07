@@ -20,10 +20,6 @@ const routes: Routes = [
         loadChildren: () => import('../operators/operators.module').then(m => m.OperatorsPageModule)
       },
       {
-        path: 'reports',
-        loadChildren: () => import('../reports/reports.module').then(m => m.ReportsPageModule)
-      },
-      {
         path: '',
         redirectTo: '/home/companies',
         pathMatch: 'full'

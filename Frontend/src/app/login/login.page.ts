@@ -15,7 +15,7 @@ export class LoginPage implements OnInit {
   constructor(private base: BaseService, private fb: FormBuilder,
     private nav: NavController) {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }

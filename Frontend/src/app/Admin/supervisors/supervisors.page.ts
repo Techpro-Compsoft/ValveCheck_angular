@@ -42,9 +42,15 @@ export class SupervisorsPage implements OnInit {
           value: value ? value.fullname : ''
         },
         {
+          name: 'username',
+          type: 'text',
+          placeholder: 'Username',
+          value: value ? value.username : ''
+        },
+        {
           name: 'email',
           type: 'text',
-          placeholder: 'Email',
+          placeholder: 'Email (optional)',
           value: value ? value.email : ''
         },
         {
@@ -79,11 +85,11 @@ export class SupervisorsPage implements OnInit {
     await alert.present();
   }
 
-  checkValidation(name: string, email: string, password: string): boolean {
-    const regEx = new RegExp(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+  checkValidation(name: string, username: string, password: string): boolean {
     if (name.trim().length === 0) {
       return false;
-    } else if (!email.match(regEx) || email.length == 0) {
+    }
+    else if (username.trim().length === 0) {
       return false;
     }
     else if (password.trim().length === 0) {
@@ -95,7 +101,7 @@ export class SupervisorsPage implements OnInit {
 
   createSupervisor(data) {
     data.role = 2;
-    if (this.checkValidation(data.fullname, data.email, data.password)) {
+    if (this.checkValidation(data.fullname, data.username, data.password)) {
       try {
         this.baseService.createUser(data).subscribe(response => {
           if (response.status === "success") {
@@ -113,11 +119,12 @@ export class SupervisorsPage implements OnInit {
   }
 
   editSupervisor(data, id) {
-    if (this.checkValidation(data.fullname, data.email, data.password)) {
+    if (this.checkValidation(data.fullname, data.username, data.password)) {
       try {
         this.baseService.updateUser({
           "id": id,
           "fullname": data.fullname,
+          "username": data.username,
           "password": data.password,
           "phone": data.phone
         }).subscribe(response => {
@@ -165,7 +172,6 @@ export class SupervisorsPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
   }
 

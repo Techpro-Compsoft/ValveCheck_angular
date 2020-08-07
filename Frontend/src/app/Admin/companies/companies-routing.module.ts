@@ -15,6 +15,10 @@ const routes: Routes = [
   {
     path: 'supassign/:compId/:mode',
     loadChildren: () => import('../supervisorassignment/supervisorassignment.module').then(m => m.SupervisorassignmentPageModule)
+  },
+  {
+    path: 'reports/:compId',
+    loadChildren: () => import('../reports/reports.module').then(m => m.ReportsPageModule)
   }
 ];
 

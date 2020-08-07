@@ -77,8 +77,8 @@ export class CompaniesPage implements OnInit {
       } catch (error) {
         alert('Something went wrong');
       }
-    } 
-    else{
+    }
+    else {
       alert('Company name can not be empty');
     }
   }
@@ -99,7 +99,7 @@ export class CompaniesPage implements OnInit {
         alert('Something went wrong');
       }
     }
-    else{
+    else {
       alert('Company name can not be empty');
     }
   }
@@ -108,16 +108,20 @@ export class CompaniesPage implements OnInit {
     this.navCtrl.navigateForward([`/home/companies/farms/${id}`]);
   }
 
-  assignSupervisor(id, mode){
+  assignUser(id, mode) {
     this.navCtrl.navigateForward([`/home/companies/supassign/${id}/${mode}`]);
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.getCompanies();
   }
 
-  toProfile(){
+  toProfile() {
     this.navCtrl.navigateForward(['/adminprofile']);
+  }
+
+  viewReport(id) {
+    this.navCtrl.navigateForward([`/home/companies/reports/${id}`]);
   }
 
 }
