@@ -13,6 +13,8 @@ export class OperatorBlockPage implements OnInit {
   farmId: number;
   role: any;
   blocksList: Array<object>;
+  blockLatitude: number;
+  blockLongitude: number;
 
   constructor(public activatedRoute: ActivatedRoute,
     public operatorService: OperatorService,
@@ -24,29 +26,31 @@ export class OperatorBlockPage implements OnInit {
     this.farmId = +this.activatedRoute.snapshot.paramMap.get('farmId');
     let data = JSON.parse(localStorage.getItem('myUser'));
     this.role = data.role;
-    this.getLocation();
     this.getBlockDetails();
   }
 
-  getLocation() {
+  getLocation(blockId) {
     this.geolocation.getCurrentPosition().then((resp) => {
       console.log(resp.coords.latitude)
       console.log(resp.coords.longitude)
-      this.calculateDistance(resp.coords.latitude, resp.coords.longitude)
+      this.calculateDistance(resp.coords.latitude, resp.coords.longitude, blockId)
     }).catch((error) => {
       console.log('Error getting location', error);
     });
   }
 
-  calculateDistance(lat1: number, long1: number) {
-    let lat2 = 28.6509;
-    let long2 = 77.1207;
+  calculateDistance(lat1: number, long1: number, id) {
     let p = 0.017453292519943295;    // Math.PI / 180
     let c = Math.cos;
-    let a = 0.5 - c((lat1 - lat2) * p) / 2 + c(lat2 * p) * c((lat1) * p) * (1 - c(((long1 - long2) * p))) / 2;
+    let a = 0.5 - c((lat1 - this.blockLatitude) * p) / 2 + c(this.blockLatitude * p) * c((lat1) * p) * (1 - c(((long1 - this.blockLongitude) * p))) / 2;
     let dis = (12742 * Math.asin(Math.sqrt(a))); // 2 * R; R = 6371 km
-    console.log(dis);
-    return dis;
+    let distanceInMeters = dis * 1000; //distance in meters
+    if (distanceInMeters <= 15) {
+      this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}`]);
+    }
+    else {
+      alert('You are not nearby to valve. Please go to exact location');
+    }
   }
 
   getBlockDetails() {
@@ -57,15 +61,16 @@ export class OperatorBlockPage implements OnInit {
       }).subscribe(response => {
         console.log(response);
         this.blocksList = response.data;
+        this.blockLatitude = response.data[0]['latitude'];
+        this.blockLongitude = response.data[0]['longitude'];
       });
     } catch (error) {
       alert('something went wrong')
     }
   }
 
-
   viewValves(id) {
-    this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}`]);
+    this.getLocation(id);
   }
 
 }

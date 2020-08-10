@@ -35,7 +35,7 @@ export class OperatorProfilePage implements OnInit {
   async openOperatorDialog() {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Edit Profile',
+      header: 'Update Profile',
       inputs: [
         {
           name: 'name',
@@ -60,7 +60,7 @@ export class OperatorProfilePage implements OnInit {
             console.log('Confirm Cancel');
           }
         }, {
-          text: 'EDIT',
+          text: 'UPDATE',
           handler: (data) => {
             this.editOperatorProfile(data)
           }
@@ -70,21 +70,44 @@ export class OperatorProfilePage implements OnInit {
     await alert.present();
   }
 
+  checkValidation(name: string): boolean {
+    if (name.trim().length === 0) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+
   editOperatorProfile(data) {
-    try {
-      const operatorObj = {
-        "id": this.operatorId,
-        "fullname": data.name,
-        "phone": data.phone
+    let patt = /^[0-9]{8,10}$/g;
+    let result = patt.test(data.phone);
+    if (this.checkValidation(data.name)) {
+      if (data.name.length > 50) {
+        alert('Name can not be more than 50 characters');
       }
-      this.operatorService.editOperatorProfileCall(operatorObj).subscribe(response => {
-        this.operatorData.fullname = data.name;
-        this.operatorData.phone = data.phone
-        localStorage.setItem('myUser', JSON.stringify(this.operatorData));
-        this.getOperatorDetails();
-      });
-    } catch (error) {
-      console.log(error)
+      else if (result === false) {
+        alert('Phone Number must contain 8 digits to maximum 10 digits');
+      } else {
+        try {
+          const operatorObj = {
+            "id": this.operatorId,
+            "fullname": data.name,
+            "phone": data.phone
+          }
+          this.operatorService.editOperatorProfileCall(operatorObj).subscribe(response => {
+            this.operatorData.fullname = data.name;
+            this.operatorData.phone = data.phone
+            localStorage.setItem('myUser', JSON.stringify(this.operatorData));
+            this.getOperatorDetails();
+          });
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    } else {
+      alert('Please enter valid details');
     }
   }
 
