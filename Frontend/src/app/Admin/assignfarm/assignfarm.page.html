@@ -31,7 +31,7 @@
         <ion-card-title>Assigned {{modeId === 1 ? 'Supervisors' : 'Operators'}}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-list>
+        <ion-list *ngIf="assignedUsers?.length > 0">
           <ion-item lines="none" *ngFor="let user of assignedUsers">
             <ion-label>{{user.fullname}} - {{user.email}}</ion-label>
             <ion-button size="small" (click)="presentAlertConfirm(user.id)" fill="clear">

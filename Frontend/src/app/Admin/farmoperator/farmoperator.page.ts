@@ -27,8 +27,10 @@ export class FarmoperatorPage implements OnInit {
     try {
       this.farmService.farmDetails({ id: this.farmId }).subscribe(response => {
         if (response.status === "success") {
-          this.availableUsers = [];
           this.availableUsers = response.data.operator;
+        }
+        else if(response.status === "error"){
+          alert(response.txt);
         }
       });
     } catch (error) {
@@ -46,7 +48,10 @@ export class FarmoperatorPage implements OnInit {
           if (response.status === "success") {
             this.nav.pop();
           }
-        })
+          else if(response.status === "error"){
+            alert(response.txt);
+          }
+        });
       } catch (error) {
         alert('Something went wrong');
       }

@@ -32,9 +32,6 @@ const routes: Routes = [
     loadChildren: () => import('./Admin/adminprofile/adminprofile.module').then(m => m.AdminprofilePageModule)
   }
 
-
-
-
 ];
 
 @NgModule({

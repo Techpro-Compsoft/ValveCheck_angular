@@ -36,6 +36,9 @@ export class AssignfarmPage implements OnInit {
           const data = this.modeId === 1 ? response.data.supervisor : response.data.operator;
           this.availableUsers = data.filter(ar => !this.assignedUsers.find(rm => (rm['id'] === ar['id'])));
         }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
       alert('Something went wrong');
@@ -49,6 +52,9 @@ export class AssignfarmPage implements OnInit {
           this.assignedUsers = this.modeId === 1 ? response.data.supervisor : response.data.operator;
           this.getCompanyDetails();
           this.farmName = response.data.farm.farm_name;
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
@@ -67,9 +73,12 @@ export class AssignfarmPage implements OnInit {
           if (response.status === "success") {
             sl.value = '';
             this.getFarmDetails();
-            this.getCompanyDetails();
+            // this.getCompanyDetails();
           }
-        })
+          else if (response.status === "error") {
+            alert(response.txt);
+          }
+        });
       } catch (error) {
         alert('Something went wrong');
       }
@@ -114,6 +123,9 @@ export class AssignfarmPage implements OnInit {
         if (response.status === "success") {
           alert('Removed');
           this.getFarmDetails();
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {

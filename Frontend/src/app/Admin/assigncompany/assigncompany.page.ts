@@ -21,6 +21,9 @@ export class AssigncompanyPage implements OnInit {
   ngOnInit() {
     this.userId = +this.activatedRoute.snapshot.paramMap.get('id');
     this.modeType = +this.activatedRoute.snapshot.paramMap.get('mode');
+  }
+
+  ionViewWillEnter() {
     this.getAvailableCompanies();
   }
 
@@ -29,6 +32,9 @@ export class AssigncompanyPage implements OnInit {
       this.compService.fetchCompanies().subscribe(response => {
         if (response.status === "success") {
           this.companiesList = response.data;
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
@@ -47,7 +53,10 @@ export class AssigncompanyPage implements OnInit {
           alert('Assigned successfully');
           this.nav.pop();
         }
-      })
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
     } catch (error) {
       alert('Something went wrong');
     }

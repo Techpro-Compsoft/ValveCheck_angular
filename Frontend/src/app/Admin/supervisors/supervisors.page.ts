@@ -24,8 +24,10 @@ export class SupervisorsPage implements OnInit {
       "role": 2
     }).subscribe(response => {
       if (response.status === "success") {
-        this.usersList = [];
         this.usersList = response.data;
+      }
+      else if (response.status === "error") {
+        alert(response.txt);
       }
     });
   }
@@ -119,6 +121,9 @@ export class SupervisorsPage implements OnInit {
               alert('Created');
               this.getUsers();
             }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
           });
         } catch (error) {
           alert('Something went wrong');
@@ -153,6 +158,9 @@ export class SupervisorsPage implements OnInit {
             if (response.status === "success") {
               alert('Updated');
               this.getUsers();
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
             }
           });
         } catch (error) {
@@ -208,6 +216,9 @@ export class SupervisorsPage implements OnInit {
         if (response.status === "success") {
           alert('Removed');
           this.getUsers();
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {

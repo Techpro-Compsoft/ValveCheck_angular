@@ -30,8 +30,10 @@ export class BlocksPage implements OnInit {
   getBlocksForFarm() {
     this.farmService.getBlocks({ id: this.farmID }).subscribe(response => {
       if (response.status === "success") {
-        this.blocksList = [];
         this.blocksList = response.data;
+      }
+      else if (response.status === "error") {
+        alert(response.txt);
       }
     });
   }
@@ -78,7 +80,7 @@ export class BlocksPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            // console.log('Confirm Cancel');
           }
         }, {
           text: value ? 'EDIT' : 'ADD',
@@ -105,6 +107,9 @@ export class BlocksPage implements OnInit {
           alert('Block added');
           this.getBlocksForFarm();
         }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
       alert('Something went wrong');
@@ -125,6 +130,9 @@ export class BlocksPage implements OnInit {
         if (response.status === "success") {
           alert('Block updated');
           this.getBlocksForFarm();
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
@@ -170,14 +178,22 @@ export class BlocksPage implements OnInit {
           alert('Operator removed');
           this.getBlocksForFarm();
         }
-      })
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
     } catch (error) {
       alert('Something went wrong');
     }
   }
 
   blockTimings(id, operatorId) {
-    this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${id}/blocktimings/${id}/${operatorId}`]);
+    if (operatorId) {
+      this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${id}/blocktimings/${id}/${operatorId}`]);
+    }
+    else {
+      alert('Please assign an operator to proceed further');
+    }
   }
 
 }

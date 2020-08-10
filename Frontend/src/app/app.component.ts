@@ -35,7 +35,8 @@ export class AppComponent {
 
   backbuttonSubscribeMethod() {
     this.platform.backButton.subscribe(() => {
-      if (this.route.url == '/login' || this.route.url == '/home') {
+      if (this.route.url == '/login' || this.route.url == '/home/companies' || this.route.url == "/operator-dashboard" ||
+        this.route.url == "/supervisor-dashboard") {
         navigator['app'].exitApp();
       }
     });
@@ -45,7 +46,12 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.backbuttonSubscribeMethod();
     });
+  }
+
+  ngOnDestroy() {
+    this.platform.backButton.unsubscribe();
   }
 
 }
