@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyService } from 'src/app/core/Services/Company/company.service';
 import { ActivatedRoute } from '@angular/router';
+import { Papa } from 'ngx-papaparse';
+import { Platform } from '@ionic/angular';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-reports',
@@ -11,12 +14,27 @@ export class ReportsPage implements OnInit {
 
   selectedDate: any;
   companyId: number;
+  companyName: string;
+  availableFiles: Array<object>;
 
-  constructor(public companyService: CompanyService, private activatedRoute: ActivatedRoute) { }
+  constructor(public companyService: CompanyService, private activatedRoute: ActivatedRoute,
+    private papa: Papa, private file: File, private plt: Platform) { }
 
   ngOnInit() {
     this.companyId = +this.activatedRoute.snapshot.paramMap.get('compId');
-    console.log(this.companyId);
+    this.companyName = this.activatedRoute.snapshot.paramMap.get('compName');
+
+    // this.file.checkDir(this.file.externalRootDirectory, 'valveCheck reports').then(res => {
+    //   if (res) {
+    //     this.file.listDir(this.file.externalRootDirectory, 'valveCheck reports').then(
+    //       res => {
+    //         if (res) {
+    //           this.availableFiles = [{ name: 'ac' }, { name: 'bcd' }];
+    //         }
+    //       }
+    //     );
+    //   }
+    // });
   }
 
   myChange(event) {
@@ -25,17 +43,98 @@ export class ReportsPage implements OnInit {
   }
 
   reportSubmit() {
-    this.companyService.getReports({
-      "company": this.companyId,
-      "date": this.selectedDate
-    }).subscribe(response => {
-      if (response.status == "success") {
-        console.log(response.data);
+    if (this.selectedDate) {
+      try {
+        this.companyService.getReports({
+          "company": this.companyId,
+          "date": this.selectedDate
+        }).subscribe(response => {
+          if (response.status == "success" && response.data.length > 0) {
+            this.columnsWork(response.data);
+            let data: string = "";
+            data += `${Object.keys(response['data'][0])}\n`;
+            response['data'].forEach(object => {
+              data += `${Object.values(object)}\n`;
+            });
+            this.papa.parse(data, {
+              complete: parsedData => {
+                const headerRow = parsedData.data.splice(0, 1)[0];
+                const csvData = parsedData.data;
+                this.exportCSV(headerRow, csvData);
+              }
+            });
+          }
+          else if (response.status == "error") {
+            alert(response.txt)
+          }
+        });
+      } catch (error) {
+        alert('Something went wrong');
       }
-      else if (response.status == "error") {
-        alert(response.txt)
+    }
+    else {
+      alert('Please select a date');
+    }
+  }
+
+  columnsWork(data: Array<object>) {
+    data.forEach(ele => {
+      ele['Actual Hours'] = '';
+      ele['Deviation'] = '0';
+      if (ele['Interruption']) {
+        let initCycleTime = this.calculateTime(ele['Actual Start'], ele['Actual Stop']);
+        let secondCycleTime = this.calculateTime(ele['Resume'], ele['Interruption Stop']);
+        let mins = +initCycleTime.split(':')[1] + +secondCycleTime.split(':')[1];
+        ele['Actual Hours'] = Math.floor(mins / 60) + 'h ' + mins % 60 + 'mins';
+        let tempDiff = mins - ele['Hours'] * 60;
+        ele['Deviation'] = tempDiff > 0 ? '+' : '-' + Math.floor(Math.abs(tempDiff) / 60) + 'h ' + Math.abs(tempDiff) % 60 + 'mins';
       }
-    })
+    });
+  }
+
+  calculateTime(start, end) {
+    start = start.split(":");
+    end = end.split(":");
+    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+    var diff = endDate.getTime() - startDate.getTime();
+    var hours = Math.floor(diff / 1000 / 60 / 60);
+    diff -= hours * 1000 * 60 * 60;
+    var minutes = Math.floor(diff / 1000 / 60);
+
+    // If using time pickers with 24 hours format, add the below line get exact hours
+    // if (hours < 0)
+    //   hours = hours + 24;
+
+    return (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
+  }
+
+  exportCSV(header, csvData) {
+    let csv = this.papa.unparse({
+      fields: header,
+      data: csvData
+    });
+    if (this.plt.is('cordova')) {
+      let path = this.file.externalRootDirectory;
+      this.file.checkDir(path, 'valveCheck reports').then(_ => {
+        this.writeFileNow(path, csv);
+      }).catch(() => {
+        this.file.createDir(path, 'valveCheck reports', true).then(
+          () => {
+            this.writeFileNow(path, csv);
+          },
+          err => alert(JSON.stringify(err))
+        )
+      });
+    }
+  }
+
+  writeFileNow(path, csv) {
+    this.file.writeFile(`${path}/valveCheck reports`, `${this.companyName}_${this.selectedDate}.csv`, csv, { replace: true }).then(res => {
+      if (res) { alert('File saved successfully'); }
+    }, () => {
+      alert('Error saving file');
+    });
   }
 
 }

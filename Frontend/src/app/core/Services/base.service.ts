@@ -32,8 +32,12 @@ export class BaseService {
     return this.http.put(`${environment.base}/updateUser`, data);
   }
 
-  // setUser(value: any) {
-  //   this.userData.next(value);
-  // }
+  addPlayerID(data){
+    return this.http.post(`${environment.base}/addPlayerId`, data);
+  }
+
+  deletePlayerID(data){
+    return this.http.post(`${environment.base}/deletePlayerId`, data);
+  }
 
 }

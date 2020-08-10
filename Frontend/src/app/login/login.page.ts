@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BaseService } from '../core/Services/base.service';
 import { NavController } from '@ionic/angular';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
 
   constructor(private base: BaseService, private fb: FormBuilder,
-    private nav: NavController) {
+    private nav: NavController, private oneSignal: OneSignal) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -51,6 +52,34 @@ export class LoginPage implements OnInit {
     else {
       alert('Please enter valid information');
     }
+  }
+
+  push_Notification_Init() {
+    this.oneSignal.startInit('a2377344-621c-4ead-8928-2b70705417c2', '225308115216');
+
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+
+    this.oneSignal.handleNotificationReceived().subscribe((res) => {
+      // do something when notification is received
+    });
+
+    this.oneSignal.handleNotificationOpened().subscribe((res) => {
+      let json_data = res.notification.payload.additionalData.type;
+      // alert(JSON.stringify(json_data));
+    });
+
+    this.oneSignal.getIds().then(res => {
+      let playerObj = {
+        // "user_id": "Chhavi",
+        "player_id": res.userId,
+      }
+      localStorage.setItem('PlayerId', res.userId);
+      this.base.addPlayerID(playerObj).subscribe(response => {
+        // response 
+      });
+    });
+
+    this.oneSignal.endInit();
   }
 
 }

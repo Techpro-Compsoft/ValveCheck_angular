@@ -56,11 +56,12 @@ export class SupervisorassignmentPage implements OnInit {
     try {
       this.supService.assignOperator({
         "company": this.compId,
-        "user_id": vl,
+        "user_id": vl.value,
         "role": this.modeId === 1 ? 2 : 3
       }).subscribe(response => {
         if (response.status === "success") {
           alert('Assigned successfully');
+          vl.value= '';
           this.getCompanyDetails();
           this.getUsers();
         }

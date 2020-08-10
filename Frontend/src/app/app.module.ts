@@ -12,6 +12,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppInterceptor } from './core/Interceptor/my-interceptor';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { File } from '@ionic-native/file/ngx';
+
+import { PapaParseModule } from 'ngx-papaparse';
+
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,11 +24,14 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule],
+    HttpClientModule,
+    PapaParseModule],
   providers: [
     StatusBar,
     SplashScreen,
     Geolocation,
+    File,
+    OneSignal,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true }
   ],

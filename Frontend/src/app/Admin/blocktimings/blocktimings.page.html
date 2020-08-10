@@ -9,14 +9,9 @@
 
 <ion-content>
   <ion-item>
-    <ion-label>Hours</ion-label>
+    <ion-label>Select hours for valve</ion-label>
     <ion-select [(ngModel)]="valveTime">
       <ion-select-option *ngFor="let hours of [1,2,3,4,5,6,7,8,9,10];let i=index" [value]="i+1">{{i+1}}
-      </ion-select-option>
-    </ion-select>
-    <ion-label>Minutes</ion-label>
-    <ion-select [(ngModel)]="valveTime">
-      <ion-select-option *ngFor="let hours of [2,4,6,8,10];let i=index" [value]="i+1">{{i+1}}
       </ion-select-option>
     </ion-select>
   </ion-item>
@@ -28,7 +23,7 @@
 
   <ion-item>
     <ion-label>Stop time</ion-label>
-    <ion-datetime displayFormat="h:mm a" [(ngModel)]="endTime" readonly></ion-datetime>
+    <ion-datetime displayFormat="h:mm a" [(ngModel)]="endTime"></ion-datetime>
   </ion-item>
 
   <div style="text-align: center;margin-top: 10px;">

@@ -26,9 +26,8 @@ export class AssigncompanyPage implements OnInit {
 
   getAvailableCompanies() {
     try {
-      this.compService.getCompanies({ role: this.modeType === 1 ? 2 : 3 }).subscribe(response => {
+      this.compService.fetchCompanies().subscribe(response => {
         if (response.status === "success") {
-          this.companiesList = [];
           this.companiesList = response.data;
         }
       });

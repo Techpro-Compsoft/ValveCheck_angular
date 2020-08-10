@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-adminprofile',
@@ -10,12 +11,13 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 export class AdminprofilePage implements OnInit {
 
   profileForm: FormGroup;
+  user: any;
 
-  constructor(private nav: NavController, private fb: FormBuilder) { }
+  constructor(private nav: NavController, private fb: FormBuilder, private base: BaseService) { }
 
   ngOnInit() {
-    const user = JSON.parse(localStorage.getItem('myUser'));
-    this.initForm(user);
+    this.user = JSON.parse(localStorage.getItem('myUser'));
+    this.initForm(this.user);
   }
 
   initForm(data) {
@@ -27,9 +29,14 @@ export class AdminprofilePage implements OnInit {
   }
 
   logoutMe() {
-    localStorage.removeItem('myToken');
-    localStorage.removeItem('myUser');
-    this.nav.navigateRoot(['/login']);
+    this.base.deletePlayerID(this.user.id).subscribe(response => {
+      // alert("Deleted player ID : " + response);
+      if (response) {
+        localStorage.removeItem('myToken');
+        localStorage.removeItem('myUser');
+        this.nav.navigateRoot(['/login']);
+      }
+    });
   }
 
 }

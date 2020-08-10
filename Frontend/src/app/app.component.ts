@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private nav: NavController
+    private nav: NavController,
+    private route: Router
   ) {
     this.initializeApp();
     const user = JSON.parse(localStorage.getItem('myUser'));
@@ -29,6 +31,14 @@ export class AppComponent {
     else {
       this.nav.navigateRoot('/login');
     }
+  }
+
+  backbuttonSubscribeMethod() {
+    this.platform.backButton.subscribe(() => {
+      if (this.route.url == '/login' || this.route.url == '/home') {
+        navigator['app'].exitApp();
+      }
+    });
   }
 
   initializeApp() {

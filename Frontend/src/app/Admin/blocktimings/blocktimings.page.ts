@@ -32,7 +32,7 @@ export class BlocktimingsPage implements OnInit {
       this.farm.valveDetails({
         block: this.blockId
       }).subscribe(response => {
-        console.log(response);
+        // console.log(response);
         if (response.status === "success") {
           this.valveDetails = response.data ? response.data[0] : null;
           this.valveTime = this.valveDetails ? parseInt(this.valveDetails['instruction']) : 1;

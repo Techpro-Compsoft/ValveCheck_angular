@@ -28,4 +28,13 @@
     </div>
   </ion-card>
 
+  <ion-card>
+    <ion-item lines="none" *ngFor="let file of availableFiles">
+      <ion-label>{{file?.name | titlecase}}</ion-label>
+      <ion-button slot="end" fill="clear" size="small">view
+        <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-card>
+
 </ion-content>

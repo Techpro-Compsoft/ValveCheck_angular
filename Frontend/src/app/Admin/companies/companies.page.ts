@@ -13,7 +13,7 @@ export class CompaniesPage implements OnInit {
   companiesList: Array<object>;
 
   constructor(private companyService: CompanyService,
-    private alertCtlr: AlertController, public navCtrl: NavController,
+    private alertCtlr: AlertController, public navCtrl: NavController
   ) { }
 
   ngOnInit() {
@@ -65,17 +65,22 @@ export class CompaniesPage implements OnInit {
 
   createCompany(name: string) {
     if (name != null && name.length > 0) {
-      try {
-        this.companyService.createCompany({
-          "company_name": name.trim()
-        }).subscribe(response => {
-          if (response.status === "success") {
-            alert('Company added');
-            this.getCompanies();
-          }
-        })
-      } catch (error) {
-        alert('Something went wrong');
+      if (name.length < 100) {
+        try {
+          this.companyService.createCompany({
+            "company_name": name.trim()
+          }).subscribe(response => {
+            if (response.status === "success") {
+              alert('Company added');
+              this.getCompanies();
+            }
+          });
+        } catch (error) {
+          alert('Something went wrong');
+        }
+      }
+      else {
+        alert('Company name can be upto 100 characters maximum');
       }
     }
     else {
@@ -85,18 +90,23 @@ export class CompaniesPage implements OnInit {
 
   editCompany(name, id) {
     if (name != null && name.length > 0) {
-      try {
-        this.companyService.updateCompany({
-          "company_name": name.trim(),
-          "id": id
-        }).subscribe(response => {
-          if (response.status === "success") {
-            alert('Company added');
-            this.getCompanies();
-          }
-        })
-      } catch (error) {
-        alert('Something went wrong');
+      if (name.length < 100) {
+        try {
+          this.companyService.updateCompany({
+            "company_name": name.trim(),
+            "id": id
+          }).subscribe(response => {
+            if (response.status === "success") {
+              alert('Company added');
+              this.getCompanies();
+            }
+          });
+        } catch (error) {
+          alert('Something went wrong');
+        }
+      }
+      else {
+        alert('Company name can be upto 100 characters maximum');
       }
     }
     else {
@@ -120,8 +130,8 @@ export class CompaniesPage implements OnInit {
     this.navCtrl.navigateForward(['/adminprofile']);
   }
 
-  viewReport(id) {
-    this.navCtrl.navigateForward([`/home/companies/reports/${id}`]);
+  viewReport(id, name) {
+    this.navCtrl.navigateForward([`/home/companies/reports/${id}/${name}`]);
   }
 
 }

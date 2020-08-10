@@ -38,6 +38,7 @@ export class SupervisorsPage implements OnInit {
         {
           name: 'fullname',
           type: 'text',
+          label: 'Name',
           placeholder: 'Full Name',
           value: value ? value.fullname : ''
         },
@@ -72,7 +73,7 @@ export class SupervisorsPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            // console.log('Confirm Cancel');
           }
         }, {
           text: value ? 'EDIT' : 'ADD',
@@ -102,15 +103,26 @@ export class SupervisorsPage implements OnInit {
   createSupervisor(data) {
     data.role = 2;
     if (this.checkValidation(data.fullname, data.username, data.password)) {
-      try {
-        this.baseService.createUser(data).subscribe(response => {
-          if (response.status === "success") {
-            alert('Created');
-            this.getUsers();
-          }
-        });
-      } catch (error) {
-        alert('Something went wrong');
+      if (data.fullname.length > 50) {
+        alert('Name can not be more than 50 characters');
+      }
+      else if (data.username.length > 20) {
+        alert('Username can not be more than 50 characters');
+      }
+      else if (data.password.length > 50) {
+        alert('Password can not be more than 50 characters');
+      }
+      else {
+        try {
+          this.baseService.createUser(data).subscribe(response => {
+            if (response.status === "success") {
+              alert('Created');
+              this.getUsers();
+            }
+          });
+        } catch (error) {
+          alert('Something went wrong');
+        }
       }
     }
     else {
@@ -120,21 +132,32 @@ export class SupervisorsPage implements OnInit {
 
   editSupervisor(data, id) {
     if (this.checkValidation(data.fullname, data.username, data.password)) {
-      try {
-        this.baseService.updateUser({
-          "id": id,
-          "fullname": data.fullname,
-          "username": data.username,
-          "password": data.password,
-          "phone": data.phone
-        }).subscribe(response => {
-          if (response.status === "success") {
-            alert('Updated');
-            this.getUsers();
-          }
-        });
-      } catch (error) {
-        alert('Something went wrong');
+      if (data.fullname.length > 50) {
+        alert('Name can not be more than 50 characters');
+      }
+      else if (data.username.length > 20) {
+        alert('Username can not be more than 50 characters');
+      }
+      else if (data.password.length > 50) {
+        alert('Password can not be more than 50 characters');
+      }
+      else {
+        try {
+          this.baseService.updateUser({
+            "id": id,
+            "fullname": data.fullname,
+            "username": data.username,
+            "password": data.password,
+            "phone": data.phone
+          }).subscribe(response => {
+            if (response.status === "success") {
+              alert('Updated');
+              this.getUsers();
+            }
+          });
+        } catch (error) {
+          alert('Something went wrong');
+        }
       }
     }
     else {
