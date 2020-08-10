@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../core/Services/Company/company.service';
 import { AlertController, NavController } from '@ionic/angular';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-companies',
@@ -26,7 +25,10 @@ export class CompaniesPage implements OnInit {
           this.companiesList = [];
           this.companiesList = response.data;
         }
-      })
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
     } catch (error) {
       alert('Something went wrong');
     }
@@ -74,6 +76,9 @@ export class CompaniesPage implements OnInit {
               alert('Company added');
               this.getCompanies();
             }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
           });
         } catch (error) {
           alert('Something went wrong');
@@ -99,6 +104,9 @@ export class CompaniesPage implements OnInit {
             if (response.status === "success") {
               alert('Company added');
               this.getCompanies();
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
             }
           });
         } catch (error) {

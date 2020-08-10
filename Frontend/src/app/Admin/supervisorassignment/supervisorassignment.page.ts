@@ -23,6 +23,9 @@ export class SupervisorassignmentPage implements OnInit {
   ngOnInit() {
     this.compId = +this.activatedRoute.snapshot.paramMap.get('compId');
     this.modeId = +this.activatedRoute.snapshot.paramMap.get('mode');
+  }
+
+  ionViewWillEnter() {
     this.getCompanyDetails();
     this.getUsers();
   }
@@ -46,7 +49,10 @@ export class SupervisorassignmentPage implements OnInit {
         if (response.status === "success") {
           this.usersList = response.data;
         }
-      })
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
     } catch (error) {
       alert('Something went wrong');
     }
@@ -61,11 +67,14 @@ export class SupervisorassignmentPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           alert('Assigned successfully');
-          vl.value= '';
+          vl.value = '';
           this.getCompanyDetails();
           this.getUsers();
         }
-      })
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
     } catch (error) {
       alert('Something went wrong');
     }
@@ -88,7 +97,7 @@ export class SupervisorassignmentPage implements OnInit {
         }, {
           text: 'Yes',
           handler: () => {
-            console.log('Confirm Okay');
+            // console.log('Confirm Okay');
             this.removeRole(userId)
           }
         }
@@ -109,6 +118,9 @@ export class SupervisorassignmentPage implements OnInit {
           alert('Removed');
           this.getCompanyDetails();
           this.getUsers();
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {

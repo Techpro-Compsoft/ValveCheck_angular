@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Papa } from 'ngx-papaparse';
 import { Platform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @Component({
   selector: 'app-reports',
@@ -18,23 +19,29 @@ export class ReportsPage implements OnInit {
   availableFiles: Array<object>;
 
   constructor(public companyService: CompanyService, private activatedRoute: ActivatedRoute,
-    private papa: Papa, private file: File, private plt: Platform) { }
+    private papa: Papa, private file: File, private plt: Platform,
+    private fileOpener: FileOpener) { }
 
   ngOnInit() {
     this.companyId = +this.activatedRoute.snapshot.paramMap.get('compId');
     this.companyName = this.activatedRoute.snapshot.paramMap.get('compName');
+    if (this.plt.is('cordova')) {
+      this.fetchFiles();
+    }
+  }
 
-    // this.file.checkDir(this.file.externalRootDirectory, 'valveCheck reports').then(res => {
-    //   if (res) {
-    //     this.file.listDir(this.file.externalRootDirectory, 'valveCheck reports').then(
-    //       res => {
-    //         if (res) {
-    //           this.availableFiles = [{ name: 'ac' }, { name: 'bcd' }];
-    //         }
-    //       }
-    //     );
-    //   }
-    // });
+  fetchFiles() {
+    this.file.checkDir(this.file.externalRootDirectory, 'valveCheck reports').then(res => {
+      if (res) {
+        this.file.listDir(this.file.externalRootDirectory, 'valveCheck reports').then(
+          res => {
+            if (res) {
+              this.availableFiles = res;
+            }
+          }
+        );
+      }
+    });
   }
 
   myChange(event) {
@@ -64,6 +71,9 @@ export class ReportsPage implements OnInit {
               }
             });
           }
+          else if (response.status == "success" && response.data.length === 0) {
+            alert('No data found');
+          }
           else if (response.status == "error") {
             alert(response.txt)
           }
@@ -86,11 +96,26 @@ export class ReportsPage implements OnInit {
         let secondCycleTime = this.calculateTime(ele['Resume'], ele['Interruption Stop']);
         let mins = +initCycleTime.split(':')[1] + +secondCycleTime.split(':')[1];
         ele['Actual Hours'] = Math.floor(mins / 60) + 'h ' + mins % 60 + 'mins';
-        let tempDiff = mins - ele['Hours'] * 60;
+        let tempDiff = mins - (+ele['Hours'].split(':')[0] * 60 + +ele['Hours'].split(':')[1]);
         ele['Deviation'] = tempDiff > 0 ? '+' : '-' + Math.floor(Math.abs(tempDiff) / 60) + 'h ' + Math.abs(tempDiff) % 60 + 'mins';
       }
     });
   }
+
+  // columnsWork(data: Array<object>) {
+  //   data.forEach(ele => {
+  //     let initCycleTime = this.calculateTime(ele['Actual Start'], ele['Actual Stop']);
+  //     let secondCycleTime = "00:00";
+  //     let mins: any;
+  //     if (ele['Interruption']) {
+  //       secondCycleTime = this.calculateTime(ele['Resume'], ele['Interruption Stop']);
+  //     }
+  //     mins = ele['Interruption'] ? +initCycleTime.split(':')[1] : +initCycleTime.split(':')[1] + +secondCycleTime.split(':')[1];
+  //     ele['Actual Hours'] = Math.floor(mins / 60) + 'h ' + mins % 60 + 'mins';
+  //     let tempDiff = mins - (+ele['Hours'].split(':')[0] * 60 + +ele['Hours'].split(':')[1]);
+  //     ele['Deviation'] = tempDiff > 0 ? '+' : '-' + Math.floor(Math.abs(tempDiff) / 60) + 'h ' + Math.abs(tempDiff) % 60 + 'mins';
+  //   });
+  // }
 
   calculateTime(start, end) {
     start = start.split(":");
@@ -131,10 +156,19 @@ export class ReportsPage implements OnInit {
 
   writeFileNow(path, csv) {
     this.file.writeFile(`${path}/valveCheck reports`, `${this.companyName}_${this.selectedDate}.csv`, csv, { replace: true }).then(res => {
-      if (res) { alert('File saved successfully'); }
+      if (res) {
+        alert('File saved successfully');
+        this.fetchFiles();
+      }
     }, () => {
       alert('Error saving file');
     });
+  }
+
+  openFile(path) {
+    this.fileOpener.open(this.file.externalRootDirectory + path, 'text/csv')
+      .then(() => alert('File is opened'))
+      .catch(e => alert('Error opening file ' + JSON.stringify(e)));
   }
 
 }

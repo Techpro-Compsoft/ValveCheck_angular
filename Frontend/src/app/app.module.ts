@@ -17,6 +17,7 @@ import { File } from '@ionic-native/file/ngx';
 import { PapaParseModule } from 'ngx-papaparse';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,6 +32,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     SplashScreen,
     Geolocation,
     File,
+    FileOpener,
     OneSignal,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true }

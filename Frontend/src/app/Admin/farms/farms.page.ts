@@ -27,10 +27,12 @@ export class FarmsPage implements OnInit {
     try {
       this.companyService.getFarmsForCompany({ id: this.companyId }).subscribe(response => {
         if (response.status === "success") {
-          this.farmsList = [];
           this.farmsList = response.data.farms;
         }
-      })
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
     } catch (error) {
       alert('Something went wrong');
     }
@@ -78,7 +80,10 @@ export class FarmsPage implements OnInit {
             alert('Farm added');
             this.getCompanyFarms();
           }
-        })
+          else if (response.status === "error") {
+            alert(response.txt);
+          }
+        });
       } catch (error) {
         alert('Something went wrong');
       }
@@ -100,7 +105,10 @@ export class FarmsPage implements OnInit {
             alert('Farm updated');
             this.getCompanyFarms();
           }
-        })
+          else if (response.status === "error") {
+            alert(response.txt);
+          }
+        });
       } catch (error) {
         alert('Something went wrong');
       }

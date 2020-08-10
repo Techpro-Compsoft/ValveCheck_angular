@@ -13,12 +13,24 @@ export class BlocktimingsPage implements OnInit {
   blockId: number;
   operatorId: number;
   valveDetails: object;
-  valveTime: number;
-  startTime: string;
-  endTime: string;
+
+  startTime: Date | string;
+  endTime: Date | string;
+
+  valveHour: any;
+  valveMins: any;
+
+  hoursArr: any[] = [];
+  minsArray: any[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private farm: FarmService,
     private alertCtrl: AlertController, private nav: NavController) {
+    for (let index = 1; index < 11; index++) {
+      this.hoursArr.push(index);
+    }
+    for (let index = 0; index < 60; index++) {
+      this.minsArray.push(index);
+    }
   }
 
   ngOnInit() {
@@ -35,9 +47,15 @@ export class BlocktimingsPage implements OnInit {
         // console.log(response);
         if (response.status === "success") {
           this.valveDetails = response.data ? response.data[0] : null;
-          this.valveTime = this.valveDetails ? parseInt(this.valveDetails['instruction']) : 1;
-          this.startTime = this.valveDetails && this.valveDetails['instruction_start_time'] ? this.getDateT(this.valveDetails['instruction_start_time']) : '';
-          this.endTime = this.valveDetails && this.valveDetails['instruction_end_time'] ? this.getDateT(this.valveDetails['instruction_end_time']) : '';
+          if (this.valveDetails && this.valveDetails['instruction']) {
+            let time = this.valveDetails['instruction'].split(':');
+            this.valveHour = parseInt(time[0]);
+            this.valveMins = parseInt(time[1]);
+            this.startTime = this.getDateT(this.valveDetails['instruction_start_time']);
+          }
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
@@ -51,31 +69,32 @@ export class BlocktimingsPage implements OnInit {
     return new Date(b.getFullYear(), b.getMonth(), b.getDate(), d[0], d[1]).toISOString();
   }
 
-  assignTime(valveTime, st, end) {
-    if (valveTime && st && end) {
-      if (this.diff_hours(new Date(st), new Date(end)) === valveTime) {
-        try {
-          this.farm.assignHours({
-            block: this.blockId,
-            time: valveTime,
-            start_time: `${new Date(st).getHours()}:${new Date(st).getMinutes()}`,
-            end_time: `${new Date(end).getHours()}:${new Date(end).getMinutes()}`,
-            operator: this.operatorId
-          }).subscribe(response => {
-            if (response.status === "success") {
-              this.getBlockValveDetails();
-              alert('Time added');
-            }
-          })
-        } catch (error) {
-          alert('something went wrong');
-        }
+  assignTime() {
+    if (this.valveHour && (this.valveMins || this.valveMins === 0) && this.startTime) {
+      let endTime = new Date(this.startTime);
+      endTime.setHours(endTime.getHours() + this.valveHour);
+      endTime.setMinutes(endTime.getMinutes() + this.valveMins);
+      try {
+        this.farm.assignHours({
+          block: this.blockId,
+          time: `${this.valveHour}:${this.valveMins}`,
+          start_time: `${new Date(this.startTime).getHours()}:${new Date(this.startTime).getMinutes()}`,
+          end_time: `${endTime.getHours()}:${endTime.getMinutes()}`,
+          operator: this.operatorId
+        }).subscribe(response => {
+          if (response.status === "success") {
+            this.getBlockValveDetails();
+            alert('Time added');
+          }
+          else if (response.status === "error") {
+            alert(response.txt);
+          }
+        });
+      } catch (error) {
+        alert('something went wrong');
       }
-      else {
-        alert('Start & end time difference is more/less than valve hours');
-      }
-
-    } else {
+    }
+    else {
       alert('Please fill all the details');
     }
   }
@@ -102,7 +121,7 @@ export class BlocktimingsPage implements OnInit {
         }, {
           text: 'Yes',
           handler: () => {
-            this.updateTime(valveTime, st, end)
+            this.updateTime();
           }
         }
       ]
@@ -110,27 +129,28 @@ export class BlocktimingsPage implements OnInit {
     await alert.present();
   }
 
-  updateTime(valveTime, st, end) {
-    if (valveTime && st && end) {
-      if (this.diff_hours(new Date(st), new Date(end)) === valveTime) {
-        try {
-          this.farm.updateHours({
-            id: this.valveDetails['id'],
-            time: valveTime,
-            start_time: `${new Date(st).getHours()}:${new Date(st).getMinutes()}`,
-            end_time: `${new Date(end).getHours()}:${new Date(end).getMinutes()}`
-          }).subscribe(response => {
-            if (response.status === "success") {
-              this.getBlockValveDetails();
-              alert('Time updated');
-            }
-          });
-        } catch (error) {
-          alert('something went wrong');
-        }
-      }
-      else {
-        alert('Start & end time difference is more/less than valve hours');
+  updateTime() {
+    if (this.valveHour && this.valveMins && this.startTime) {
+      let endTime = new Date(this.startTime);
+      endTime.setHours(endTime.getHours() + this.valveHour);
+      endTime.setMinutes(endTime.getMinutes() + this.valveMins);
+      try {
+        this.farm.updateHours({
+          id: this.valveDetails['id'],
+          time: `${this.valveHour}:${this.valveMins}`,
+          start_time: `${new Date(this.startTime).getHours()}:${new Date(this.startTime).getMinutes()}`,
+          end_time: `${endTime.getHours()}:${endTime.getMinutes()}`
+        }).subscribe(response => {
+          if (response.status === "success") {
+            this.getBlockValveDetails();
+            alert('Time updated');
+          }
+          else if (response.status === "error") {
+            alert(response.txt);
+          }
+        });
+      } catch (error) {
+        alert('something went wrong');
       }
     }
     else {
@@ -148,6 +168,9 @@ export class BlocktimingsPage implements OnInit {
           this.getBlockValveDetails();
           alert('Valve started');
         }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
       alert('something went wrong');
@@ -163,6 +186,9 @@ export class BlocktimingsPage implements OnInit {
         if (response.status === "success") {
           this.getBlockValveDetails();
           alert('Valve stopped');
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
@@ -213,6 +239,9 @@ export class BlocktimingsPage implements OnInit {
             this.getBlockValveDetails();
             alert('Valve issue reported');
           }
+          else if (response.status === "error") {
+            alert(response.txt);
+          }
         });
       } catch (error) {
         alert('something went wrong');
@@ -221,7 +250,6 @@ export class BlocktimingsPage implements OnInit {
       alert('Reason can not be empty');
       this.confirmReport();
     }
-
   }
 
   resumeValve() {
@@ -234,10 +262,14 @@ export class BlocktimingsPage implements OnInit {
           this.getBlockValveDetails();
           alert('Valve resumed');
         }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
       alert('something went wrong');
     }
   }
+
 
 }

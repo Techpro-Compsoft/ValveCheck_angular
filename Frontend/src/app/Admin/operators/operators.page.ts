@@ -23,8 +23,10 @@ export class OperatorsPage implements OnInit {
       "role": 3
     }).subscribe(response => {
       if (response.status === "success") {
-        this.usersList = [];
         this.usersList = response.data;
+      }
+      else if (response.status === "error") {
+        alert(response.txt);
       }
     });
   }
@@ -117,6 +119,9 @@ export class OperatorsPage implements OnInit {
               alert('Created');
               this.getUsers();
             }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
           });
         } catch (error) {
           alert('Something went wrong');
@@ -151,6 +156,9 @@ export class OperatorsPage implements OnInit {
             if (response.status === "success") {
               alert('Updated');
               this.getUsers();
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
             }
           });
         } catch (error) {
@@ -207,6 +215,9 @@ export class OperatorsPage implements OnInit {
         if (response.status === "success") {
           alert('Removed');
           this.getUsers();
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
