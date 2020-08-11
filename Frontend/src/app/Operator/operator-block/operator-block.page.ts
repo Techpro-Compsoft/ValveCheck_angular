@@ -65,6 +65,7 @@ export class OperatorBlockPage implements OnInit {
         "farm": this.farmId,
         "role": this.role
       }).subscribe(response => {
+        console.log(response);
         if (response.status === "success") {
           this.blocksList = response.data;
           // this.blockLatitude = response.data[0]['latitude'];

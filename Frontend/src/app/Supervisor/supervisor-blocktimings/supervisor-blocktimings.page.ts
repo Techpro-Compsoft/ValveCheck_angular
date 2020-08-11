@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
 import { AlertController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-supervisor-blocktimings',
@@ -17,7 +18,8 @@ export class SupervisorBlocktimingsPage implements OnInit {
 
   constructor(public activatedRoute: ActivatedRoute,
     public supervisorService: SupervisorService,
-    public alertCtrl: AlertController) { }
+    public alertCtrl: AlertController,
+    public base: BaseService) { }
 
   ngOnInit() {
     this.blockId = +this.activatedRoute.snapshot.paramMap.get('blockId');
@@ -29,17 +31,22 @@ export class SupervisorBlocktimingsPage implements OnInit {
       this.supervisorService.getCycleCall({
         "block": this.blockId
       }).subscribe(response => {
-        if (response.data == "") {
-          alert('No data available')
+        if (response.status === 'success') {
+          if (response.data == "") {
+            this.base.toastMessage('No data available');
+          }
+          else {
+            this.valveDetails = response.data[0];
+            this.startTime = this.valveDetails['instruction_start_time'];
+            this.endTime = this.valveDetails['instruction_end_time']
+          }
         }
-        else {
-          this.valveDetails = response.data[0];
-          this.startTime = this.valveDetails['instruction_start_time'];
-          this.endTime = this.valveDetails['instruction_end_time']
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
-      alert('something went wrong')
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -73,14 +80,16 @@ export class SupervisorBlocktimingsPage implements OnInit {
         "id": id,
         "stop_time": `${new Date().getHours()}:${new Date().getMinutes()}`,
       }).subscribe(response => {
-        console.log(response);
-        this.getValveDetails();
+        if (response.status === 'success') {
+          this.getValveDetails();
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
-      alert('something went wrong')
+      this.base.toastMessage('Something went wrong');
     }
   }
-
-
 
 }
