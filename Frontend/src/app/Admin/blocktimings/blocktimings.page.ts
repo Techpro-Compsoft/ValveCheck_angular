@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { FarmService } from 'src/app/core/Services/Farm/farm.service';
 import { BaseService } from 'src/app/core/Services/base.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-blocktimings',
@@ -26,13 +27,14 @@ export class BlocktimingsPage implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private farm: FarmService,
     private alertCtrl: AlertController, private nav: NavController,
-    private base: BaseService) {
+    private base: BaseService, private lo: Location) {
     for (let index = 1; index < 11; index++) {
       this.hoursArr.push(index);
     }
     for (let index = 0; index < 60; index++) {
       this.minsArray.push(index);
     }
+    // console.log(this.lo.path());
   }
 
   ngOnInit() {

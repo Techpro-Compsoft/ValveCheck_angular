@@ -65,8 +65,26 @@ export class LoginPage implements OnInit {
     });
 
     this.oneSignal.handleNotificationOpened().subscribe((res) => {
-      let json_data = res.notification.payload.additionalData.type;
-      // alert(JSON.stringify(json_data));
+      let notificationData = res.notification.payload.additionalData;
+      const user = JSON.parse(localStorage.getItem('myUser'));
+      // alert(JSON.stringify(user));
+      if (user && user['role'] === '1') {
+        //admin
+        // alert('in admin');
+        try {
+          this.nav.navigateForward([`/home/companies/farms/${notificationData['farm_id']}/blocks/${notificationData['block_id']}/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
+        } catch (error) {
+          // alert(JSON.stringify(error));
+        }
+      }
+      else if (user && user['role'] === '2') {
+        //sup
+        // alert('in sup');
+      }
+      else if (user && user['role'] === '3') {
+        //op
+        // alert('in opr');
+      }
     });
 
     this.oneSignal.getIds().then(res => {
