@@ -5,6 +5,7 @@ import { Papa } from 'ngx-papaparse';
 import { Platform } from '@ionic/angular';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-reports',
@@ -20,7 +21,7 @@ export class ReportsPage implements OnInit {
 
   constructor(public companyService: CompanyService, private activatedRoute: ActivatedRoute,
     private papa: Papa, private file: File, private plt: Platform,
-    private fileOpener: FileOpener) { }
+    private fileOpener: FileOpener, private base: BaseService) { }
 
   ngOnInit() {
     this.companyId = +this.activatedRoute.snapshot.paramMap.get('compId');
@@ -72,18 +73,18 @@ export class ReportsPage implements OnInit {
             });
           }
           else if (response.status == "success" && response.data.length === 0) {
-            alert('No data found');
+            this.base.toastMessage('No data found');
           }
           else if (response.status == "error") {
             alert(response.txt)
           }
         });
       } catch (error) {
-        alert('Something went wrong');
+        this.base.toastMessage('Something went wrong');
       }
     }
     else {
-      alert('Please select a date');
+      this.base.toastMessage('Please select a date');
     }
   }
 
@@ -148,8 +149,8 @@ export class ReportsPage implements OnInit {
           () => {
             this.writeFileNow(path, csv);
           },
-          err => alert(JSON.stringify(err))
-        )
+          err => this.base.toastMessage('Error in directory')
+        );
       });
     }
   }
@@ -157,18 +158,18 @@ export class ReportsPage implements OnInit {
   writeFileNow(path, csv) {
     this.file.writeFile(`${path}/valveCheck reports`, `${this.companyName}_${this.selectedDate}.csv`, csv, { replace: true }).then(res => {
       if (res) {
-        alert('File saved successfully');
+        this.base.toastMessage('File saved successfully');
         this.fetchFiles();
       }
     }, () => {
-      alert('Error saving file');
+      this.base.toastMessage('Error saving file');
     });
   }
 
   openFile(path) {
     this.fileOpener.open(this.file.externalRootDirectory + path, 'text/csv')
-      .then(() => alert('File is opened'))
-      .catch(e => alert('Error opening file ' + JSON.stringify(e)));
+      .then(() => console.log('File is opened'))
+      .catch(e => this.base.toastMessage('Error in opening file'));
   }
 
 }

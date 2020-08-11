@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CompanyService } from 'src/app/core/Services/Company/company.service';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
 import { NavController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-assigncompany',
@@ -16,7 +17,8 @@ export class AssigncompanyPage implements OnInit {
   modeType: number;
 
   constructor(private activatedRoute: ActivatedRoute, private compService: CompanyService,
-    private supService: SupervisorService, private nav: NavController) { }
+    private supService: SupervisorService, private nav: NavController,
+    private base: BaseService) { }
 
   ngOnInit() {
     this.userId = +this.activatedRoute.snapshot.paramMap.get('id');
@@ -38,7 +40,7 @@ export class AssigncompanyPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -50,7 +52,7 @@ export class AssigncompanyPage implements OnInit {
         "role": this.modeType === 1 ? 2 : 3
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Assigned successfully');
+          this.base.toastMessage('Assigned successfully');
           this.nav.pop();
         }
         else if (response.status === "error") {
@@ -58,7 +60,7 @@ export class AssigncompanyPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 

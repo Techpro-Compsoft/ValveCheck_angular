@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FarmService } from 'src/app/core/Services/Farm/farm.service';
 import { NavController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-farmoperator',
@@ -15,7 +16,7 @@ export class FarmoperatorPage implements OnInit {
   availableUsers: Array<object>;
 
   constructor(private activatedRoute: ActivatedRoute, private farmService: FarmService,
-    private nav: NavController) { }
+    private nav: NavController, private base: BaseService) { }
 
   ngOnInit() {
     this.blockId = +this.activatedRoute.snapshot.paramMap.get('blockId')
@@ -34,7 +35,7 @@ export class FarmoperatorPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -53,7 +54,7 @@ export class FarmoperatorPage implements OnInit {
           }
         });
       } catch (error) {
-        alert('Something went wrong');
+        this.base.toastMessage('Something went wrong');
       }
     }
   }

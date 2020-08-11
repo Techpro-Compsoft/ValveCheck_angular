@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CompanyService } from '../../core/Services/Company/company.service';
 import { AlertController, NavController } from '@ionic/angular';
 import { FarmService } from '../../core/Services/Farm/farm.service';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-farms',
@@ -16,7 +17,8 @@ export class FarmsPage implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
     private companyService: CompanyService, private alertCtlr: AlertController,
-    private farmService: FarmService, public navCtrl: NavController) { }
+    private farmService: FarmService, public navCtrl: NavController,
+    private base : BaseService) { }
 
   ngOnInit() {
     this.companyId = +this.activatedRoute.snapshot.paramMap.get('selectedId');
@@ -34,7 +36,7 @@ export class FarmsPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -77,7 +79,7 @@ export class FarmsPage implements OnInit {
           "farm_name": name.trim()
         }).subscribe(response => {
           if (response.status === "success") {
-            alert('Farm added');
+            this.base.toastMessage('Farm added');
             this.getCompanyFarms();
           }
           else if (response.status === "error") {
@@ -85,11 +87,11 @@ export class FarmsPage implements OnInit {
           }
         });
       } catch (error) {
-        alert('Something went wrong');
+        this.base.toastMessage('Something went wrong');
       }
     }
     else {
-      alert('Farm name can not be empty');
+      this.base.toastMessage('Farm name can not be empty');
     }
   }
 
@@ -102,7 +104,7 @@ export class FarmsPage implements OnInit {
           "farm_name": name
         }).subscribe(response => {
           if (response.status === "success") {
-            alert('Farm updated');
+            this.base.toastMessage('Farm updated');
             this.getCompanyFarms();
           }
           else if (response.status === "error") {
@@ -110,11 +112,11 @@ export class FarmsPage implements OnInit {
           }
         });
       } catch (error) {
-        alert('Something went wrong');
+        this.base.toastMessage('Something went wrong');
       }
     }
     else {
-      alert('Farm name can not be empty');
+      this.base.toastMessage('Farm name can not be empty');
     }
   }
 

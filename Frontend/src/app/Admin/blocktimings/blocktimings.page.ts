@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { FarmService } from 'src/app/core/Services/Farm/farm.service';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-blocktimings',
@@ -24,7 +25,8 @@ export class BlocktimingsPage implements OnInit {
   minsArray: any[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private farm: FarmService,
-    private alertCtrl: AlertController, private nav: NavController) {
+    private alertCtrl: AlertController, private nav: NavController,
+    private base: BaseService) {
     for (let index = 1; index < 11; index++) {
       this.hoursArr.push(index);
     }
@@ -59,7 +61,7 @@ export class BlocktimingsPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('something went wrong');
+      this.base.toastMessage('something went wrong');
     }
   }
 
@@ -84,18 +86,18 @@ export class BlocktimingsPage implements OnInit {
         }).subscribe(response => {
           if (response.status === "success") {
             this.getBlockValveDetails();
-            alert('Time added');
+            this.base.toastMessage('Time added');
           }
           else if (response.status === "error") {
             alert(response.txt);
           }
         });
       } catch (error) {
-        alert('something went wrong');
+        this.base.toastMessage('something went wrong');
       }
     }
     else {
-      alert('Please fill all the details');
+      this.base.toastMessage('Please fill all the details');
     }
   }
 
@@ -143,18 +145,18 @@ export class BlocktimingsPage implements OnInit {
         }).subscribe(response => {
           if (response.status === "success") {
             this.getBlockValveDetails();
-            alert('Time updated');
+            this.base.toastMessage('Time updated');
           }
           else if (response.status === "error") {
             alert(response.txt);
           }
         });
       } catch (error) {
-        alert('something went wrong');
+        this.base.toastMessage('something went wrong');
       }
     }
     else {
-      alert('Please fill all the details');
+      this.base.toastMessage('Please fill all the details');
     }
   }
 
@@ -166,14 +168,14 @@ export class BlocktimingsPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           this.getBlockValveDetails();
-          alert('Valve started');
+          this.base.toastMessage('Valve has been started');
         }
         else if (response.status === "error") {
           alert(response.txt);
         }
       });
     } catch (error) {
-      alert('something went wrong');
+      this.base.toastMessage('something went wrong');
     }
   }
 
@@ -185,14 +187,14 @@ export class BlocktimingsPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           this.getBlockValveDetails();
-          alert('Valve stopped');
+          this.base.toastMessage('Valve has been stopped');
         }
         else if (response.status === "error") {
           alert(response.txt);
         }
       });
     } catch (error) {
-      alert('something went wrong');
+      this.base.toastMessage('something went wrong');
     }
   }
 
@@ -237,17 +239,17 @@ export class BlocktimingsPage implements OnInit {
         }).subscribe(response => {
           if (response.status === "success") {
             this.getBlockValveDetails();
-            alert('Valve issue reported');
+            this.base.toastMessage('Valve issue has been reported');
           }
           else if (response.status === "error") {
             alert(response.txt);
           }
         });
       } catch (error) {
-        alert('something went wrong');
+        this.base.toastMessage('something went wrong');
       }
     } else {
-      alert('Reason can not be empty');
+      this.base.toastMessage('Interruption Reason can not be empty');
       this.confirmReport();
     }
   }
@@ -260,16 +262,15 @@ export class BlocktimingsPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           this.getBlockValveDetails();
-          alert('Valve resumed');
+          this.base.toastMessage('Valve has been resumed');
         }
         else if (response.status === "error") {
           alert(response.txt);
         }
       });
     } catch (error) {
-      alert('something went wrong');
+      this.base.toastMessage('something went wrong');
     }
   }
-
 
 }

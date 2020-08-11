@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../core/Services/Company/company.service';
 import { AlertController, NavController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-companies',
@@ -11,7 +12,7 @@ export class CompaniesPage implements OnInit {
 
   companiesList: Array<object>;
 
-  constructor(private companyService: CompanyService,
+  constructor(private companyService: CompanyService, private base: BaseService,
     private alertCtlr: AlertController, public navCtrl: NavController
   ) { }
 
@@ -30,7 +31,7 @@ export class CompaniesPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -52,7 +53,7 @@ export class CompaniesPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            // console.log('Confirm Cancel');
           }
         }, {
           text: value ? 'EDIT' : 'ADD',
@@ -73,7 +74,7 @@ export class CompaniesPage implements OnInit {
             "company_name": name.trim()
           }).subscribe(response => {
             if (response.status === "success") {
-              alert('Company added');
+              this.base.toastMessage('Company added');
               this.getCompanies();
             }
             else if (response.status === "error") {
@@ -81,15 +82,15 @@ export class CompaniesPage implements OnInit {
             }
           });
         } catch (error) {
-          alert('Something went wrong');
+          this.base.toastMessage('Something went wrong');
         }
       }
       else {
-        alert('Company name can be upto 100 characters maximum');
+        this.base.toastMessage('Company name can be upto 100 characters maximum');
       }
     }
     else {
-      alert('Company name can not be empty');
+      this.base.toastMessage('Company name can not be empty');
     }
   }
 
@@ -102,7 +103,7 @@ export class CompaniesPage implements OnInit {
             "id": id
           }).subscribe(response => {
             if (response.status === "success") {
-              alert('Company added');
+              this.base.toastMessage('Company updated');
               this.getCompanies();
             }
             else if (response.status === "error") {
@@ -110,15 +111,15 @@ export class CompaniesPage implements OnInit {
             }
           });
         } catch (error) {
-          alert('Something went wrong');
+          this.base.toastMessage('Something went wrong');
         }
       }
       else {
-        alert('Company name can be upto 100 characters maximum');
+        this.base.toastMessage('Company name can be upto 100 characters maximum');
       }
     }
     else {
-      alert('Company name can not be empty');
+      this.base.toastMessage('Company name can not be empty');
     }
   }
 

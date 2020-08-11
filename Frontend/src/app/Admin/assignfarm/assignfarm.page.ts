@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FarmService } from 'src/app/core/Services/Farm/farm.service';
 import { CompanyService } from 'src/app/core/Services/Company/company.service';
 import { AlertController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-assignfarm',
@@ -19,7 +20,8 @@ export class AssignfarmPage implements OnInit {
   farmName: string;
 
   constructor(private activatedRoute: ActivatedRoute, private farmService: FarmService,
-    private companyService: CompanyService, private alertCtrl: AlertController) { }
+    private companyService: CompanyService, private alertCtrl: AlertController,
+    private base: BaseService) { }
 
   ngOnInit() {
     this.farmId = +this.activatedRoute.snapshot.paramMap.get('farmId');
@@ -41,7 +43,7 @@ export class AssignfarmPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -58,7 +60,7 @@ export class AssignfarmPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -80,10 +82,10 @@ export class AssignfarmPage implements OnInit {
           }
         });
       } catch (error) {
-        alert('Something went wrong');
+        this.base.toastMessage('Something went wrong');
       }
     } else {
-      alert('No user selected');
+      this.base.toastMessage('No user selected');
     }
   }
 
@@ -109,7 +111,6 @@ export class AssignfarmPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
   }
 
@@ -121,7 +122,7 @@ export class AssignfarmPage implements OnInit {
         "role": this.modeId === 1 ? 2 : 3
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Removed');
+          this.base.toastMessage('Removed successfully');
           this.getFarmDetails();
         }
         else if (response.status === "error") {
@@ -129,7 +130,7 @@ export class AssignfarmPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 

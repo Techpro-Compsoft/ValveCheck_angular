@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FarmService } from '../../core/Services/Farm/farm.service';
 import { AlertController, NavController } from '@ionic/angular';
 import { Location } from '@angular/common';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-blocks',
@@ -16,7 +17,8 @@ export class BlocksPage implements OnInit {
   blocksList: Array<object>;
 
   constructor(private activatedRoute: ActivatedRoute, private farmService: FarmService,
-    private alertCtrl: AlertController, private nav: NavController) { }
+    private alertCtrl: AlertController, private nav: NavController,
+    private base: BaseService) { }
 
   ngOnInit() {
     this.farmID = +this.activatedRoute.snapshot.paramMap.get('selectedId');
@@ -28,14 +30,18 @@ export class BlocksPage implements OnInit {
   }
 
   getBlocksForFarm() {
-    this.farmService.getBlocks({ id: this.farmID }).subscribe(response => {
-      if (response.status === "success") {
-        this.blocksList = response.data;
-      }
-      else if (response.status === "error") {
-        alert(response.txt);
-      }
-    });
+    try {
+      this.farmService.getBlocks({ id: this.farmID }).subscribe(response => {
+        if (response.status === "success") {
+          this.blocksList = response.data;
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
   }
 
   async openBlockDialog(value?) {
@@ -104,7 +110,7 @@ export class BlocksPage implements OnInit {
         "irrigation": data.type
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Block added');
+          this.base.toastMessage('Block created');
           this.getBlocksForFarm();
         }
         else if (response.status === "error") {
@@ -112,7 +118,7 @@ export class BlocksPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -128,7 +134,7 @@ export class BlocksPage implements OnInit {
         "irrigation": data.type
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Block updated');
+          this.base.toastMessage('Block updated');
           this.getBlocksForFarm();
         }
         else if (response.status === "error") {
@@ -136,7 +142,7 @@ export class BlocksPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -175,7 +181,7 @@ export class BlocksPage implements OnInit {
         "block": id
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Operator removed');
+          this.base.toastMessage('Operator removed');
           this.getBlocksForFarm();
         }
         else if (response.status === "error") {
@@ -183,7 +189,7 @@ export class BlocksPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -192,7 +198,7 @@ export class BlocksPage implements OnInit {
       this.nav.navigateForward([`/home/companies/farms/${this.farmID}/blocks/${id}/blocktimings/${id}/${operatorId}`]);
     }
     else {
-      alert('Please assign an operator to proceed further');
+      this.base.toastMessage('Please assign an operator to proceed further');
     }
   }
 
