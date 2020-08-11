@@ -35,6 +35,7 @@ export class AppInterceptor implements HttpInterceptor {
             catchError((error: HttpErrorResponse) => {
                 this.load.dismiss();
                 if (error.status === 401) {
+                    this.base.toastMessage('Token expired. Please login again');
                     localStorage.removeItem('myToken');
                     localStorage.removeItem('myUser');
                     this.nav.navigateRoot('login');

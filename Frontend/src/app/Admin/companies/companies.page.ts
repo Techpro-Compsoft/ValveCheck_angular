@@ -52,7 +52,7 @@ export class CompaniesPage implements OnInit {
         {
           text: 'Cancel',
           role: 'cancel',
-          cssClass: 'secondary',
+          cssClass: 'test',
           handler: () => {
             // console.log('Confirm Cancel');
           }

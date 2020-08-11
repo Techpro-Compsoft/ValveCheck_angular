@@ -28,14 +28,18 @@
     <ion-datetime displayFormat="h:mm a" [(ngModel)]="startTime"></ion-datetime>
   </ion-item>
 
+  <ion-item>
+    <ion-label>Stop time</ion-label>
+    <ion-datetime displayFormat="h:mm a" [(ngModel)]="stopTime" readonly></ion-datetime>
+  </ion-item>
+
   <!-- <ion-item>
     <ion-label>Stop time</ion-label>
     <ion-datetime displayFormat="h:mm a" [(ngModel)]="endTime" readonly></ion-datetime>
   </ion-item> -->
 
   <div style="text-align: center;margin-top: 10px;">
-    <ion-button *ngIf="!valveDetails?.instruction" size="small" fill="clear"
-      (click)="assignTime()">Assign
+    <ion-button *ngIf="!valveDetails?.instruction" size="small" fill="clear" (click)="assignTime()">Assign
       time</ion-button>
     <ion-button *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time" size="small" fill="clear"
       (click)="presentAlertConfirm()">Update

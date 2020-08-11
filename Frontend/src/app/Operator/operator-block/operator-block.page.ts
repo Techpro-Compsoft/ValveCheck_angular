@@ -31,22 +31,26 @@ export class OperatorBlockPage implements OnInit {
     this.getBlockDetails();
   }
 
-  getLocation(blockId) {
+  getLocation(blockId, blockLat, blockLong) {
     this.geolocation.getCurrentPosition().then((resp) => {
       console.log(resp.coords.latitude)
       console.log(resp.coords.longitude)
-      this.calculateDistance(resp.coords.latitude, resp.coords.longitude, blockId)
+      this.calculateDistance(resp.coords.latitude, resp.coords.longitude, blockId, blockLat, blockLong);
     }).catch((error) => {
       this.base.toastMessage('Error getting location');
     });
   }
 
-  calculateDistance(lat1: number, long1: number, id) {
+  calculateDistance(lat1: number, long1: number, id, blockLat, blockLong) {
     let p = 0.017453292519943295;    // Math.PI / 180
     let c = Math.cos;
-    let a = 0.5 - c((lat1 - this.blockLatitude) * p) / 2 + c(this.blockLatitude * p) * c((lat1) * p) * (1 - c(((long1 - this.blockLongitude) * p))) / 2;
+    let a = 0.5 - c((lat1 - blockLat) * p) / 2 + c(blockLat * p) * c((lat1) * p) * (1 - c(((long1 - blockLong) * p))) / 2;
+    alert(lat1);
+    alert(long1);
     let dis = (12742 * Math.asin(Math.sqrt(a))); // 2 * R; R = 6371 km
     let distanceInMeters = dis * 1000; //distance in meters
+    alert(dis);
+    alert(distanceInMeters);
     if (distanceInMeters <= 15) {
       this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}`]);
     }
@@ -63,8 +67,8 @@ export class OperatorBlockPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           this.blocksList = response.data;
-          this.blockLatitude = response.data[0]['latitude'];
-          this.blockLongitude = response.data[0]['longitude'];
+          // this.blockLatitude = response.data[0]['latitude'];
+          // this.blockLongitude = response.data[0]['longitude'];
         }
         else if (response.status === "error") {
           alert(response.txt);
@@ -75,8 +79,8 @@ export class OperatorBlockPage implements OnInit {
     }
   }
 
-  viewValves(id) {
-    this.getLocation(id);
+  viewValves(id, lat, lng) {
+    this.getLocation(id, lat, lng);
   }
 
 }

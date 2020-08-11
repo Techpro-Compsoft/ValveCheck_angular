@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BaseService } from '../core/Services/base.service';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController } from '@ionic/angular';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @Component({
@@ -14,7 +14,8 @@ export class LoginPage implements OnInit {
   loginForm: FormGroup;
 
   constructor(private base: BaseService, private fb: FormBuilder,
-    private nav: NavController, private oneSignal: OneSignal) {
+    private nav: NavController, private oneSignal: OneSignal,
+    private load: LoadingController) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -28,8 +29,12 @@ export class LoginPage implements OnInit {
       try {
         this.base.login(this.loginForm.value).subscribe(response => {
           if (response.status === "success") {
+            const pId = localStorage.getItem('PlayerId');
+            alert(pId);
+            this.base.addPlayerID({ player_id: pId }).subscribe(response => {
+              // response 
+            });
             this.base.toastMessage('Login successful');
-            this.push_Notification_Init();
             localStorage.setItem('myToken', response.data.token);
             localStorage.setItem('myUser', JSON.stringify(response.data.user));
             if (response.data.user.role === "1") {
@@ -65,12 +70,13 @@ export class LoginPage implements OnInit {
     });
 
     this.oneSignal.handleNotificationOpened().subscribe((res) => {
+      this.presentLoading();
       let notificationData = res.notification.payload.additionalData;
       const user = JSON.parse(localStorage.getItem('myUser'));
-      // alert(JSON.stringify(user));
+      alert(JSON.stringify(notificationData));
+      alert(JSON.stringify(user));
       if (user && user['role'] === '1') {
-        //admin
-        // alert('in admin');
+        alert('in admin');
         try {
           this.nav.navigateForward([`/home/companies/farms/${notificationData['farm_id']}/blocks/${notificationData['block_id']}/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
         } catch (error) {
@@ -78,17 +84,19 @@ export class LoginPage implements OnInit {
         }
       }
       else if (user && user['role'] === '2') {
-        //sup
-        // alert('in sup');
+        alert('in sup');
+        try {
+          this.nav.navigateForward([`/supervisor-dashboard/supervisor-blocktimings/${notificationData['block_id']}`]);
+        } catch (error) {
+          // alert(JSON.stringify(error));
+        }
       }
       else if (user && user['role'] === '3') {
-        //op
-        // alert('in opr');
+        alert('in operator');
+        this.nav.navigateForward([`/operator-dashboard/operator-blocktimings/${notificationData['block_id']}`]);
       }
     });
-
     this.oneSignal.getIds().then(res => {
-      console.log(res);
       let playerObj = {
         // "user_id": "Chhavi",
         "player_id": res.userId,
@@ -98,8 +106,15 @@ export class LoginPage implements OnInit {
         // response 
       });
     });
-
     this.oneSignal.endInit();
   }
 
+  async presentLoading() {
+    const loading = await this.load.create({
+      cssClass: 'my-custom-class',
+      message: 'Please wait...',
+      duration: 3000
+    });
+    await loading.present();
+  }
 }

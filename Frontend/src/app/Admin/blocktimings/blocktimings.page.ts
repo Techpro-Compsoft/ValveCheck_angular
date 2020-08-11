@@ -17,6 +17,7 @@ export class BlocktimingsPage implements OnInit {
   valveDetails: object;
 
   startTime: Date | string;
+  stopTime: Date | string;
   endTime: Date | string;
 
   valveHour: any;
@@ -56,6 +57,7 @@ export class BlocktimingsPage implements OnInit {
             this.valveHour = parseInt(time[0]);
             this.valveMins = parseInt(time[1]);
             this.startTime = this.getDateT(this.valveDetails['instruction_start_time']);
+            this.stopTime = this.getDateT(this.valveDetails['instruction_end_time']);
           }
         }
         else if (response.status === "error") {

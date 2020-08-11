@@ -47,7 +47,7 @@ export class BlocksPage implements OnInit {
   async openBlockDialog(value?) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: value ? 'Edit Block' : 'New Block',
+      header: value ? 'Update Block' : 'New Block',
       inputs: [
         {
           name: 'name',
@@ -89,7 +89,7 @@ export class BlocksPage implements OnInit {
             // console.log('Confirm Cancel');
           }
         }, {
-          text: value ? 'EDIT' : 'ADD',
+          text: value ? 'UPDATE' : 'ADD',
           handler: (data) => {
             value ? this.editBlock(data, value.id) : this.createBlock(data);
           }

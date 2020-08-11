@@ -4,6 +4,8 @@ import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { BaseService } from './core/Services/base.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +18,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private nav: NavController,
-    private route: Router
+    private route: Router,
+    private oneSignal: OneSignal, private base: BaseService
   ) {
     this.initializeApp();
     const user = JSON.parse(localStorage.getItem('myUser'));
@@ -47,11 +50,54 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.backbuttonSubscribeMethod();
+      this.push_Notification_Init();
     });
   }
 
   ngOnDestroy() {
     this.platform.backButton.unsubscribe();
+  }
+
+  async push_Notification_Init() {
+    this.oneSignal.startInit('d1613e76-96f6-4b7c-a9a7-cf76811a62df', '172278637990');
+
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
+
+    this.oneSignal.handleNotificationReceived().subscribe((res) => {
+      // do something when notification is received
+    });
+
+    this.oneSignal.handleNotificationOpened().subscribe((res) => {
+      let notificationData = res.notification.payload.additionalData;
+      const user = JSON.parse(localStorage.getItem('myUser'));
+      alert(JSON.stringify(notificationData));
+      alert(JSON.stringify(user));
+      if (user && user['role'] === '1') {
+        alert('in admin');
+        try {
+          this.nav.navigateForward([`/home/companies/farms/${notificationData['farm_id']}/blocks/${notificationData['block_id']}/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
+        } catch (error) {
+          // alert(JSON.stringify(error));
+        }
+      }
+      else if (user && user['role'] === '2') {
+        alert('in sup');
+        try {
+          this.nav.navigateForward([`/supervisor-dashboard/supervisor-blocktimings/${notificationData['block_id']}`]);
+        } catch (error) {
+          // alert(JSON.stringify(error));
+        }
+      }
+      else if (user && user['role'] === '3') {
+        alert('in operator');
+        this.nav.navigateForward([`/operator-dashboard/operator-blocktimings/${notificationData['block_id']}`]);
+      }
+    });
+
+    await this.oneSignal.getIds().then(res => {
+      localStorage.setItem('PlayerId', res.userId);
+    });
+    this.oneSignal.endInit();
   }
 
 }

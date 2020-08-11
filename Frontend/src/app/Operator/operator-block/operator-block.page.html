@@ -29,7 +29,7 @@
       <ion-label>Irrigation : {{block.irrigation}}</ion-label>
     </ion-item>
 
-    <ion-button fill="clear" (click)="viewValves(block.id)">View Valves</ion-button>
+    <ion-button fill="clear" (click)="viewValves(block.id, block.latitude, block.longitude)">View Valves</ion-button>
   </ion-card>
 
 </ion-content>

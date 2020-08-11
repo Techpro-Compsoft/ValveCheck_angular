@@ -43,7 +43,7 @@ export class FarmsPage implements OnInit {
   async openFarmDialog(value?, id?) {
     const alert = await this.alertCtlr.create({
       cssClass: 'my-custom-class',
-      header: value ? 'Edit Farm' : 'New Farm',
+      header: value ? 'Update Farm' : 'New Farm',
       inputs: [
         {
           name: 'name1',
@@ -61,7 +61,7 @@ export class FarmsPage implements OnInit {
             // console.log('Confirm Cancel');
           }
         }, {
-          text: value ? 'EDIT' : 'ADD',
+          text: value ? 'UPDATE' : 'ADD',
           handler: (data) => {
             value ? this.editFarm(data.name1, id) : this.createFarm(data.name1);
           }
