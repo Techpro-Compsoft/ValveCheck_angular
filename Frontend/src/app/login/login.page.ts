@@ -28,7 +28,8 @@ export class LoginPage implements OnInit {
       try {
         this.base.login(this.loginForm.value).subscribe(response => {
           if (response.status === "success") {
-            alert('login success');
+            this.base.toastMessage('Login successful');
+            this.push_Notification_Init();
             localStorage.setItem('myToken', response.data.token);
             localStorage.setItem('myUser', JSON.stringify(response.data.user));
             if (response.data.user.role === "1") {
@@ -46,7 +47,7 @@ export class LoginPage implements OnInit {
           }
         });
       } catch (error) {
-        alert('Something went wrong');
+        this.base.toastMessage('Something went wrong');
       }
     }
     else {
@@ -55,7 +56,7 @@ export class LoginPage implements OnInit {
   }
 
   push_Notification_Init() {
-    this.oneSignal.startInit('a2377344-621c-4ead-8928-2b70705417c2', '225308115216');
+    this.oneSignal.startInit('d1613e76-96f6-4b7c-a9a7-cf76811a62df', '172278637990');
 
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
 
@@ -69,6 +70,7 @@ export class LoginPage implements OnInit {
     });
 
     this.oneSignal.getIds().then(res => {
+      console.log(res);
       let playerObj = {
         // "user_id": "Chhavi",
         "player_id": res.userId,

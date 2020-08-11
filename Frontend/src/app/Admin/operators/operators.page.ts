@@ -19,6 +19,7 @@ export class OperatorsPage implements OnInit {
   }
 
   getUsers() {
+   try {
     this.baseService.getUsers({
       "role": 3
     }).subscribe(response => {
@@ -29,6 +30,9 @@ export class OperatorsPage implements OnInit {
         alert(response.txt);
       }
     });
+   } catch (error) {
+     this.baseService.toastMessage('Something went wrong');
+   }
   }
 
   async addSupervisor(value?, id?) {
@@ -116,7 +120,7 @@ export class OperatorsPage implements OnInit {
         try {
           this.baseService.createUser(data).subscribe(response => {
             if (response.status === "success") {
-              alert('Created');
+              this.baseService.toastMessage('Operator added');
               this.getUsers();
             }
             else if (response.status === "error") {
@@ -124,12 +128,12 @@ export class OperatorsPage implements OnInit {
             }
           });
         } catch (error) {
-          alert('Something went wrong');
+          this.baseService.toastMessage('Something went wrong');
         }
       }
     }
     else {
-      alert('Please enter valid details');
+      this.baseService.toastMessage('Please enter valid details');
     }
   }
 
@@ -154,7 +158,7 @@ export class OperatorsPage implements OnInit {
             "phone": data.phone
           }).subscribe(response => {
             if (response.status === "success") {
-              alert('Updated');
+              this.baseService.toastMessage('Operator Updated');
               this.getUsers();
             }
             else if (response.status === "error") {
@@ -162,12 +166,12 @@ export class OperatorsPage implements OnInit {
             }
           });
         } catch (error) {
-          alert('Something went wrong');
+          this.baseService.toastMessage('Something went wrong');
         }
       }
     }
     else {
-      alert('Please enter valid details');
+      this.baseService.toastMessage('Please enter valid details');
     }
   }
 
@@ -201,7 +205,6 @@ export class OperatorsPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
   }
 
@@ -213,7 +216,7 @@ export class OperatorsPage implements OnInit {
         "role": 3
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Removed');
+          this.baseService.toastMessage('Operator removed');
           this.getUsers();
         }
         else if (response.status === "error") {
@@ -221,7 +224,7 @@ export class OperatorsPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.baseService.toastMessage('Something went wrong');
     }
   }
 

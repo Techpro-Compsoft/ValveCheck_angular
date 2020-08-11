@@ -35,6 +35,7 @@ export class AdminprofilePage implements OnInit {
         localStorage.removeItem('myToken');
         localStorage.removeItem('myUser');
         this.nav.navigateRoot(['/login']);
+        this.base.toastMessage('Logged out successfully');
       }
     });
   }

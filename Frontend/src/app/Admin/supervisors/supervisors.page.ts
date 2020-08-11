@@ -20,16 +20,20 @@ export class SupervisorsPage implements OnInit {
   }
 
   getUsers() {
-    this.baseService.getUsers({
-      "role": 2
-    }).subscribe(response => {
-      if (response.status === "success") {
-        this.usersList = response.data;
-      }
-      else if (response.status === "error") {
-        alert(response.txt);
-      }
-    });
+    try {
+      this.baseService.getUsers({
+        "role": 2
+      }).subscribe(response => {
+        if (response.status === "success") {
+          this.usersList = response.data;
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.baseService.toastMessage('Something went wrong');
+    }
   }
 
   async addSupervisor(value?, id?) {
@@ -118,7 +122,7 @@ export class SupervisorsPage implements OnInit {
         try {
           this.baseService.createUser(data).subscribe(response => {
             if (response.status === "success") {
-              alert('Created');
+              this.baseService.toastMessage('Supervisor created');
               this.getUsers();
             }
             else if (response.status === "error") {
@@ -126,12 +130,12 @@ export class SupervisorsPage implements OnInit {
             }
           });
         } catch (error) {
-          alert('Something went wrong');
+          this.baseService.toastMessage('Something went wrong');
         }
       }
     }
     else {
-      alert('Please enter valid details');
+      this.baseService.toastMessage('Please enter valid details');
     }
   }
 
@@ -156,7 +160,7 @@ export class SupervisorsPage implements OnInit {
             "phone": data.phone
           }).subscribe(response => {
             if (response.status === "success") {
-              alert('Updated');
+              this.baseService.toastMessage('Supervisor updated');
               this.getUsers();
             }
             else if (response.status === "error") {
@@ -164,12 +168,12 @@ export class SupervisorsPage implements OnInit {
             }
           });
         } catch (error) {
-          alert('Something went wrong');
+          this.baseService.toastMessage('Something went wrong');
         }
       }
     }
     else {
-      alert('Please enter valid details');
+      this.baseService.toastMessage('Please enter valid details');
     }
   }
 
@@ -197,7 +201,7 @@ export class SupervisorsPage implements OnInit {
         }, {
           text: 'Yes',
           handler: () => {
-            console.log('Confirm Okay');
+            // console.log('Confirm Okay');
             this.removeRole(companyId, userId)
           }
         }
@@ -214,7 +218,7 @@ export class SupervisorsPage implements OnInit {
         "role": 2
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Removed');
+          this.baseService.toastMessage('Supervisor removed');
           this.getUsers();
         }
         else if (response.status === "error") {

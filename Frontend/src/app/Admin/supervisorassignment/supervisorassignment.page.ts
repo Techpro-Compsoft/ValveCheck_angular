@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CompanyService } from 'src/app/core/Services/Company/company.service';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
 import { AlertController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-supervisorassignment',
@@ -18,7 +19,8 @@ export class SupervisorassignmentPage implements OnInit {
   assignedUsers: Array<object>;
 
   constructor(private activatedRoute: ActivatedRoute, private companyService: CompanyService,
-    private supService: SupervisorService, private alertCtrl: AlertController) { }
+    private supService: SupervisorService, private alertCtrl: AlertController,
+    private base: BaseService) { }
 
   ngOnInit() {
     this.compId = +this.activatedRoute.snapshot.paramMap.get('compId');
@@ -39,7 +41,7 @@ export class SupervisorassignmentPage implements OnInit {
         }
       })
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -54,7 +56,7 @@ export class SupervisorassignmentPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -66,7 +68,7 @@ export class SupervisorassignmentPage implements OnInit {
         "role": this.modeId === 1 ? 2 : 3
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Assigned successfully');
+          this.base.toastMessage('Assigned successfully');
           vl.value = '';
           this.getCompanyDetails();
           this.getUsers();
@@ -76,7 +78,7 @@ export class SupervisorassignmentPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
   //2 for supervisor
@@ -103,7 +105,6 @@ export class SupervisorassignmentPage implements OnInit {
         }
       ]
     });
-
     await alert.present();
   }
 
@@ -115,7 +116,7 @@ export class SupervisorassignmentPage implements OnInit {
         "role": this.modeId === 1 ? 2 : 3
       }).subscribe(response => {
         if (response.status === "success") {
-          alert('Removed');
+          this.base.toastMessage('Removed successfully');
           this.getCompanyDetails();
           this.getUsers();
         }
@@ -124,7 +125,7 @@ export class SupervisorassignmentPage implements OnInit {
         }
       });
     } catch (error) {
-      alert('Something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
