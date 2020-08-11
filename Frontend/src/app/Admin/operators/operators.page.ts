@@ -38,7 +38,7 @@ export class OperatorsPage implements OnInit {
   async addSupervisor(value?, id?) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: value ? 'Edit Operator' : 'New Operator',
+      header: value ? 'Update Operator' : 'New Operator',
       inputs: [
         {
           name: 'fullname',
@@ -80,7 +80,7 @@ export class OperatorsPage implements OnInit {
             // console.log('Confirm Cancel');
           }
         }, {
-          text: value ? 'EDIT' : 'ADD',
+          text: value ? 'UPDATE' : 'ADD',
           handler: (data) => {
             value ? this.editOperator(data, id) : this.createOperator(data);
           }

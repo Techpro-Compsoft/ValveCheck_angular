@@ -39,7 +39,7 @@ export class SupervisorsPage implements OnInit {
   async addSupervisor(value?, id?) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: value ? 'Edit Supervisor' : 'New Supervisor',
+      header: value ? 'Update Supervisor' : 'New Supervisor',
       inputs: [
         {
           name: 'fullname',
@@ -82,7 +82,7 @@ export class SupervisorsPage implements OnInit {
             // console.log('Confirm Cancel');
           }
         }, {
-          text: value ? 'EDIT' : 'ADD',
+          text: value ? 'UPDATE' : 'ADD',
           handler: (data) => {
             value ? this.editSupervisor(data, id) : this.createSupervisor(data);
           }

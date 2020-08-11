@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../core/Services/Company/company.service';
 import { AlertController, NavController } from '@ionic/angular';
 import { BaseService } from 'src/app/core/Services/base.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-companies',
@@ -38,7 +39,7 @@ export class CompaniesPage implements OnInit {
   async openCompanyDialog(value?, id?) {
     const alert = await this.alertCtlr.create({
       cssClass: 'my-custom-class',
-      header: value ? 'Edit Company' : 'New Company',
+      header: value ? 'Update Company' : 'New Company',
       inputs: [
         {
           name: 'name1',
@@ -56,7 +57,7 @@ export class CompaniesPage implements OnInit {
             // console.log('Confirm Cancel');
           }
         }, {
-          text: value ? 'EDIT' : 'ADD',
+          text: value ? 'UPDATE' : 'ADD',
           handler: (data) => {
             value ? this.editCompany(data.name1, id) : this.createCompany(data.name1);
           }
