@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { OperatorService } from 'src/app/core/Services/Operator/operator.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AlertController, NavController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-operator-block',
@@ -20,7 +21,8 @@ export class OperatorBlockPage implements OnInit {
     public operatorService: OperatorService,
     public alertCtrl: AlertController,
     private geolocation: Geolocation,
-    public navCtrl: NavController) { }
+    public navCtrl: NavController,
+    public base: BaseService) { }
 
   ngOnInit() {
     this.farmId = +this.activatedRoute.snapshot.paramMap.get('farmId');
@@ -35,7 +37,7 @@ export class OperatorBlockPage implements OnInit {
       console.log(resp.coords.longitude)
       this.calculateDistance(resp.coords.latitude, resp.coords.longitude, blockId)
     }).catch((error) => {
-      console.log('Error getting location', error);
+      this.base.toastMessage('Error getting location');
     });
   }
 
@@ -49,7 +51,7 @@ export class OperatorBlockPage implements OnInit {
       this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}`]);
     }
     else {
-      alert('You are not nearby to valve. Please go to exact location');
+      this.base.toastMessage('You are not nearby to valve. Please go to exact location');
     }
   }
 
@@ -59,13 +61,17 @@ export class OperatorBlockPage implements OnInit {
         "farm": this.farmId,
         "role": this.role
       }).subscribe(response => {
-        console.log(response);
-        this.blocksList = response.data;
-        this.blockLatitude = response.data[0]['latitude'];
-        this.blockLongitude = response.data[0]['longitude'];
+        if (response.status === "success") {
+          this.blocksList = response.data;
+          this.blockLatitude = response.data[0]['latitude'];
+          this.blockLongitude = response.data[0]['longitude'];
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
-      alert('something went wrong')
+      this.base.toastMessage('Something went wrong');
     }
   }
 

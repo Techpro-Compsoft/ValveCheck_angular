@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { OperatorService } from 'src/app/core/Services/Operator/operator.service';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-operator-dashboard',
@@ -11,7 +12,8 @@ export class OperatorDashboardPage implements OnInit {
   farmsList: Array<object>;
 
   constructor(public navCtrl: NavController,
-    public operatorService: OperatorService) { }
+    public operatorService: OperatorService,
+    public base: BaseService) { }
 
   ngOnInit() {
     this.getDashboardDetails();
@@ -24,11 +26,15 @@ export class OperatorDashboardPage implements OnInit {
         "user_id": data.id,
         "role": data.role
       }).subscribe(response => {
-        console.log(response);
-        this.farmsList = response.data
+        if (response.status === "success") {
+          this.farmsList = response.data
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
-      alert('Something went wrong')
+      this.base.toastMessage('Something went wrong');
     }
   }
 

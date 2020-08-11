@@ -30,7 +30,12 @@ const routes: Routes = [
   {
     path: 'adminprofile',
     loadChildren: () => import('./Admin/adminprofile/adminprofile.module').then(m => m.AdminprofilePageModule)
+  },
+  {
+    path: 'supervisor-report',
+    loadChildren: () => import('./Supervisor/supervisor-report/supervisor-report.module').then(m => m.SupervisorReportPageModule)
   }
+
 
 ];
 

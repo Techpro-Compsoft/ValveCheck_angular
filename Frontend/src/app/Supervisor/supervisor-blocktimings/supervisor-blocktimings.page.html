@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Block Timings
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Start time</ion-label>
+    <ion-datetime displayFormat="h:mm a" [(ngModel)]="startTime"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Stop time</ion-label>
+    <ion-datetime displayFormat="h:mm a" [(ngModel)]="endTime"></ion-datetime>
+  </ion-item>
+
+  <ion-item *ngIf="valveDetails?.actual_start_time === null">Not started</ion-item>
+  <ion-item *ngIf="valveDetails?.actual_stop_time !== null">Already stopped</ion-item>
+  <ion-item *ngIf="valveDetails?.actual_start_time !== null && valveDetails?.actual_stop_time === null">
+    <ion-button (click)=presentAlertConfirm(valveDetails.id)> Stop</ion-button>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label>Started at:</ion-label>
+    <ion-input type="text" [value]="valveDetails?.actual_start_time ? valveDetails?.actual_start_time : '-'" readonly>
+    </ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label>Stopped at:</ion-label>
+    <ion-input type="text" [value]="valveDetails?.actual_stop_time ? valveDetails?.actual_stop_time : '-'" readonly>
+    </ion-input>
+  </ion-item>
+
+
+
+</ion-content>

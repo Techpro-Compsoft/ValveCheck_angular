@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-supervisor-block',
@@ -16,7 +17,9 @@ export class SupervisorBlockPage implements OnInit {
 
   constructor(public activatedRoute: ActivatedRoute,
     public supervisorService: SupervisorService,
-    public alertCtrl: AlertController) { }
+    public alertCtrl: AlertController,
+    public base: BaseService,
+    public navCtrl: NavController) { }
 
   ngOnInit() {
     this.farmId = +this.activatedRoute.snapshot.paramMap.get('farmId');
@@ -31,38 +34,44 @@ export class SupervisorBlockPage implements OnInit {
         "farm": this.farmId,
         "role": this.role
       }).subscribe(response => {
-        console.log(response);
-        this.blocksList = response.data
+        if (response.status === 'success') {
+          this.blocksList = response.data
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
-      alert('something went wrong')
+      this.base.toastMessage('Something went wrong');
     }
   }
 
   viewValves(id) {
-    try {
-      this.supervisorService.getCycleCall({
-        "block": id
-      }).subscribe(response => {
-        console.log(response);
-        if (response.data !== "") {
-          if (response.data[0]['actual_stop_time'] !== null) {
-            alert('already stopped')
-          }
-          else if (response.data[0]['actual_start_time'] == null) {
-            alert('valve not started')
-          }
-          else {
-            this.presentAlertConfirm(response.data[0]['id'])
-          }
-        }
-        else {
-          alert('No data available')
-        }
-      });
-    } catch (error) {
-      alert('something went wrong')
-    }
+    this.navCtrl.navigateForward([`/supervisor-dashboard/supervisor-blocktimings/${id}`]);
+
+
+    // try {
+    //   this.supervisorService.getCycleCall({
+    //     "block": id
+    //   }).subscribe(response => {
+    //     if (response.data !== "") {
+    //       if (response.data[0]['actual_stop_time'] !== null) {
+    //         this.base.toastMessage('Already stopped');
+    //       }
+    //       else if (response.data[0]['actual_start_time'] == null) {
+    //         this.base.toastMessage('Valve not started');
+    //       }
+    //       else {
+    //         this.presentAlertConfirm(response.data[0]['id'])
+    //       }
+    //     }
+    //     else {
+    //       this.base.toastMessage('No data available');
+    //     }
+    //   });
+    // } catch (error) {
+    //   this.base.toastMessage('Something went wrong');
+    // }
   }
 
 
@@ -100,11 +109,15 @@ export class SupervisorBlockPage implements OnInit {
         "id": id,
         "stop_time": timeStamp
       }).subscribe(response => {
-        console.log(response);
-        this.getBlockDetails();
+        if (response.status === 'success') {
+          this.getBlockDetails();
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
-      alert('something went wrong')
+      this.base.toastMessage('Something went wrong');
     }
   }
 

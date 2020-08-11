@@ -85,12 +85,11 @@ export class SupervisorProfilePage implements OnInit {
     let result = patt.test(data.phone);
     if (this.checkValidation(data.name)) {
       if (data.name.length > 50) {
-        alert('Name can not be more than 50 characters');
+        this.base.toastMessage('Name can not be more than 50 characters');
       }
       else if (result === false) {
-        alert('Phone Number must contain 8 digits to maximum 10 digits');
+        this.base.toastMessage('Phone Number must contain 8 digits to maximum 10 digits');
       } else {
-
         try {
           const supObj = {
             "id": this.supervisorId,
@@ -98,18 +97,24 @@ export class SupervisorProfilePage implements OnInit {
             "phone": data.phone
           }
           this.supervisorService.editSupervisorProfileCall(supObj).subscribe(response => {
-            this.supervisorData.fullname = data.name;
-            this.supervisorData.phone = data.phone
-            localStorage.setItem('myUser', JSON.stringify(this.supervisorData));
-            this.getSupervisorDetails();
+            if (response.status === 'success') {
+              this.supervisorData.fullname = data.name;
+              this.supervisorData.phone = data.phone
+              localStorage.setItem('myUser', JSON.stringify(this.supervisorData));
+              this.getSupervisorDetails();
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
+
           });
         } catch (error) {
-          console.log(error)
+          this.base.toastMessage('Something went wrong');
         }
       }
     }
     else {
-      alert('Please enter valid details');
+      this.base.toastMessage('Please enter valid details');
     }
   }
 

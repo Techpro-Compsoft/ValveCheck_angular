@@ -16,7 +16,12 @@
 </ion-header>
 
 <ion-content>
-  <ion-label class="header-title">Farms List</ion-label>
+  <ion-item lines="none">
+    <ion-label class="header-title">Farms List</ion-label>
+
+    <ion-button fill="clear" class="reportBtn" (click)="getReport()">Report</ion-button>
+  </ion-item>
+
   <div id="compList">
     <ion-card *ngFor="let farm of farmsList">
       <ion-item lines="none">
@@ -27,6 +32,6 @@
         </ion-button>
       </ion-item>
     </ion-card>
-
   </div>
+
 </ion-content>

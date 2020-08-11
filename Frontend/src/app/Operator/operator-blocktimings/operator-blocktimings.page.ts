@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OperatorService } from 'src/app/core/Services/Operator/operator.service';
 import { AlertController } from '@ionic/angular';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-operator-blocktimings',
@@ -17,7 +18,8 @@ export class OperatorBlocktimingsPage implements OnInit {
 
   constructor(public activatedRoute: ActivatedRoute,
     public operatorService: OperatorService,
-    public alertCtrl: AlertController) { }
+    public alertCtrl: AlertController,
+    public base: BaseService) { }
 
   ngOnInit() {
     this.blockId = +this.activatedRoute.snapshot.paramMap.get('blockId');
@@ -30,15 +32,17 @@ export class OperatorBlocktimingsPage implements OnInit {
         block: this.blockId
       }).subscribe(response => {
         if (response.status === "success") {
-          console.log(response);
           this.valveDetails = response.data ? response.data[0] : null;
           this.valveTime = this.valveDetails ? parseInt(this.valveDetails['instruction']) : 1;
           this.startTime = this.valveDetails && this.valveDetails['instruction_start_time'] ? this.getDateT(this.valveDetails['instruction_start_time']) : '';
           this.endTime = this.valveDetails && this.valveDetails['instruction_end_time'] ? this.getDateT(this.valveDetails['instruction_end_time']) : '';
         }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
       });
     } catch (error) {
-      alert('something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -63,11 +67,14 @@ export class OperatorBlocktimingsPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           this.getBlockValveDetails();
-          alert('Valve started');
+          this.base.toastMessage('Valve started');
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
-      alert('something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -79,11 +86,14 @@ export class OperatorBlocktimingsPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           this.getBlockValveDetails();
-          alert('Valve stopped');
+          this.base.toastMessage('Valve stopped');
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
-      alert('something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
@@ -128,14 +138,17 @@ export class OperatorBlocktimingsPage implements OnInit {
         }).subscribe(response => {
           if (response.status === "success") {
             this.getBlockValveDetails();
-            alert('Valve issue reported');
+            this.base.toastMessage('Valve issue reported');
+          }
+          else if (response.status === "error") {
+            alert(response.txt);
           }
         });
       } catch (error) {
-        alert('something went wrong');
+        this.base.toastMessage('Something went wrong');
       }
     } else {
-      alert('Reason can not be empty');
+      this.base.toastMessage('Reason can not be empty');
       this.confirmReport();
     }
 
@@ -149,11 +162,14 @@ export class OperatorBlocktimingsPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           this.getBlockValveDetails();
-          alert('Valve resumed');
+          this.base.toastMessage('Valve resumed');
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
         }
       });
     } catch (error) {
-      alert('something went wrong');
+      this.base.toastMessage('Something went wrong');
     }
   }
 
