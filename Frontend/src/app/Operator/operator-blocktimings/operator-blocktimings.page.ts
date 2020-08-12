@@ -4,6 +4,7 @@ import { OperatorService } from 'src/app/core/Services/Operator/operator.service
 import { AlertController } from '@ionic/angular';
 import { BaseService } from 'src/app/core/Services/base.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { CompanyService } from 'src/app/core/Services/Company/company.service';
 
 @Component({
   selector: 'app-operator-blocktimings',
@@ -18,18 +19,39 @@ export class OperatorBlocktimingsPage implements OnInit {
   endTime: string;
   latitude: any;
   longitude: any;
+  interruptionReasons: Array<object>;
+
+  valveHour: any;
+  valveMins: any;
+
+  stopTime: Date | string;
 
   constructor(public activatedRoute: ActivatedRoute,
     public operatorService: OperatorService,
     public alertCtrl: AlertController,
     public base: BaseService,
-    private geolocation: Geolocation) { }
+    private geolocation: Geolocation,
+    private company: CompanyService) { }
 
   ngOnInit() {
+    this.getInterruprtionReasons();
     this.blockId = +this.activatedRoute.snapshot.paramMap.get('blockId');
     this.latitude = this.activatedRoute.snapshot.paramMap.get('lat');
     this.longitude = this.activatedRoute.snapshot.paramMap.get('lng');
     this.getBlockValveDetails();
+
+  }
+
+  getInterruprtionReasons() {
+    try {
+      this.operatorService.getReasons().subscribe(response => {
+        if (response.status === "success") {
+          this.interruptionReasons = response.data;
+        }
+      });
+    } catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
   }
 
   getLocation(id) {
@@ -38,8 +60,6 @@ export class OperatorBlocktimingsPage implements OnInit {
     }
     else {
       this.geolocation.getCurrentPosition().then((resp) => {
-        console.log(resp.coords.latitude)
-        console.log(resp.coords.longitude)
         this.calculateDistance(resp.coords.latitude, resp.coords.longitude, id);
       }).catch((error) => {
         this.base.toastMessage('Error getting location');
@@ -51,12 +71,8 @@ export class OperatorBlocktimingsPage implements OnInit {
     let p = 0.017453292519943295;    // Math.PI / 180
     let c = Math.cos;
     let a = 0.5 - c((lat1 - this.latitude) * p) / 2 + c(this.latitude * p) * c((lat1) * p) * (1 - c(((long1 - this.longitude) * p))) / 2;
-    // alert(lat1);
-    // alert(long1);
     let dis = (12742 * Math.asin(Math.sqrt(a))); // 2 * R; R = 6371 km
     let distanceInMeters = dis * 1000; //distance in meters
-    // alert(dis);
-    // alert(distanceInMeters);
     if (distanceInMeters <= 15) {
 
       if (id == 1) {
@@ -70,16 +86,12 @@ export class OperatorBlocktimingsPage implements OnInit {
       }
       else if (id == 4) {
         this.resumeValveCall();
-
       }
-
     }
     else {
       this.base.toastMessage('You are not nearby to valve. Please go to exact location');
     }
   }
-
-
 
   getBlockValveDetails() {
     try {
@@ -88,16 +100,20 @@ export class OperatorBlocktimingsPage implements OnInit {
       }).subscribe(response => {
         if (response.status === "success") {
           this.valveDetails = response.data ? response.data[0] : null;
-          this.valveTime = this.valveDetails ? parseInt(this.valveDetails['instruction']) : 1;
-          this.startTime = this.valveDetails && this.valveDetails['instruction_start_time'] ? this.getDateT(this.valveDetails['instruction_start_time']) : '';
-          this.endTime = this.valveDetails && this.valveDetails['instruction_end_time'] ? this.getDateT(this.valveDetails['instruction_end_time']) : '';
+          if (this.valveDetails && this.valveDetails['instruction']) {
+            let time = this.valveDetails['instruction'].split(':');
+            this.valveHour = parseInt(time[0]);
+            this.valveMins = parseInt(time[1]);
+            this.startTime = this.getDateT(this.valveDetails['instruction_start_time']);
+            this.stopTime = this.getDateT(this.valveDetails['instruction_end_time']);
+          }
         }
         else if (response.status === "error") {
           alert(response.txt);
         }
       });
     } catch (error) {
-      this.base.toastMessage('Something went wrong');
+      this.base.toastMessage('something went wrong');
     }
   }
 
@@ -166,18 +182,25 @@ export class OperatorBlocktimingsPage implements OnInit {
 
 
   async confirmReportCall() {
-    const alert = await this.alertCtrl.create({
-      cssClass: 'my-custom-class',
-      header: 'Confirm',
-      message: 'Please mention the issue for interruption caused.',
-      inputs: [
-        {
-          name: 'reason',
-          type: 'text',
-          placeholder: 'Interruption reason',
-        }
-      ],
-      buttons: [
+    this.interruptionReasons.forEach((e: any) => {
+      e.name = e.reason,
+        e.type = 'radio',
+        e.label = e.reason,
+        e.value = e.reason,
+        e.checked = false
+    });
+    this.interruptionReasons.forEach((e: any) => {
+      e.name = e.reason,
+        e.type = 'radio',
+        e.label = e.reason,
+        e.value = e.reason,
+        e.checked = false
+    });
+    const alert = await this.alertCtrl.create();
+    alert.inputs = this.interruptionReasons;
+    alert.header = 'Confirm',
+      alert.message = 'Please select the reason',
+      alert.buttons = [
         {
           text: 'No',
           role: 'cancel',
@@ -188,16 +211,16 @@ export class OperatorBlocktimingsPage implements OnInit {
         }, {
           text: 'Yes',
           handler: (data) => {
-            this.reportValveIssue(data.reason);
+            this.reportValveIssue(data);
           }
         }
-      ]
-    });
+      ];
     await alert.present();
+
   }
 
   reportValveIssue(reason: string) {
-    if (reason.trim() != "") {
+    if (reason) {
       try {
         this.operatorService.interruptBlockCall({
           id: this.valveDetails['id'],
@@ -206,20 +229,19 @@ export class OperatorBlocktimingsPage implements OnInit {
         }).subscribe(response => {
           if (response.status === "success") {
             this.getBlockValveDetails();
-            this.base.toastMessage('Valve issue reported');
+            this.base.toastMessage('Valve issue has been reported');
           }
           else if (response.status === "error") {
             alert(response.txt);
           }
         });
       } catch (error) {
-        this.base.toastMessage('Something went wrong');
+        this.base.toastMessage('something went wrong');
       }
     } else {
-      this.base.toastMessage('Reason can not be empty');
+      this.base.toastMessage('Interruption Reason can not be empty');
       this.confirmReportCall();
     }
-
   }
 
   resumeValve(id) {
