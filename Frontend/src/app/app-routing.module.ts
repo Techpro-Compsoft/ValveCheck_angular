@@ -34,12 +34,11 @@ const routes: Routes = [
   {
     path: 'supervisor-report',
     loadChildren: () => import('./Supervisor/supervisor-report/supervisor-report.module').then(m => m.SupervisorReportPageModule)
-  },  {
+  },
+  {
     path: 'interruptions',
     loadChildren: () => import('./Admin/interruptions/interruptions.module').then( m => m.InterruptionsPageModule)
   }
-
-
 
 ];
 

@@ -115,11 +115,7 @@
 
     <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">
       <ion-label>Interruption Reason:</ion-label>
-      <ion-select [value]="valveDetails?.interruption_reason">
-        <ion-select-option *ngFor="let reason of interruptionReasons" [value]="reason?.reason">
-          {{reason.reason | titlecase}}
-        </ion-select-option>
-      </ion-select>
+      <ion-input type="text" readonly [value]="valveDetails?.interruption_reason | titlecase"></ion-input>
     </ion-item>
 
     <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">

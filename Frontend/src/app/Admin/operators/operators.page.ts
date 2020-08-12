@@ -140,7 +140,7 @@ export class OperatorsPage implements OnInit {
   }
 
   editOperator(data, id) {
-    if (this.checkValidation(data.fullname, data.email, data.password)) {
+    if (this.checkValidation(data.fullname, data.username, data.password)) {
       if (data.fullname.length > 50) {
         alert('Name can not be more than 50 characters');
       }
