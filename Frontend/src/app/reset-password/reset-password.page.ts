@@ -23,15 +23,6 @@ export class ResetPasswordPage implements OnInit {
 
   ngOnInit() {
     this.initResetPasswordForm();
-    this.getUserDetails();
-  }
-
-  getUserDetails() {
-    // this.base.userData.subscribe((data) => {
-    //   this.fullName = data['fullname']
-    //   this.phone = data['phone']
-    //   this.roleId = data['id']
-    // });
   }
 
   initResetPasswordForm() {
@@ -51,12 +42,11 @@ export class ResetPasswordPage implements OnInit {
         "password": this.resetPasswordForm.value.password,
         "phone": this.phone
       }).subscribe(response => {
-        console.log(response);
         this.modalCtrl.dismiss();
       });
     }
     catch (error) {
-      console.log(error);
+      this.base.toastMessage('Something went wrong');
     }
   }
 

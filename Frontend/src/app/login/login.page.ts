@@ -28,24 +28,29 @@ export class LoginPage implements OnInit {
     if (this.loginForm.valid) {
       try {
         this.base.login(this.loginForm.value).subscribe(response => {
+          console.log(response);
           if (response.status === "success") {
-            const pId = localStorage.getItem('PlayerId');
-            alert(pId);
-            this.base.addPlayerID({ player_id: pId }).subscribe(response => {
-              // response 
-            });
             this.base.toastMessage('Login successful');
             localStorage.setItem('myToken', response.data.token);
             localStorage.setItem('myUser', JSON.stringify(response.data.user));
-            if (response.data.user.role === "1") {
-              this.nav.navigateRoot('/home');
-            }
-            else if (response.data.user.role === "2") {
-              this.nav.navigateRoot('/supervisor-dashboard');
-            }
-            else if (response.data.user.role === "3") {
-              this.nav.navigateRoot('/operator-dashboard');
-            }
+            this.nav.navigateRoot('/supervisor-dashboard');
+            // const pId = localStorage.getItem('PlayerId');
+            // alert(pId);
+            // this.base.addPlayerID({ player_id: pId }).subscribe(response => {
+            //   // response 
+            // });
+            // this.base.toastMessage('Login successful');
+            // localStorage.setItem('myToken', response.data.token);
+            // localStorage.setItem('myUser', JSON.stringify(response.data.user));
+            // if (response.data.user.role === "1") {
+            //   this.nav.navigateRoot('/home');
+            // }
+            // else if (response.data.user.role === "2") {
+            //   this.nav.navigateRoot('/supervisor-dashboard');
+            // }
+            // else if (response.data.user.role === "3") {
+            //   this.nav.navigateRoot('/operator-dashboard');
+            // }
           }
           else if (response.status === "error") {
             alert(response.txt);

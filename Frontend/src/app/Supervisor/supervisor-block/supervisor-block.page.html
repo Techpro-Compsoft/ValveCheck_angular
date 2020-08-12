@@ -34,9 +34,15 @@
       <ion-label>Irrigation : {{block.irrigation}}</ion-label>
     </ion-item>
 
-    <ion-item lines="none">
-      <ion-button fill="clear" (click)="viewValves(block.id)">Check Valves</ion-button>
-    </ion-item>
+    <div class="footer-btn">
+      <ion-item lines="none" *ngIf="block.latitude == null && block.longitude == null">
+        <ion-button fill="clear" (click)="assignCoordinates(block.id)">Assign Coordinates</ion-button>
+      </ion-item>
+
+      <ion-item lines="none">
+        <ion-button fill="clear" (click)="viewValves(block.id)">Check Valves</ion-button>
+      </ion-item>
+    </div>
 
   </ion-card>
 

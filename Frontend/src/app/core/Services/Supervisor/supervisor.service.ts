@@ -42,6 +42,10 @@ export class SupervisorService {
     return this.http.put(`${environment.base}/closeBlock`, data);
   }
 
+  updateCoordinatesCall(data): Observable<any> {
+    return this.http.post(`${environment.base}/updateCoordinates`, data);
+  }
+
 
 
 }

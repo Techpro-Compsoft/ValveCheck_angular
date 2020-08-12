@@ -1,15 +1,18 @@
 ion-item{
     --background:#eaeaea;
     color:#1f4e79;
+    height: 60px;
+    line-height: 40px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 }
 ion-item ion-icon{
     color:#1f4e79;
     margin-right:5px;
 }
-ion-card{
-    box-shadow:none;
+// ion-card{
+//     box-shadow:none;
     
-}
+// }
 .header-title{
     font-weight: 600;
     font-size: 22px;

@@ -25,23 +25,23 @@
 
 
     <ion-button *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time" size="small" fill="clear"
-      (click)="startValve()">Start
+      (click)="startValve(1)">Start
       Valve</ion-button>
 
     <ion-button *ngIf="valveDetails?.instruction && valveDetails?.actual_start_time && !valveDetails?.actual_stop_time"
-      size="small" fill="clear" (click)="stopValve()">Stop
+      size="small" fill="clear" (click)="stopValve(2)">Stop
       Valve</ion-button>
 
     <ion-button *ngIf="valveDetails?.instruction && valveDetails?.actual_start_time && !valveDetails?.actual_stop_time"
-      size="small" fill="clear" (click)="confirmReport()">Report</ion-button>
+      size="small" fill="clear" (click)="confirmReport(3)">Report</ion-button>
 
     <ion-button *ngIf="valveDetails?.interruption_reason && !valveDetails?.interruption_resume" size="small"
-      fill="clear" color="secondary" (click)="resumeValve()">Resume Valve
+      fill="clear" color="secondary" (click)="resumeValve(4)">Resume Valve
     </ion-button>
 
     <ion-button
       *ngIf="valveDetails?.interruption_reason && valveDetails?.interruption_resume && !valveDetails?.interruption_stop"
-      size="small" fill="clear" (click)="stopValve()">Stop Valve
+      size="small" fill="clear" (click)="stopValve(2)">Stop Valve
     </ion-button>
   </div>
 

@@ -20,7 +20,6 @@
   <div id="compList">
     <ion-card *ngFor="let farm of farmsList">
       <ion-item lines="none">
-        <ion-icon name="home-outline"></ion-icon>
         <ion-label>Farm Name : {{farm.farm_name}}</ion-label>
         <ion-button (click)="viewBlocks(farm.id)" size="small" fill="clear">
           <ion-icon slot="icon-only" name="eye-outline"></ion-icon>

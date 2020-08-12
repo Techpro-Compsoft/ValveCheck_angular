@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
 import { AlertController, NavController } from '@ionic/angular';
 import { BaseService } from 'src/app/core/Services/base.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-supervisor-block',
@@ -19,7 +20,8 @@ export class SupervisorBlockPage implements OnInit {
     public supervisorService: SupervisorService,
     public alertCtrl: AlertController,
     public base: BaseService,
-    public navCtrl: NavController) { }
+    public navCtrl: NavController,
+    private geolocation: Geolocation) { }
 
   ngOnInit() {
     this.farmId = +this.activatedRoute.snapshot.paramMap.get('farmId');
@@ -48,31 +50,63 @@ export class SupervisorBlockPage implements OnInit {
 
   viewValves(id) {
     this.navCtrl.navigateForward([`/supervisor-dashboard/supervisor-blocktimings/${id}`]);
-
-
-    // try {
-    //   this.supervisorService.getCycleCall({
-    //     "block": id
-    //   }).subscribe(response => {
-    //     if (response.data !== "") {
-    //       if (response.data[0]['actual_stop_time'] !== null) {
-    //         this.base.toastMessage('Already stopped');
-    //       }
-    //       else if (response.data[0]['actual_start_time'] == null) {
-    //         this.base.toastMessage('Valve not started');
-    //       }
-    //       else {
-    //         this.presentAlertConfirm(response.data[0]['id'])
-    //       }
-    //     }
-    //     else {
-    //       this.base.toastMessage('No data available');
-    //     }
-    //   });
-    // } catch (error) {
-    //   this.base.toastMessage('Something went wrong');
-    // }
   }
+
+  async assignCoordinates(id) {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirm',
+      message: 'Do you want to assign location of valve ? ',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            // console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Yes',
+          handler: () => {
+            this.getLocation(id);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  getLocation(id) {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp.coords.latitude)
+      console.log(resp.coords.longitude)
+      this.createCoordinates(resp.coords.latitude, resp.coords.longitude, id)
+    }).catch((error) => {
+      this.base.toastMessage('Error getting location');
+    });
+  }
+
+  createCoordinates(lat, lng, id) {
+    try {
+      this.supervisorService.updateCoordinatesCall({
+        block: id,
+        latitude: lat,
+        longitude: lng
+      }).subscribe(response => {
+        if (response.status === 'success') {
+          this.getBlockDetails();
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    }
+    catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
+
+  }
+
 
 
   async presentAlertConfirm(id) {
