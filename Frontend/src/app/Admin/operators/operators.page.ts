@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, PopoverController } from '@ionic/angular';
 import { BaseService } from '../../core/Services/base.service';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
+import { PopoverComponent } from '../popover/popover.component';
 
 @Component({
   selector: 'app-operators',
@@ -13,26 +14,27 @@ export class OperatorsPage implements OnInit {
   usersList: Array<object>;
 
   constructor(private alertCtrl: AlertController, private baseService: BaseService,
-    private navCtr: NavController, private supService: SupervisorService) { }
+    private navCtr: NavController, private supService: SupervisorService,
+    private pop: PopoverController) { }
 
   ngOnInit() {
   }
 
   getUsers() {
-   try {
-    this.baseService.getUsers({
-      "role": 3
-    }).subscribe(response => {
-      if (response.status === "success") {
-        this.usersList = response.data;
-      }
-      else if (response.status === "error") {
-        alert(response.txt);
-      }
-    });
-   } catch (error) {
-     this.baseService.toastMessage('Something went wrong');
-   }
+    try {
+      this.baseService.getUsers({
+        "role": 3
+      }).subscribe(response => {
+        if (response.status === "success") {
+          this.usersList = response.data;
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.baseService.toastMessage('Something went wrong');
+    }
   }
 
   async addSupervisor(value?, id?) {
@@ -230,6 +232,16 @@ export class OperatorsPage implements OnInit {
 
   toProfile() {
     this.navCtr.navigateForward(['/adminprofile']);
+  }
+
+  async presentPopover(ev: any) {
+    const popover = await this.pop.create({
+      component: PopoverComponent,
+      cssClass: 'testPop',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
   }
 
 }

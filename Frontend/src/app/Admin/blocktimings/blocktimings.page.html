@@ -28,7 +28,7 @@
     <ion-datetime displayFormat="h:mm a" [(ngModel)]="startTime"></ion-datetime>
   </ion-item>
 
-  <ion-item *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time">
+  <ion-item *ngIf="valveDetails?.instruction">
     <ion-label>Stop time</ion-label>
     <ion-datetime displayFormat="h:mm a" [(ngModel)]="stopTime" readonly></ion-datetime>
   </ion-item>
@@ -71,7 +71,35 @@
       <ion-label>Valve Details</ion-label>
     </div> -->
     <ion-card-header>
-      <ion-card-title>Valve Details</ion-card-title>
+      <ion-card-title>Valve Status -
+
+        <span *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time">
+          Not started yet
+        </span>
+
+        <span *ngIf="valveDetails?.instruction && valveDetails?.actual_start_time && !valveDetails?.actual_stop_time">
+          In progress
+        </span>
+
+        <span *ngIf="valveDetails?.interruption_reason && !valveDetails?.interruption_resume">
+          On halt
+        </span>
+
+        <span
+          *ngIf="valveDetails?.interruption_reason && valveDetails?.interruption_resume && !valveDetails?.interruption_stop">
+          Resumed, in progress
+        </span>
+
+        <span *ngIf="valveDetails?.interruption_reason && valveDetails?.interruption_stop">
+          Completed
+        </span>
+
+        <span
+          *ngIf="!valveDetails?.interruption_reason && valveDetails?.actual_start_time && valveDetails?.actual_stop_time">
+          Completed
+        </span>
+
+      </ion-card-title>
     </ion-card-header>
 
     <ion-item lines="none">

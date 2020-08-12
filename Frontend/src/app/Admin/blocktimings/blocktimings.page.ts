@@ -31,7 +31,7 @@ export class BlocktimingsPage implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private farm: FarmService,
     private alertCtrl: AlertController, private nav: NavController,
     private base: BaseService, private company: CompanyService) {
-    for (let index = 1; index < 11; index++) {
+    for (let index = 0; index < 11; index++) {
       this.hoursArr.push(index);
     }
     for (let index = 0; index < 60; index++) {
@@ -90,7 +90,7 @@ export class BlocktimingsPage implements OnInit {
   }
 
   assignTime() {
-    if (this.valveHour && (this.valveMins || this.valveMins === 0) && this.startTime) {
+    if ((this.valveHour || this.valveHour === 0) && (this.valveMins || this.valveMins === 0) && this.startTime) {
       let endTime = new Date(this.startTime);
       endTime.setHours(endTime.getHours() + this.valveHour);
       endTime.setMinutes(endTime.getMinutes() + this.valveMins);
