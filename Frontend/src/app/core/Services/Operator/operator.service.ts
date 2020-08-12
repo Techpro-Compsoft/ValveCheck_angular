@@ -42,4 +42,8 @@ export class OperatorService {
     return this.http.put(`${environment.base}/resumeBlock`, data);
   }
 
+  getReasons(): Observable<any> {
+    return this.http.get(`${environment.base}/getReason`);
+  }
+
 }

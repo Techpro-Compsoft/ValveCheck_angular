@@ -18,7 +18,7 @@
 
   <ion-item>
     <ion-label>Stop time</ion-label>
-    <ion-datetime displayFormat="h:mm a" [(ngModel)]="endTime"></ion-datetime>
+    <ion-datetime displayFormat="h:mm a" [(ngModel)]="stopTime"></ion-datetime>
   </ion-item>
 
   <div style="text-align: center;margin-top: 10px;">
@@ -66,8 +66,11 @@
 
     <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">
       <ion-label>Interruption Reason:</ion-label>
-      <ion-input type="text" [value]="valveDetails?.interruption_reason | titlecase" readonly>
-      </ion-input>
+      <ion-select [value]="valveDetails?.interruption_reason">
+        <ion-select-option *ngFor="let reason of interruptionReasons" [value]="reason?.reason">
+          {{reason.reason | titlecase}}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
 
     <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">

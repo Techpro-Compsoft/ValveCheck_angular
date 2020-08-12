@@ -78,8 +78,6 @@ export class SupervisorBlockPage implements OnInit {
 
   getLocation(id) {
     this.geolocation.getCurrentPosition().then((resp) => {
-      console.log(resp.coords.latitude)
-      console.log(resp.coords.longitude)
       this.createCoordinates(resp.coords.latitude, resp.coords.longitude, id)
     }).catch((error) => {
       this.base.toastMessage('Error getting location');

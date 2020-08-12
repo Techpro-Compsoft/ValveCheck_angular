@@ -33,8 +33,6 @@ export class OperatorBlockPage implements OnInit {
 
   getLocation(blockId, blockLat, blockLong) {
     this.geolocation.getCurrentPosition().then((resp) => {
-      console.log(resp.coords.latitude)
-      console.log(resp.coords.longitude)
       this.calculateDistance(resp.coords.latitude, resp.coords.longitude, blockId, blockLat, blockLong);
     }).catch((error) => {
       this.base.toastMessage('Error getting location');
