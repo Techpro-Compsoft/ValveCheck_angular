@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyService } from '../../core/Services/Company/company.service';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, PopoverController } from '@ionic/angular';
 import { BaseService } from 'src/app/core/Services/base.service';
 import { ActivatedRoute } from '@angular/router';
+import { PopoverComponent } from '../popover/popover.component';
 
 @Component({
   selector: 'app-companies',
@@ -14,8 +15,8 @@ export class CompaniesPage implements OnInit {
   companiesList: Array<object>;
 
   constructor(private companyService: CompanyService, private base: BaseService,
-    private alertCtlr: AlertController, public navCtrl: NavController
-  ) { }
+    private alertCtlr: AlertController, public navCtrl: NavController,
+    private pop: PopoverController ) { }
 
   ngOnInit() {
   }
@@ -24,7 +25,6 @@ export class CompaniesPage implements OnInit {
     try {
       this.companyService.fetchCompanies().subscribe(response => {
         if (response.status === "success") {
-          this.companiesList = [];
           this.companiesList = response.data;
         }
         else if (response.status === "error") {
@@ -136,12 +136,18 @@ export class CompaniesPage implements OnInit {
     this.getCompanies();
   }
 
-  toProfile() {
-    this.navCtrl.navigateForward(['/adminprofile']);
-  }
-
   viewReport(id, name) {
     this.navCtrl.navigateForward([`/home/companies/reports/${id}/${name}`]);
+  }
+
+  async presentPopover(ev: any) {
+    const popover = await this.pop.create({
+      component: PopoverComponent,
+      cssClass: 'testPop',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
   }
 
 }

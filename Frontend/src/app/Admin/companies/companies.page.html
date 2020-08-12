@@ -7,6 +7,10 @@
       <ion-button (click)="openCompanyDialog()">
         <ion-icon slot="start" name="add-outline"></ion-icon>Company
       </ion-button>
+
+      <ion-button slot="end" (click)="presentPopover($event)">
+        <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -18,12 +22,12 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="toProfile()">
       <ion-icon name="person-outline"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
-  
+  </ion-fab> -->
+
   <div id="compList">
     <ion-card *ngFor="let company of companiesList">
       <ion-item lines="none" class="business-outline">

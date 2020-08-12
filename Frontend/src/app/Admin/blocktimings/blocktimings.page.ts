@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { FarmService } from 'src/app/core/Services/Farm/farm.service';
 import { BaseService } from 'src/app/core/Services/base.service';
-import { Location } from '@angular/common';
+import { CompanyService } from 'src/app/core/Services/Company/company.service';
 
 @Component({
   selector: 'app-blocktimings',
@@ -26,22 +26,36 @@ export class BlocktimingsPage implements OnInit {
   hoursArr: any[] = [];
   minsArray: any[] = [];
 
+  interruptionReasons: Array<object>;
+
   constructor(private activatedRoute: ActivatedRoute, private farm: FarmService,
     private alertCtrl: AlertController, private nav: NavController,
-    private base: BaseService, private lo: Location) {
+    private base: BaseService, private company: CompanyService) {
     for (let index = 1; index < 11; index++) {
       this.hoursArr.push(index);
     }
     for (let index = 0; index < 60; index++) {
       this.minsArray.push(index);
     }
-    // console.log(this.lo.path());
   }
 
   ngOnInit() {
     this.blockId = +this.activatedRoute.snapshot.paramMap.get('id');
     this.operatorId = +this.activatedRoute.snapshot.paramMap.get('operatorId');
     this.getBlockValveDetails();
+    this.getInterruprtionReasons();
+  }
+
+  getInterruprtionReasons() {
+    try {
+      this.company.getReasons().subscribe(response => {
+        if (response.status === "success") {
+          this.interruptionReasons = response.data;
+        }
+      });
+    } catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
   }
 
   getBlockValveDetails() {
@@ -203,18 +217,25 @@ export class BlocktimingsPage implements OnInit {
   }
 
   async confirmReport() {
-    const alert = await this.alertCtrl.create({
-      cssClass: 'my-custom-class',
-      header: 'Confirm',
-      message: 'Please mention the issue for interruption caused.',
-      inputs: [
-        {
-          name: 'reason',
-          type: 'text',
-          placeholder: 'Interruption reason',
-        }
-      ],
-      buttons: [
+    this.interruptionReasons.forEach((e: any) => {
+      e.name = e.reason,
+        e.type = 'radio',
+        e.label = e.reason,
+        e.value = e.reason,
+        e.checked = false
+    });
+    this.interruptionReasons.forEach((e: any) => {
+      e.name = e.reason,
+        e.type = 'radio',
+        e.label = e.reason,
+        e.value = e.reason,
+        e.checked = false
+    });
+    const alert = await this.alertCtrl.create();
+    alert.inputs = this.interruptionReasons;
+    alert.header = 'Confirm',
+      alert.message = 'Please select the reason',
+      alert.buttons = [
         {
           text: 'No',
           role: 'cancel',
@@ -225,16 +246,16 @@ export class BlocktimingsPage implements OnInit {
         }, {
           text: 'Yes',
           handler: (data) => {
-            this.reportValveIssue(data.reason);
+            // console.log(data);
+            this.reportValveIssue(data);
           }
         }
-      ]
-    });
+      ];
     await alert.present();
   }
 
   reportValveIssue(reason: string) {
-    if (reason.trim() != "") {
+    if (reason) {
       try {
         this.farm.reportIssue({
           id: this.valveDetails['id'],

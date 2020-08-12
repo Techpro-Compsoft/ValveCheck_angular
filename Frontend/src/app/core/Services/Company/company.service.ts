@@ -34,4 +34,17 @@ export class CompanyService {
     return this.http.post(`${environment.base}/getReport`, data);
   }
 
+  getReasons(): Observable<any> {
+    return this.http.get(`${environment.base}/getReason`);
+  }
+
+  addReason(data): Observable<any> {
+    return this.http.post(`${environment.base}/addReason`, data);
+  }
+
+  deleteReason(id): Observable<any> {
+    return this.http.post(`${environment.base}/delReason`, id);
+  }
+  
+
 }
