@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Router } from '@angular/router';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { BaseService } from './core/Services/base.service';
+import { EventService } from './core/Services/Events/events.service';
 
 @Component({
   selector: 'app-root',
@@ -18,18 +19,23 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private nav: NavController,
-    private route: Router,
+    private route: Router, private event: EventService,
     private oneSignal: OneSignal, private base: BaseService
   ) {
     this.initializeApp();
     const user = JSON.parse(localStorage.getItem('myUser'));
-    if (user && user['role'] === "1") {
-      this.nav.navigateRoot('/home');
-    } else if (user && user['role'] === "2") {
-      this.nav.navigateRoot('/supervisor-dashboard');
-    }
-    else if (user && user['role'] === "3") {
-      this.nav.navigateRoot('/operator-dashboard');
+    if (user) {
+      if (user && user['role'] === "1") {
+        this.nav.navigateRoot('/home');
+      } else if (user && user['role'] === "2") {
+        this.nav.navigateRoot('/supervisor-dashboard');
+      }
+      else if (user && user['role'] === "3") {
+        this.nav.navigateRoot('/operator-dashboard');
+      }
+      if (this.platform.is('cordova')) {
+        this.push_Notification_Init(false);
+      }
     }
     else {
       this.nav.navigateRoot('/login');
@@ -50,7 +56,14 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.backbuttonSubscribeMethod();
-      this.push_Notification_Init();
+      if (this.platform.is('cordova')) {
+        this.event.subscribe('ULS', (val: any) => {
+          if (val) {
+            alert('event ' + JSON.stringify(val));
+            this.push_Notification_Init(true);
+          }
+        })
+      }
     });
   }
 
@@ -58,9 +71,17 @@ export class AppComponent {
     this.platform.backButton.unsubscribe();
   }
 
-  async push_Notification_Init() {
-    this.oneSignal.startInit('d1613e76-96f6-4b7c-a9a7-cf76811a62df', '172278637990');
+  push_Notification_Init(bool) {
+    if (this.platform.is('android')) {
+      this.oneSignal.startInit('d1613e76-96f6-4b7c-a9a7-cf76811a62df', '172278637990');
+    }
+    else if (this.platform.is('ios')) {
+      this.oneSignal.startInit('d1613e76-96f6-4b7c-a9a7-cf76811a62df');
+    }
 
+    // alert(JSON.stringify(this.oneSignal.setLogLevel({ logLevel: 6, visualLevel: 0 })));
+
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
 
     this.oneSignal.handleNotificationReceived().subscribe((res) => {
@@ -94,9 +115,15 @@ export class AppComponent {
       }
     });
 
-    await this.oneSignal.getIds().then(res => {
-      localStorage.setItem('PlayerId', res.userId);
-    });
+    if (bool) {
+      this.oneSignal.getIds().then(res => {
+        alert(JSON.stringify(res.userId));
+        this.base.addPlayerID({ player_id: res.userId }).subscribe(response => {
+          //response
+        });
+      });
+    }
+
     this.oneSignal.endInit();
   }
 

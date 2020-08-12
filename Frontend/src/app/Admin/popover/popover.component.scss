@@ -1,0 +1,16 @@
+ion-list {  
+    &.list-ios {  
+        margin-bottom: 0;  
+    }  
+
+    padding: 10px;
+}  
+
+ion-list ion-item{
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+ion-list ion-item ion-icon{
+    margin-right: 10px;
+}
