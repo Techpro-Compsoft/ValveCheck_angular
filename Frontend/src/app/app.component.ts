@@ -59,7 +59,7 @@ export class AppComponent {
       if (this.platform.is('cordova')) {
         this.event.subscribe('ULS', (val: any) => {
           if (val) {
-            alert('event ' + JSON.stringify(val));
+            // alert('event ' + JSON.stringify(val));
             this.push_Notification_Init(true);
           }
         })
@@ -91,10 +91,10 @@ export class AppComponent {
     this.oneSignal.handleNotificationOpened().subscribe((res) => {
       let notificationData = res.notification.payload.additionalData;
       const user = JSON.parse(localStorage.getItem('myUser'));
-      alert(JSON.stringify(notificationData));
-      alert(JSON.stringify(user));
+      // alert(JSON.stringify(notificationData));
+      // alert(JSON.stringify(user));
       if (user && user['role'] === '1') {
-        alert('in admin');
+        // alert('in admin');
         try {
           this.nav.navigateForward([`/home/companies/farms/${notificationData['farm_id']}/blocks/${notificationData['block_id']}/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
         } catch (error) {
@@ -102,7 +102,7 @@ export class AppComponent {
         }
       }
       else if (user && user['role'] === '2') {
-        alert('in sup');
+        // alert('in sup');
         try {
           this.nav.navigateForward([`/supervisor-dashboard/supervisor-blocktimings/${notificationData['block_id']}`]);
         } catch (error) {
@@ -110,14 +110,14 @@ export class AppComponent {
         }
       }
       else if (user && user['role'] === '3') {
-        alert('in operator');
+        // alert('in operator');
         this.nav.navigateForward([`/operator-dashboard/operator-blocktimings/${notificationData['block_id']}`]);
       }
     });
 
     if (bool) {
       this.oneSignal.getIds().then(res => {
-        alert(JSON.stringify(res.userId));
+        // alert(JSON.stringify(res.userId));
         this.base.addPlayerID({ player_id: res.userId }).subscribe(response => {
           //response
         });

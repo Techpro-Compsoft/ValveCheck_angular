@@ -51,12 +51,12 @@ export class OperatorBlocktimingsPage implements OnInit {
     let p = 0.017453292519943295;    // Math.PI / 180
     let c = Math.cos;
     let a = 0.5 - c((lat1 - this.latitude) * p) / 2 + c(this.latitude * p) * c((lat1) * p) * (1 - c(((long1 - this.longitude) * p))) / 2;
-    alert(lat1);
-    alert(long1);
+    // alert(lat1);
+    // alert(long1);
     let dis = (12742 * Math.asin(Math.sqrt(a))); // 2 * R; R = 6371 km
     let distanceInMeters = dis * 1000; //distance in meters
-    alert(dis);
-    alert(distanceInMeters);
+    // alert(dis);
+    // alert(distanceInMeters);
     if (distanceInMeters <= 15) {
 
       if (id == 1) {

@@ -7,6 +7,10 @@
       <ion-button (click)="addSupervisor()">
         <ion-icon name="person-add-outline" style="margin-right: 5px;"></ion-icon>
       </ion-button>
+
+      <ion-button slot="end" (click)="presentPopover($event)">
+        <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -18,11 +22,11 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="toProfile()">
       <ion-icon name="person-outline"></ion-icon>
     </ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 
   <div id="opList">
 
@@ -41,7 +45,8 @@
             Assign
           </ion-button>
 
-          <ion-button *ngIf="user?.company_name" size="small" fill="clear" (click)="presentAlertConfirm(user?.company_id, user?.id)">
+          <ion-button *ngIf="user?.company_name" size="small" fill="clear"
+            (click)="presentAlertConfirm(user?.company_id, user?.id)">
             Remove
           </ion-button>
         </div>

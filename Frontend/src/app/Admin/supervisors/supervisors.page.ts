@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, PopoverController } from '@ionic/angular';
 import { BaseService } from '../../core/Services/base.service';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
+import { PopoverComponent } from '../popover/popover.component';
 
 @Component({
   selector: 'app-supervisors',
@@ -14,7 +15,7 @@ export class SupervisorsPage implements OnInit {
 
   constructor(private baseService: BaseService,
     private navCtr: NavController, private supService: SupervisorService,
-    private alertCtrl: AlertController) { }
+    private alertCtrl: AlertController,  private pop: PopoverController) { }
 
   ngOnInit() {
   }
@@ -234,4 +235,14 @@ export class SupervisorsPage implements OnInit {
     this.navCtr.navigateForward(['/adminprofile']);
   }
 
+  async presentPopover(ev: any) {
+    const popover = await this.pop.create({
+      component: PopoverComponent,
+      cssClass: 'testPop',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
+  
 }
