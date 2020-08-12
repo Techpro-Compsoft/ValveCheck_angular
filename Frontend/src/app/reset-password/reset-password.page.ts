@@ -42,7 +42,10 @@ export class ResetPasswordPage implements OnInit {
         "password": this.resetPasswordForm.value.password,
         "phone": this.phone
       }).subscribe(response => {
-        this.modalCtrl.dismiss();
+        if (response.status == "success") {
+          this.base.toastMessage('Password reset successfully');
+          this.modalCtrl.dismiss();
+        }
       });
     }
     catch (error) {
