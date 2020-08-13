@@ -78,7 +78,15 @@ export class OperatorBlockPage implements OnInit {
   }
 
   viewValves(id, lat, lng) {
-    this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}/${lat}/${lng}`]);
+    if (lat == "" && lng == "") {
+      let lat = null;
+      let lng = null;
+      this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}/${lat}/${lng}`]);
+    }
+    else {
+      this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}/${lat}/${lng}`]);
+    }
+
     // this.getLocation(id, lat, lng);
   }
 

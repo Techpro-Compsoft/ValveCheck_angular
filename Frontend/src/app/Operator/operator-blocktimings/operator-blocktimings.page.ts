@@ -55,7 +55,10 @@ export class OperatorBlocktimingsPage implements OnInit {
   }
 
   getLocation(id) {
-    if (this.latitude == null && this.longitude == null) {
+    if (this.latitude == 'null' && this.longitude == 'null') {
+      this.base.toastMessage('No coordinates available');
+    }
+    else if (this.latitude == "" && this.longitude == "") {
       this.base.toastMessage('No coordinates available');
     }
     else {

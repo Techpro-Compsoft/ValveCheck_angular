@@ -39,6 +39,10 @@
         <ion-button fill="clear" (click)="assignCoordinates(block.id)">Assign Coordinates</ion-button>
       </ion-item>
 
+      <ion-item lines="none" *ngIf="block.latitude.length == 0 && block.longitude.length == 0 ">
+        <ion-button fill="clear" (click)="assignCoordinates(block.id)">Assign Coordinates</ion-button>
+      </ion-item>
+
       <ion-item lines="none">
         <ion-button fill="clear" (click)="viewValves(block.id)">Check Valves</ion-button>
       </ion-item>

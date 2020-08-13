@@ -92,6 +92,7 @@ export class SupervisorBlockPage implements OnInit {
         longitude: lng
       }).subscribe(response => {
         if (response.status === 'success') {
+          this.base.toastMessage('Location assigned successfully');
           this.getBlockDetails();
         }
         else if (response.status === "error") {

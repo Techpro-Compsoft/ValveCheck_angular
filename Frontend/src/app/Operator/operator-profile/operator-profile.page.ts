@@ -102,6 +102,7 @@ export class OperatorProfilePage implements OnInit {
               this.operatorData.phone = data.phone
               localStorage.setItem('myUser', JSON.stringify(this.operatorData));
               this.getOperatorDetails();
+              this.base.toastMessage('Profile updated successfully');
             }
             else if (response.status === "error") {
               alert(response.txt);

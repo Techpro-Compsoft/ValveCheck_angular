@@ -102,6 +102,7 @@ export class SupervisorProfilePage implements OnInit {
               this.supervisorData.phone = data.phone
               localStorage.setItem('myUser', JSON.stringify(this.supervisorData));
               this.getSupervisorDetails();
+              this.base.toastMessage('Profile updated successfully');
             }
             else if (response.status === "error") {
               alert(response.txt);

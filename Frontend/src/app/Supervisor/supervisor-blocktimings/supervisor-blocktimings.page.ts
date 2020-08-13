@@ -81,6 +81,7 @@ export class SupervisorBlocktimingsPage implements OnInit {
         "stop_time": `${new Date().getHours()}:${new Date().getMinutes()}`,
       }).subscribe(response => {
         if (response.status === 'success') {
+          this.base.toastMessage('Valve stopped successfully');
           this.getValveDetails();
         }
         else if (response.status === "error") {
