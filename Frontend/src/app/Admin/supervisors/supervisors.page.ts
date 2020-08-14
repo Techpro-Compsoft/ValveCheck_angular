@@ -15,9 +15,11 @@ export class SupervisorsPage implements OnInit {
 
   constructor(private baseService: BaseService,
     private navCtr: NavController, private supService: SupervisorService,
-    private alertCtrl: AlertController,  private pop: PopoverController) { }
+    private alertCtrl: AlertController, private pop: PopoverController) { }
 
   ngOnInit() {
+    const num = 9329992992;
+    console.log(num.toString().length);
   }
 
   getUsers() {
@@ -45,14 +47,13 @@ export class SupervisorsPage implements OnInit {
         {
           name: 'fullname',
           type: 'text',
-          label: 'Name',
-          placeholder: 'Full Name',
+          placeholder: 'Full Name *',
           value: value ? value.fullname : ''
         },
         {
           name: 'username',
           type: 'text',
-          placeholder: 'Username',
+          placeholder: 'Username *',
           value: value ? value.username : ''
         },
         {
@@ -64,13 +65,13 @@ export class SupervisorsPage implements OnInit {
         {
           name: 'password',
           type: 'text',
-          placeholder: 'Password',
+          placeholder: 'Password *',
           value: value ? atob(value.password) : ''
         },
         {
           name: 'phone',
           type: 'number',
-          placeholder: 'Mobile',
+          placeholder: 'Mobile *',
           value: value ? value.phone : ''
         }
       ],
@@ -93,7 +94,7 @@ export class SupervisorsPage implements OnInit {
     await alert.present();
   }
 
-  checkValidation(name: string, username: string, password: string): boolean {
+  checkValidation(name: string, username: string, password: string, num: string): boolean {
     if (name.trim().length === 0) {
       return false;
     }
@@ -102,6 +103,9 @@ export class SupervisorsPage implements OnInit {
     }
     else if (password.trim().length === 0) {
       return false;
+    }
+    else if (num.length === 0) {
+      return false;
     } else {
       return true;
     }
@@ -109,7 +113,7 @@ export class SupervisorsPage implements OnInit {
 
   createSupervisor(data) {
     data.role = 2;
-    if (this.checkValidation(data.fullname, data.username, data.password)) {
+    if (this.checkValidation(data.fullname, data.username, data.password, data.phone)) {
       if (data.fullname.length > 50) {
         alert('Name can not be more than 50 characters');
       }
@@ -119,11 +123,14 @@ export class SupervisorsPage implements OnInit {
       else if (data.password.length > 50) {
         alert('Password can not be more than 50 characters');
       }
+      else if (data.phone.length <= 7 || data.phone.length > 12) {
+        alert('Phone number length should be between 8-12');
+      }
       else {
         try {
           this.baseService.createUser(data).subscribe(response => {
             if (response.status === "success") {
-              this.baseService.toastMessage('Supervisor created');
+              this.baseService.toastMessage('Supervisor created successfully');
               this.getUsers();
             }
             else if (response.status === "error") {
@@ -141,7 +148,7 @@ export class SupervisorsPage implements OnInit {
   }
 
   editSupervisor(data, id) {
-    if (this.checkValidation(data.fullname, data.username, data.password)) {
+    if (this.checkValidation(data.fullname, data.username, data.password, data.phone)) {
       if (data.fullname.length > 50) {
         alert('Name can not be more than 50 characters');
       }
@@ -150,6 +157,9 @@ export class SupervisorsPage implements OnInit {
       }
       else if (data.password.length > 50) {
         alert('Password can not be more than 50 characters');
+      }
+      else if (data.phone.length <= 7 || data.phone.length > 12) {
+        alert('Phone number length should be between 8-12');
       }
       else {
         try {
@@ -161,7 +171,7 @@ export class SupervisorsPage implements OnInit {
             "phone": data.phone
           }).subscribe(response => {
             if (response.status === "success") {
-              this.baseService.toastMessage('Supervisor updated');
+              this.baseService.toastMessage('Supervisor updated successfully');
               this.getUsers();
             }
             else if (response.status === "error") {
@@ -244,5 +254,5 @@ export class SupervisorsPage implements OnInit {
     });
     return await popover.present();
   }
-  
+
 }

@@ -91,7 +91,7 @@ export class AppComponent {
     this.oneSignal.handleNotificationOpened().subscribe((res) => {
       let notificationData = res.notification.payload.additionalData;
       const user = JSON.parse(localStorage.getItem('myUser'));
-      alert(JSON.stringify(notificationData));
+      // alert(JSON.stringify(notificationData));
       // alert(JSON.stringify(user));
       if (user && user['role'] === '1') {
         // alert('in admin');

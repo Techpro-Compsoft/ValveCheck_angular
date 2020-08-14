@@ -75,7 +75,7 @@ export class CompaniesPage implements OnInit {
             "company_name": name.trim()
           }).subscribe(response => {
             if (response.status === "success") {
-              this.base.toastMessage('Company added');
+              this.base.toastMessage('Company added successfully');
               this.getCompanies();
             }
             else if (response.status === "error") {
@@ -104,7 +104,7 @@ export class CompaniesPage implements OnInit {
             "id": id
           }).subscribe(response => {
             if (response.status === "success") {
-              this.base.toastMessage('Company updated');
+              this.base.toastMessage('Company updated successfully');
               this.getCompanies();
             }
             else if (response.status === "error") {

@@ -53,4 +53,8 @@ export class BaseService {
     toast.present();
   }
 
+  editOperatorProfileCall(data): Observable<any> {
+    return this.http.put(`${environment.base}/updateUser`, data);
+  }
+  
 }
