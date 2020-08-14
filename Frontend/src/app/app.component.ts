@@ -91,7 +91,7 @@ export class AppComponent {
     this.oneSignal.handleNotificationOpened().subscribe((res) => {
       let notificationData = res.notification.payload.additionalData;
       const user = JSON.parse(localStorage.getItem('myUser'));
-      // alert(JSON.stringify(notificationData));
+      alert(JSON.stringify(notificationData));
       // alert(JSON.stringify(user));
       if (user && user['role'] === '1') {
         // alert('in admin');
@@ -111,7 +111,7 @@ export class AppComponent {
       }
       else if (user && user['role'] === '3') {
         // alert('in operator');
-        this.nav.navigateForward([`/operator-dashboard/operator-blocktimings/${notificationData['block_id']}`]);
+        this.nav.navigateForward([`/operator-dashboard/operator-blocktimings/${notificationData['block_id']}/${notificationData['lat']}/${notificationData['long']}`]);
       }
     });
 

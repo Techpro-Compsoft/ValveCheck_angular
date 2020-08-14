@@ -150,7 +150,7 @@ export class BlocktimingsPage implements OnInit {
   }
 
   updateTime() {
-    if (this.valveHour && this.valveMins && this.startTime) {
+    if ((this.valveHour || this.valveHour === 0) && (this.valveMins || this.valveMins === 0) && this.startTime) {
       let endTime = new Date(this.startTime);
       endTime.setHours(endTime.getHours() + this.valveHour);
       endTime.setMinutes(endTime.getMinutes() + this.valveMins);
