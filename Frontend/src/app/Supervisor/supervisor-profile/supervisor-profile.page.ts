@@ -99,14 +99,14 @@ export class SupervisorProfilePage implements OnInit {
 
 
   editSupervisorProfile(data) {
-    let patt = /^[0-9]{8,10}$/g;
+    let patt = /^[0-9]{8,12}$/g;
     let result = patt.test(data.phone);
     if (this.checkValidation(data.name)) {
       if (data.name.length > 50) {
         this.base.toastMessage('Name can not be more than 50 characters');
       }
       else if (result === false) {
-        this.base.toastMessage('Phone Number must contain 8 digits to maximum 10 digits');
+        this.base.toastMessage('Phone Number must contain 8 digits to maximum 12 digits');
       } else {
         try {
           const supObj = {
