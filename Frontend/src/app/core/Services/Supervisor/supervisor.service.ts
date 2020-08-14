@@ -46,6 +46,12 @@ export class SupervisorService {
     return this.http.post(`${environment.base}/updateCoordinates`, data);
   }
 
+  getProfile(): Observable<any> {
+    return this.http.get(`${environment.base}/getProfile`);
+  }
+
+
+
 
 
 }

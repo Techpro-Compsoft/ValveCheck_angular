@@ -41,6 +41,10 @@ export class BaseService {
     return this.http.post(`${environment.base}/deletePlayerId`, data);
   }
 
+  getProfile(): Observable<any> {
+    return this.http.get(`${environment.base}/getProfile`);
+  }
+
   async toastMessage(message: string) {
     const toast = await this.toast.create({
       message: message.trim(),

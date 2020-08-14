@@ -22,7 +22,26 @@ export class OperatorProfilePage implements OnInit {
   }
 
   ngOnInit() {
-    this.getOperatorDetails();
+    this.getProfile();
+  }
+
+
+  getProfile() {
+    try {
+      this.operatorService.getProfile().subscribe(response => {
+        if (response.status == 'success') {
+          this.operatorData = response.data;
+          this.fullName = response.data['fullname'];
+          this.phone = response.data['phone'];
+          this.operatorId = response.data['id'];
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
   }
 
   getOperatorDetails() {
@@ -127,9 +146,15 @@ export class OperatorProfilePage implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('myToken');
-    localStorage.removeItem('myUser');
-    this.nav.navigateRoot(['/login']);
+    this.base.deletePlayerID(this.operatorId).subscribe(response => {
+      // alert("Deleted player ID : " + response);
+      if (response) {
+        localStorage.removeItem('myToken');
+        localStorage.removeItem('myUser');
+        this.nav.navigateRoot(['/login']);
+        this.base.toastMessage('Logged out successfully');
+      }
+    });
   }
 
 

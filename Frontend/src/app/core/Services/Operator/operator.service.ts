@@ -46,4 +46,10 @@ export class OperatorService {
     return this.http.get(`${environment.base}/getReason`);
   }
 
+  getProfile(): Observable<any> {
+    return this.http.get(`${environment.base}/getProfile`);
+  }
+
+
+
 }

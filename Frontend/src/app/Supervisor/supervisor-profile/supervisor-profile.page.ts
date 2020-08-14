@@ -22,7 +22,25 @@ export class SupervisorProfilePage implements OnInit {
   }
 
   ngOnInit() {
-    this.getSupervisorDetails();
+    this.getProfile();
+  }
+
+  getProfile() {
+    try {
+      this.supervisorService.getProfile().subscribe(response => {
+        if (response.status == 'success') {
+          this.supervisorData = response.data;
+          this.fullName = response.data['fullname'];
+          this.phone = response.data['phone'];
+          this.supervisorId = response.data['id'];
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
   }
 
   getSupervisorDetails() {
@@ -130,9 +148,15 @@ export class SupervisorProfilePage implements OnInit {
 
 
   logout() {
-    localStorage.removeItem('myToken');
-    localStorage.removeItem('myUser');
-    this.nav.navigateRoot(['/login']);
+    this.base.deletePlayerID(this.supervisorId).subscribe(response => {
+      // alert("Deleted player ID : " + response);
+      if (response) {
+        localStorage.removeItem('myToken');
+        localStorage.removeItem('myUser');
+        this.nav.navigateRoot(['/login']);
+        this.base.toastMessage('Logged out successfully');
+      }
+    });
   }
 
 
