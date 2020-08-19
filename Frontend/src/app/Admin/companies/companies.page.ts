@@ -16,7 +16,7 @@ export class CompaniesPage implements OnInit {
 
   constructor(private companyService: CompanyService, private base: BaseService,
     private alertCtlr: AlertController, public navCtrl: NavController,
-    private pop: PopoverController ) { }
+    private pop: PopoverController) { }
 
   ngOnInit() {
   }

@@ -38,6 +38,7 @@ export class SupervisorassignmentPage implements OnInit {
         if (response.status === "success") {
           this.companyDetails = response.data.company;
           this.assignedUsers = this.modeId === 1 ? response.data.supervisor : response.data.operator;
+          this.assignedUsers.sort((a, b) => (a['fullname'].toLowerCase() > b['fullname'].toLowerCase()) ? 1 : ((b['fullname'].toLowerCase() > a['fullname'].toLowerCase()) ? -1 : 0));
         }
       })
     } catch (error) {

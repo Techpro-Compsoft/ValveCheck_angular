@@ -72,7 +72,7 @@ export class FarmsPage implements OnInit {
   }
 
   createFarm(name: string) {
-    if (name != null && name.length > 0) {
+    if (name != null && name.trim().length > 0) {
       try {
         this.farmService.createFarm({
           "company": this.companyId,
@@ -96,7 +96,7 @@ export class FarmsPage implements OnInit {
   }
 
   editFarm(name, id) {
-    if (name != null && name.length > 0) {
+    if (name != null && name.trim().length > 0) {
       try {
         this.farmService.updateFarm({
           "id": id,

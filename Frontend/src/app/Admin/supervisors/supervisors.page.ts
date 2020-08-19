@@ -18,8 +18,6 @@ export class SupervisorsPage implements OnInit {
     private alertCtrl: AlertController, private pop: PopoverController) { }
 
   ngOnInit() {
-    const num = 9329992992;
-    console.log(num.toString().length);
   }
 
   getUsers() {
