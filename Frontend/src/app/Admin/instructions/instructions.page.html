@@ -13,4 +13,31 @@
 
 <ion-content>
 
+  <table>
+    <tr>
+      <th>Block</th>
+      <th>Hours</th>
+      <th>Open</th>
+      <th>Close</th>
+      <th>Action</th>
+    </tr>
+    <tr *ngFor="let block of blocksArray">
+
+      <td>{{block?.block_name | titlecase}}</td>
+
+      <td>
+        {{block?.instruction ? block?.instruction : '-'}}</td>
+
+      <td>
+        {{block?.actual_start_time ? block?.actual_start_time : '-'}}</td>
+
+      <td>
+        {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td>
+
+      <td>
+        <ion-button size="small" fill="clear">View</ion-button>
+      </td>
+
+    </tr>
+  </table>
 </ion-content>

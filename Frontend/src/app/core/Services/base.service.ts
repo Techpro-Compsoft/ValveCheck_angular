@@ -57,5 +57,9 @@ export class BaseService {
   editOperatorProfileCall(data): Observable<any> {
     return this.http.put(`${environment.base}/updateUser`, data);
   }
+
+  getAllBlocks(data): Observable<any> {
+    return this.http.post(`${environment.base}/getBlocksTable`, data);
+  }
   
 }
