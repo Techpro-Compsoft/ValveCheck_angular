@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: InstructionsPage
+  },
+  {
+    path: 'blocktimings/:id',
+    loadChildren: () => import('../blocktimings/blocktimings.module').then(m => m.BlocktimingsPageModule)
   }
 ];
 

@@ -79,8 +79,6 @@ export class AppComponent {
       this.oneSignal.startInit('d1613e76-96f6-4b7c-a9a7-cf76811a62df');
     }
 
-    // alert(JSON.stringify(this.oneSignal.setLogLevel({ logLevel: 6, visualLevel: 0 })));
-
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
 
@@ -96,7 +94,8 @@ export class AppComponent {
       if (user && user['role'] === '1') {
         // alert('in admin');
         try {
-          this.nav.navigateForward([`/home/companies/farms/${notificationData['farm_id']}/blocks/${notificationData['block_id']}/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
+          // this.nav.navigateForward([`/home/companies/farms/${notificationData['farm_id']}/blocks/${notificationData['block_id']}/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
+          this.nav.navigateForward([`/home/instructions/blocktimings/${notificationData['block_id']}`]);
         } catch (error) {
           // alert(JSON.stringify(error));
         }

@@ -13,6 +13,10 @@
 
 <ion-content>
 
+  <div id="topDiv">
+    Instruction {{currentDate | date}}
+  </div>
+
   <table>
     <tr>
       <th>Block</th>
@@ -25,17 +29,28 @@
 
       <td>{{block?.block_name | titlecase}}</td>
 
-      <td>
+      <td [ngStyle]="{'background': block?.instruction ? 'yellow' : ''}">
         {{block?.instruction ? block?.instruction : '-'}}</td>
 
-      <td>
+      <td [ngStyle]="{'background': block?.actual_start_time ? '#3efa00c7' : 'red'}">
         {{block?.actual_start_time ? block?.actual_start_time : '-'}}</td>
 
-      <td>
+      <td *ngIf="!block?.actual_start_time && !block?.actual_stop_time" [ngStyle]="{'background': 'red'}">
+        {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}
+      </td>
+
+      <td *ngIf="!block?.actual_stop_time && block?.expected_stop_time" [ngStyle]="{'background': 'yellow'}">
+        {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}</td>
+
+      <td *ngIf="block?.actual_stop_time && block?.onTime === true" [ngStyle]="{'background': '#3efa00c7'}">
+        {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td>
+
+      <td *ngIf="block?.actual_stop_time && block?.onTime === false" [ngStyle]="{'background': 'red'}">
         {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td>
 
       <td>
-        <ion-button size="small" fill="clear">View</ion-button>
+        <ion-button size="small" fill="clear" [routerLink]="['/home/instructions/blocktimings/', block?.id]">View
+        </ion-button>
       </td>
 
     </tr>
