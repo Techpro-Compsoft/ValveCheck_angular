@@ -15,8 +15,8 @@ export class OperatorBlocktimingsPage implements OnInit {
   blockId: number;
   valveDetails: object;
   valveTime: number;
-  startTime: string;
-  endTime: string;
+  // startTime: string;
+  // endTime: string;
   latitude: any;
   longitude: any;
   interruptionReasons: Array<object>;
@@ -107,8 +107,8 @@ export class OperatorBlocktimingsPage implements OnInit {
             let time = this.valveDetails['instruction'].split(':');
             this.valveHour = parseInt(time[0]);
             this.valveMins = parseInt(time[1]);
-            this.startTime = this.getDateT(this.valveDetails['instruction_start_time']);
-            this.stopTime = this.getDateT(this.valveDetails['instruction_end_time']);
+            // this.startTime = this.getDateT(this.valveDetails['instruction_start_time']);
+            // this.stopTime = this.getDateT(this.valveDetails['instruction_end_time']);
           }
         }
         else if (response.status === "error") {
@@ -192,13 +192,13 @@ export class OperatorBlocktimingsPage implements OnInit {
         e.value = e.reason,
         e.checked = false
     });
-    this.interruptionReasons.forEach((e: any) => {
-      e.name = e.reason,
-        e.type = 'radio',
-        e.label = e.reason,
-        e.value = e.reason,
-        e.checked = false
-    });
+    // this.interruptionReasons.forEach((e: any) => {
+    //   e.name = e.reason,
+    //     e.type = 'radio',
+    //     e.label = e.reason,
+    //     e.value = e.reason,
+    //     e.checked = false
+    // });
     const alert = await this.alertCtrl.create();
     alert.inputs = this.interruptionReasons;
     alert.header = 'Confirm',

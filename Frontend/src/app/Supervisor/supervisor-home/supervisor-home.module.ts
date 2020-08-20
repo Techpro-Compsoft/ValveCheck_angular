@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { OperatorBlockPageRoutingModule } from './operator-block-routing.module';
+import { SupervisorHomePageRoutingModule } from './supervisor-home-routing.module';
 
-import { OperatorBlockPage } from './operator-block.page';
+import { SupervisorHomePage } from './supervisor-home.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    OperatorBlockPageRoutingModule
+    SupervisorHomePageRoutingModule
   ],
-  declarations: [OperatorBlockPage]
+  declarations: [SupervisorHomePage]
 })
-export class OperatorBlockPageModule {}
+export class SupervisorHomePageModule {}

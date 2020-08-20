@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { OperatorBlockPage } from './operator-block.page';
+import { SupervisorInstructionsPage } from './supervisor-instructions.page';
 
-describe('OperatorBlockPage', () => {
-  let component: OperatorBlockPage;
-  let fixture: ComponentFixture<OperatorBlockPage>;
+describe('SupervisorInstructionsPage', () => {
+  let component: SupervisorInstructionsPage;
+  let fixture: ComponentFixture<SupervisorInstructionsPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OperatorBlockPage ],
+      declarations: [ SupervisorInstructionsPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(OperatorBlockPage);
+    fixture = TestBed.createComponent(SupervisorInstructionsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

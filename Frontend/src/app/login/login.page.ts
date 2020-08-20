@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
               this.nav.navigateRoot('/home');
             }
             else if (response.data.user.role === "2") {
-              this.nav.navigateRoot('/supervisor-dashboard');
+              this.nav.navigateRoot('/supervisor-home');
             }
             else if (response.data.user.role === "3") {
               this.nav.navigateRoot('/operator-dashboard');

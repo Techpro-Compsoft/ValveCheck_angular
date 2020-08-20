@@ -18,6 +18,14 @@ export class SupervisorDashboardPage implements OnInit {
 
   ngOnInit() {
     this.getDashboardDetails();
+    this.getBlocks();
+  }
+
+
+  getBlocks() {
+    this.supervisorService.getBlocksCall({ role: 2 }).subscribe(response => {
+      console.log(response);
+    })
   }
 
   getDashboardDetails() {
@@ -27,6 +35,7 @@ export class SupervisorDashboardPage implements OnInit {
         "user_id": data.id,
         "role": data.role
       }).subscribe(response => {
+        console.log(response);
         if (response.status === 'success') {
           this.farmsList = response.data;
           this.companyId = response.data[0]['company'];
@@ -41,15 +50,15 @@ export class SupervisorDashboardPage implements OnInit {
   }
 
   viewBlocks(id) {
-    this.navCtrl.navigateForward([`/supervisor-dashboard/supervisor-block/${id}`]);
+    this.navCtrl.navigateForward([`supervisor-home/supervisor-dashboard/supervisor-block/${id}`]);
   }
 
   openProfilePage() {
-    this.navCtrl.navigateForward(['/supervisor-dashboard/supervisor-profile'])
+    this.navCtrl.navigateForward(['/supervisor-profile'])
   }
 
   getReport() {
-    this.navCtrl.navigateForward([`/supervisor-dashboard/supervisor-report/${this.companyId}`]);
+    this.navCtrl.navigateForward([`supervisor-home/supervisor-dashboard/supervisor-report/${this.companyId}`]);
   }
 
 }

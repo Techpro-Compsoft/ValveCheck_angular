@@ -13,8 +13,7 @@ export class SupervisorBlocktimingsPage implements OnInit {
 
   blockId: number;
   valveDetails: object;
-  startTime: string;
-  endTime: string
+
 
   constructor(public activatedRoute: ActivatedRoute,
     public supervisorService: SupervisorService,
@@ -31,14 +30,13 @@ export class SupervisorBlocktimingsPage implements OnInit {
       this.supervisorService.getCycleCall({
         "block": this.blockId
       }).subscribe(response => {
+        console.log(response);
         if (response.status === 'success') {
           if (response.data == "") {
             this.base.toastMessage('No data available');
           }
           else {
             this.valveDetails = response.data[0];
-            this.startTime = this.valveDetails['instruction_start_time'];
-            this.endTime = this.valveDetails['instruction_end_time']
           }
         }
         else if (response.status === "error") {
