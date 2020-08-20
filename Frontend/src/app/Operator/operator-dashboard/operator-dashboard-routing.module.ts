@@ -9,10 +9,6 @@ const routes: Routes = [
     component: OperatorDashboardPage
   },
   {
-    path: 'operator-profile',
-    loadChildren: () => import('../operator-profile/operator-profile.module').then(m => m.OperatorProfilePageModule)
-  },
-  {
     path: 'operator-block/:farmId',
     loadChildren: () => import('../operator-block/operator-block.module').then(m => m.OperatorBlockPageModule)
   },
