@@ -33,19 +33,7 @@ export class AdminprofilePage implements OnInit {
   toggleRead() {
     this.isReadOnly = !this.isReadOnly;
   }
-
-  logoutMe() {
-    this.base.deletePlayerID(this.user.id).subscribe(response => {
-      // alert("Deleted player ID : " + response);
-      if (response) {
-        localStorage.removeItem('myToken');
-        localStorage.removeItem('myUser');
-        this.nav.navigateRoot(['/login']);
-        this.base.toastMessage('Logged out successfully');
-      }
-    });
-  }
-
+  
   updateProfile() {
     if (this.profileForm.controls.name.value.length === 0 || this.profileForm.controls.name.value.length > 50) {
       alert('Name length should be between 1-50');

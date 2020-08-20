@@ -19,22 +19,24 @@
       <!-- <span *ngIf="companyDetails?.supervisor">Current Supervisor - {{companyDetails?.supervisor_name}}</span> -->
       <!-- To be managed for multiple -->
 
-
-
       <div>
         <ion-item lines="none">
           <ion-label>{{ modeId === 1 ? 'Select supervisor' : "Select operator"}}</ion-label>
-          <ion-select #val multiple style="margin-right: 10px;">
+          <ion-select #val multiple style="margin-right: 10px;" [disabled]="usersList?.length === 0">
             <ion-select-option *ngFor="let user of usersList" [value]="user.id">{{user?.fullname}}
             </ion-select-option>
           </ion-select>
         </ion-item>
 
-       <div style="text-align: center;">
-        <ion-button *ngIf="usersList?.length > 0" (click)="assignSupervisor(val)" size="small" fill="outline" class="asign">
-          Assign
-        </ion-button>
-       </div>
+        <div style="text-align: center;">
+          <ion-button *ngIf="usersList?.length > 0" (click)="assignSupervisor(val)" size="small" fill="outline"
+            class="asign">
+            Assign
+          </ion-button>
+
+          <ion-label *ngIf="usersList?.length === 0">No more {{ modeId === 1 ? 'supervisors' : "operators"}} available
+            to assign.</ion-label>
+        </div>
 
         <!-- <ion-button *ngIf="supervisorsList?.length > 0 && companyDetails?.supervisor" (click)="changeSupervisor(val.value)">
           Change

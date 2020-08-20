@@ -23,7 +23,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-item>
+  <!-- <ion-item>
     <ion-label>Start time</ion-label>
     <ion-datetime displayFormat="h:mm a" [(ngModel)]="startTime"></ion-datetime>
   </ion-item>
@@ -31,7 +31,7 @@
   <ion-item *ngIf="valveDetails?.instruction">
     <ion-label>Stop time</ion-label>
     <ion-datetime displayFormat="h:mm a" [(ngModel)]="stopTime" readonly></ion-datetime>
-  </ion-item>
+  </ion-item> -->
 
   <!-- <ion-item>
     <ion-label>Stop time</ion-label>
@@ -66,12 +66,14 @@
     </ion-button>
   </div>
 
-  <ion-card *ngIf="valveDetails?.instruction_start_time" style="margin-top: 10px;">
-    <!-- <div style="text-align: center;">
-      <ion-label>Valve Details</ion-label>
-    </div> -->
+  <ion-card style="margin-top: 10px;">
+
     <ion-card-header>
       <ion-card-title>Valve Status -
+
+        <span *ngIf="!valveDetails?.instruction">
+          Instructions not assigned
+        </span>
 
         <span *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time">
           Not started yet

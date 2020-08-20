@@ -52,19 +52,19 @@ export class BlocksPage implements OnInit {
         {
           name: 'name',
           type: 'text',
-          placeholder: 'Block Name',
+          placeholder: 'Block Name *',
           value: value ? value.block_name : ''
         },
         {
           name: 'type',
           type: 'text',
-          placeholder: 'Irrigation type',
+          placeholder: 'Irrigation type *',
           value: value ? value.irrigation : ''
         },
         {
           name: 'hectare',
           type: 'number',
-          placeholder: 'Hectares',
+          placeholder: 'Hectares *',
           value: value ? value.hectares : ''
         },
         {
@@ -78,6 +78,12 @@ export class BlocksPage implements OnInit {
           type: 'number',
           placeholder: 'longitude',
           value: value ? value.longitude : ''
+        },
+        {
+          name: 'lthr',
+          type: 'number',
+          placeholder: 'Lt/hr *',
+          value: value ? value.ltr_hr : ''
         }
       ],
       buttons: [
@@ -99,50 +105,97 @@ export class BlocksPage implements OnInit {
     await alert.present();
   }
 
-  createBlock(data) {
-    try {
-      this.farmService.createBlock({
-        "farm": this.farmID,
-        "block_name": data.name,
-        "hectares": data.hectare,
-        "latitude": data.latitude,
-        "longitude": data.longitude,
-        "irrigation": data.type
-      }).subscribe(response => {
-        if (response.status === "success") {
-          this.base.toastMessage('Block created');
-          this.getBlocksForFarm();
-        }
-        else if (response.status === "error") {
-          alert(response.txt);
-        }
-      });
-    } catch (error) {
-      this.base.toastMessage('Something went wrong');
+  checkValidation(name: string, hect: string, irr: string, ltr: string): boolean {
+    if (name.trim().length === 0) {
+      return false
+    }
+    else if (hect.length === 0) {
+      return false;
+    }
+    else if (irr.length === 0) {
+      return false;
+    }
+    else if (ltr.length === 0) {
+      return false;
+    }
+    else {
+      return true;
     }
   }
 
+  createBlock(data) {
+    if (this.checkValidation(data.name, data.hectare, data.type, data.lthr)) {
+      if (data.name.trim().length > 50) {
+        this.base.toastMessage('Block name should be between 1-50 characters');
+      }
+      else if (data.type.trim().length > 20) {
+        this.base.toastMessage('Irrigation type should be between 1-20 characters');
+      }
+      else {
+        try {
+          this.farmService.createBlock({
+            "farm": this.farmID,
+            "block_name": data.name,
+            "hectares": data.hectare,
+            "latitude": data.latitude,
+            "longitude": data.longitude,
+            "irrigation": data.type,
+            "ltr_hr": parseFloat(data.lthr).toFixed(1)
+          }).subscribe(response => {
+            if (response.status === "success") {
+              this.base.toastMessage('Block created');
+              this.getBlocksForFarm();
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
+          });
+        } catch (error) {
+          this.base.toastMessage('Something went wrong');
+        }
+      }
+    }
+    else {
+      this.base.toastMessage('Please enter required details');
+    }
+
+  }
+
   editBlock(data, id) {
-    try {
-      this.farmService.updateBlock({
-        "id": id,
-        "farm": this.farmID,
-        "block_name": data.name,
-        "hectares": data.hectare,
-        "latitude": data.latitude,
-        "longitude": data.longitude,
-        "irrigation": data.type
-      }).subscribe(response => {
-        if (response.status === "success") {
-          this.base.toastMessage('Block updated');
-          this.getBlocksForFarm();
+    if (this.checkValidation(data.name, data.hectare, data.type, data.lthr)) {
+      if (data.name.trim().length > 50) {
+        this.base.toastMessage('Block name should be between 1-50 characters');
+      }
+      else if (data.type.trim().length > 20) {
+        this.base.toastMessage('Irrigation type should be between 1-20 characters');
+      }
+      else {
+        try {
+          this.farmService.updateBlock({
+            "id": id,
+            "farm": this.farmID,
+            "block_name": data.name,
+            "hectares": data.hectare,
+            "latitude": data.latitude,
+            "longitude": data.longitude,
+            "irrigation": data.type,
+            "ltr_hr": parseFloat(data.lthr).toFixed(1)
+          }).subscribe(response => {
+            if (response.status === "success") {
+              this.base.toastMessage('Block updated');
+              this.getBlocksForFarm();
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
+          });
+        } catch (error) {
+          this.base.toastMessage('Something went wrong');
         }
-        else if (response.status === "error") {
-          alert(response.txt);
-        }
-      });
-    } catch (error) {
-      this.base.toastMessage('Something went wrong');
+      }
+    }
+    else {
+      this.base.toastMessage('Please enter required details');
     }
   }
 

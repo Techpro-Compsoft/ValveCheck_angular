@@ -33,3 +33,9 @@ ion-toolbar{
     ion-tab-button{
     --color-selected: #1f4e79;
     }
+
+    .myToastClass{
+        --background: #1f4e79;
+        --color: white;
+        --width: fit-content;
+    }

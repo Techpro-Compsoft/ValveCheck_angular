@@ -29,6 +29,7 @@ export class FarmoperatorPage implements OnInit {
       this.farmService.farmDetails({ id: this.farmId }).subscribe(response => {
         if (response.status === "success") {
           this.availableUsers = response.data.operator;
+          this.availableUsers.sort((a, b) => (a['fullname'].toLowerCase() > b['fullname'].toLowerCase()) ? 1 : ((b['fullname'].toLowerCase() > a['fullname'].toLowerCase()) ? -1 : 0));
         }
         else if(response.status === "error"){
           alert(response.txt);

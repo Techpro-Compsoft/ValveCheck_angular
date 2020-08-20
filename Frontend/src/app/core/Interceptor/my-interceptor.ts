@@ -46,7 +46,6 @@ export class AppInterceptor implements HttpInterceptor {
 
     async presentLoading() {
         const loading = await this.load.create({
-            cssClass: 'my-custom-class',
             message: 'Please wait...',
             duration: 3000
         });

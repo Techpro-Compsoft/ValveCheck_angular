@@ -8,6 +8,10 @@ const routes: Routes = [
     component: HomePage,
     children: [
       {
+        path: 'instructions',
+        loadChildren: () => import('../../Admin/instructions/instructions.module').then(m => m.InstructionsPageModule)
+      },
+      {
         path: 'companies',
         loadChildren: () => import('../companies/companies.module').then(m => m.CompaniesPageModule)
       },
@@ -21,14 +25,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/home/companies',
+        redirectTo: '/home/instructions',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/home/companies',
+    redirectTo: '/home/instructions',
     pathMatch: 'full'
   }
 ];

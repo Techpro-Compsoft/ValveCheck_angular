@@ -37,6 +37,7 @@ export class AssignfarmPage implements OnInit {
           this.availableUsers = [];
           const data = this.modeId === 1 ? response.data.supervisor : response.data.operator;
           this.availableUsers = data.filter(ar => !this.assignedUsers.find(rm => (rm['id'] === ar['id'])));
+          this.availableUsers.sort((a, b) => (a['fullname'].toLowerCase() > b['fullname'].toLowerCase()) ? 1 : ((b['fullname'].toLowerCase() > a['fullname'].toLowerCase()) ? -1 : 0));
         }
         else if (response.status === "error") {
           alert(response.txt);
@@ -52,6 +53,7 @@ export class AssignfarmPage implements OnInit {
       this.farmService.farmDetails({ id: this.farmId }).subscribe(response => {
         if (response.status === "success") {
           this.assignedUsers = this.modeId === 1 ? response.data.supervisor : response.data.operator;
+          this.assignedUsers.sort((a, b) => (a['fullname'].toLowerCase() > b['fullname'].toLowerCase()) ? 1 : ((b['fullname'].toLowerCase() > a['fullname'].toLowerCase()) ? -1 : 0));
           this.getCompanyDetails();
           this.farmName = response.data.farm.farm_name;
         }

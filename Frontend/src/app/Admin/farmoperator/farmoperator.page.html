@@ -11,13 +11,17 @@
   <div>
     <ion-item>
       <ion-label>Select Operator</ion-label>
-      <ion-select #sl>
+      <ion-select #sl [disabled]="availableUsers?.length === 0">
         <ion-select-option *ngFor="let user of availableUsers" [value]="user.id">{{user?.fullname}}</ion-select-option>
       </ion-select>
     </ion-item>
   </div>
 
   <div style="text-align: center;">
-    <ion-button fill="clear" size="small" (click)="assignOperator(sl)">Assign</ion-button>
+    <ion-button *ngIf="availableUsers?.length > 0" fill="clear" size="small" (click)="assignOperator(sl)">Assign
+    </ion-button>
+
+    <ion-label *ngIf="availableUsers?.length === 0">No more {{ modeId === 1 ? 'supervisors' : "operators"}} available
+      to assign.</ion-label>
   </div>
 </ion-content>

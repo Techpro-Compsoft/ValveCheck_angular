@@ -47,8 +47,9 @@ export class BaseService {
 
   async toastMessage(message: string) {
     const toast = await this.toast.create({
+      cssClass: 'myToastClass',
       message: message.trim(),
-      duration: 2000
+      duration: 3000
     });
     toast.present();
   }

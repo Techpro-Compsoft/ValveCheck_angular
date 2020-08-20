@@ -16,9 +16,9 @@ export class BlocktimingsPage implements OnInit {
   operatorId: number;
   valveDetails: object;
 
-  startTime: Date | string;
-  stopTime: Date | string;
-  endTime: Date | string;
+  // startTime: Date | string;
+  // stopTime: Date | string;
+  // endTime: Date | string;
 
   valveHour: any;
   valveMins: any;
@@ -70,8 +70,8 @@ export class BlocktimingsPage implements OnInit {
             let time = this.valveDetails['instruction'].split(':');
             this.valveHour = parseInt(time[0]);
             this.valveMins = parseInt(time[1]);
-            this.startTime = this.getDateT(this.valveDetails['instruction_start_time']);
-            this.stopTime = this.getDateT(this.valveDetails['instruction_end_time']);
+            // this.startTime = this.getDateT(this.valveDetails['instruction_start_time']);
+            // this.stopTime = this.getDateT(this.valveDetails['instruction_end_time']);
           }
         }
         else if (response.status === "error") {
@@ -83,23 +83,21 @@ export class BlocktimingsPage implements OnInit {
     }
   }
 
-  getDateT(time: string): string {
-    let d = time.split(":").map(e => +e);
-    let b = new Date();
-    return new Date(b.getFullYear(), b.getMonth(), b.getDate(), d[0], d[1]).toISOString();
-  }
+  // getDateT(time: string): string {
+  //   let d = time.split(":").map(e => +e);
+  //   let b = new Date();
+  //   return new Date(b.getFullYear(), b.getMonth(), b.getDate(), d[0], d[1]).toISOString();
+  // }
 
   assignTime() {
-    if ((this.valveHour || this.valveHour === 0) && (this.valveMins || this.valveMins === 0) && this.startTime) {
-      let endTime = new Date(this.startTime);
-      endTime.setHours(endTime.getHours() + this.valveHour);
-      endTime.setMinutes(endTime.getMinutes() + this.valveMins);
+    if ((this.valveHour || this.valveHour === 0) && (this.valveMins || this.valveMins === 0)) {
+      // let endTime = new Date(this.startTime);
+      // endTime.setHours(endTime.getHours() + this.valveHour);
+      // endTime.setMinutes(endTime.getMinutes() + this.valveMins);
       try {
         this.farm.assignHours({
           block: this.blockId,
           time: `${this.valveHour}:${this.valveMins}`,
-          start_time: `${new Date(this.startTime).getHours()}:${new Date(this.startTime).getMinutes()}`,
-          end_time: `${endTime.getHours()}:${endTime.getMinutes()}`,
           operator: this.operatorId
         }).subscribe(response => {
           if (response.status === "success") {
@@ -119,13 +117,13 @@ export class BlocktimingsPage implements OnInit {
     }
   }
 
-  diff_hours(dt2, dt1) {
-    var res = Math.abs(dt1 - dt2) / 1000;
-    var hours = Math.floor(res / 3600) % 24;
-    return hours;
-  }
+  // diff_hours(dt2, dt1) {
+  //   var res = Math.abs(dt1 - dt2) / 1000;
+  //   var hours = Math.floor(res / 3600) % 24;
+  //   return hours;
+  // }
 
-  async presentAlertConfirm(valveTime, st, end) {
+  async presentAlertConfirm() {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
       header: 'Confirm',
@@ -150,16 +148,16 @@ export class BlocktimingsPage implements OnInit {
   }
 
   updateTime() {
-    if ((this.valveHour || this.valveHour === 0) && (this.valveMins || this.valveMins === 0) && this.startTime) {
-      let endTime = new Date(this.startTime);
-      endTime.setHours(endTime.getHours() + this.valveHour);
-      endTime.setMinutes(endTime.getMinutes() + this.valveMins);
+    if ((this.valveHour || this.valveHour === 0) && (this.valveMins || this.valveMins === 0)) {
+      // let endTime = new Date(this.startTime);
+      // endTime.setHours(endTime.getHours() + this.valveHour);
+      // endTime.setMinutes(endTime.getMinutes() + this.valveMins);
       try {
         this.farm.updateHours({
           id: this.valveDetails['id'],
           time: `${this.valveHour}:${this.valveMins}`,
-          start_time: `${new Date(this.startTime).getHours()}:${new Date(this.startTime).getMinutes()}`,
-          end_time: `${endTime.getHours()}:${endTime.getMinutes()}`
+          // start_time: `${new Date(this.startTime).getHours()}:${new Date(this.startTime).getMinutes()}`,
+          // end_time: `${endTime.getHours()}:${endTime.getMinutes()}`
         }).subscribe(response => {
           if (response.status === "success") {
             this.getBlockValveDetails();
@@ -224,13 +222,13 @@ export class BlocktimingsPage implements OnInit {
         e.value = e.reason,
         e.checked = false
     });
-    this.interruptionReasons.forEach((e: any) => {
-      e.name = e.reason,
-        e.type = 'radio',
-        e.label = e.reason,
-        e.value = e.reason,
-        e.checked = false
-    });
+    // this.interruptionReasons.forEach((e: any) => {
+    //   e.name = e.reason,
+    //     e.type = 'radio',
+    //     e.label = e.reason,
+    //     e.value = e.reason,
+    //     e.checked = false
+    // });
     const alert = await this.alertCtrl.create();
     alert.inputs = this.interruptionReasons;
     alert.header = 'Confirm',
@@ -296,6 +294,10 @@ export class BlocktimingsPage implements OnInit {
     } catch (error) {
       this.base.toastMessage('something went wrong');
     }
+  }
+
+  async alertConfirmation(){
+    
   }
 
 }

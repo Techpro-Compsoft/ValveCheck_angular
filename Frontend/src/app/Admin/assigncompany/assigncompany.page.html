@@ -12,7 +12,8 @@
     <ion-item lines="none" class="header">
       <ion-label>Select Company</ion-label>
       <ion-select #val>
-        <ion-select-option *ngFor="let company of companiesList" [value]="company.id">{{company?.company_name}}
+        <ion-select-option *ngFor="let company of companiesList" [value]="company.id"
+          [disabled]="companiesList?.length === 0">{{company?.company_name}}
         </ion-select-option>
       </ion-select>
     </ion-item>
@@ -22,9 +23,7 @@
           Assign
         </ion-button>
 
-        <!-- <ion-button *ngIf="modeType === 1" (click)="openDetails(user.id, 2)" size="small">
-          Change
-        </ion-button> -->
+        <ion-label *ngIf="companiesList?.length === 0">No more companies available.</ion-label>
       </div>
     </ion-card-content>
   </ion-card>

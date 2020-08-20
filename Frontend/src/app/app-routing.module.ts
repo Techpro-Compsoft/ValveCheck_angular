@@ -38,7 +38,11 @@ const routes: Routes = [
   {
     path: 'interruptions',
     loadChildren: () => import('./Admin/interruptions/interruptions.module').then( m => m.InterruptionsPageModule)
+  },  {
+    path: 'instructions',
+    loadChildren: () => import('./Admin/instructions/instructions.module').then( m => m.InstructionsPageModule)
   }
+
 
 ];
 
