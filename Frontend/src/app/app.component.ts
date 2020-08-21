@@ -28,7 +28,7 @@ export class AppComponent {
       if (user && user['role'] === "1") {
         this.nav.navigateRoot('/home');
       } else if (user && user['role'] === "2") {
-        this.nav.navigateRoot('/supervisor-dashboard');
+        this.nav.navigateRoot('/supervisor-home');
       }
       else if (user && user['role'] === "3") {
         this.nav.navigateRoot('/operator-dashboard');
@@ -45,7 +45,7 @@ export class AppComponent {
   backbuttonSubscribeMethod() {
     this.platform.backButton.subscribe(() => {
       if (this.route.url == '/login' || this.route.url == '/home/companies' || this.route.url == '/home/supervisors' || this.route.url == '/home/operators' || this.route.url == "/operator-dashboard" ||
-        this.route.url == "/supervisor-dashboard") {
+        this.route.url == "/supervisor-home/supervisor-dashboard" || this.route.url == '/supervisor-home/supervisor-instructions') {
         navigator['app'].exitApp();
       }
     });

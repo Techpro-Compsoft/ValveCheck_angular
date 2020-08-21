@@ -90,18 +90,27 @@ export class SupervisorReportPage implements OnInit {
 
   columnsWork(data: Array<object>) {
     data.forEach(ele => {
-      ele['Actual Hours'] = '';
-      ele['Deviation'] = '0';
-      if (ele['Interruption']) {
+      if (ele['Actual Stop'] || ele['Interruption Stop']) {
         let initCycleTime = this.calculateTime(ele['Actual Start'], ele['Actual Stop']);
-        let secondCycleTime = this.calculateTime(ele['Resume'], ele['Interruption Stop']);
-        let mins = +initCycleTime.split(':')[1] + +secondCycleTime.split(':')[1];
+        let secondCycleTime = ele['Interruption'] ? this.calculateTime(ele['Resume'], ele['Interruption Stop']) : this.calculateTime("00:00", "00:00");
+        let mins = (60 * +initCycleTime.split(':')[0] + +initCycleTime.split(':')[1]) + (60 * +secondCycleTime.split(':')[0] + +secondCycleTime.split(':')[1]);
         ele['Actual Hours'] = Math.floor(mins / 60) + 'h ' + mins % 60 + 'mins';
         let tempDiff = mins - (+ele['Hours'].split(':')[0] * 60 + +ele['Hours'].split(':')[1]);
-        ele['Deviation'] = tempDiff > 0 ? '+' : '-' + Math.floor(Math.abs(tempDiff) / 60) + 'h ' + Math.abs(tempDiff) % 60 + 'mins';
+        ele['Deviation'] = `${tempDiff > 0 ? '+' : '-'}${Math.floor(Math.abs(tempDiff) / 60)}h ${Math.abs(tempDiff) % 60}mins`;
+        //console.log(ele['Deviation']);
+        // console.log(Math.floor(Math.abs(tempDiff) / 60) + 'h ' + Math.abs(tempDiff) % 60 + 'mins')
+        // if (ele['Interruption']) {
+        //   let initCycleTime = this.calculateTime(ele['Actual Start'], ele['Actual Stop']);
+        //   let secondCycleTime = this.calculateTime(ele['Resume'], ele['Interruption Stop']);
+        //   let mins = +initCycleTime.split(':')[1] + +secondCycleTime.split(':')[1];
+        //   ele['Actual Hours'] = Math.floor(mins / 60) + 'h ' + mins % 60 + 'mins';
+        //   let tempDiff = mins - (+ele['Hours'].split(':')[0] * 60 + +ele['Hours'].split(':')[1]);
+        //   ele['Deviation'] = tempDiff > 0 ? '+' : '-' + Math.floor(Math.abs(tempDiff) / 60) + 'h ' + Math.abs(tempDiff) % 60 + 'mins';
+        // }
       }
     });
   }
+
 
   // columnsWork(data: Array<object>) {
   //   data.forEach(ele => {

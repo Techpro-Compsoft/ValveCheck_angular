@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { OperatorBlockPage } from './operator-block.page';
+import { SupervisorInstructionsPage } from './supervisor-instructions.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: OperatorBlockPage
+    component: SupervisorInstructionsPage
   }
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class OperatorBlockPageRoutingModule { }
+export class SupervisorInstructionsPageRoutingModule {}

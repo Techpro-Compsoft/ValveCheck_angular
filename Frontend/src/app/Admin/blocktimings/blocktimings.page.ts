@@ -296,8 +296,8 @@ export class BlocktimingsPage implements OnInit {
     }
   }
 
-  async alertConfirmation(){
-    
+  async alertConfirmation() {
+
   }
 
 }

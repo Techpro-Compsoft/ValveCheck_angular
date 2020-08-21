@@ -11,10 +11,6 @@ const routes: Routes = [
     loadChildren: () => import('../app/Admin/home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'supervisor-dashboard',
-    loadChildren: () => import('./Supervisor/supervisor-dashboard/supervisor-dashboard.module').then(m => m.SupervisorDashboardPageModule)
-  },
-  {
     path: 'reset-password',
     loadChildren: () => import('./reset-password/reset-password.module').then(m => m.ResetPasswordPageModule)
   },
@@ -37,10 +33,23 @@ const routes: Routes = [
   },
   {
     path: 'interruptions',
-    loadChildren: () => import('./Admin/interruptions/interruptions.module').then( m => m.InterruptionsPageModule)
-  },  {
+    loadChildren: () => import('./Admin/interruptions/interruptions.module').then(m => m.InterruptionsPageModule)
+  },
+  {
     path: 'instructions',
-    loadChildren: () => import('./Admin/instructions/instructions.module').then( m => m.InstructionsPageModule)
+    loadChildren: () => import('./Admin/instructions/instructions.module').then(m => m.InstructionsPageModule)
+  },
+  {
+    path: 'supervisor-profile',
+    loadChildren: () => import('./Supervisor/supervisor-profile/supervisor-profile.module').then(m => m.SupervisorProfilePageModule)
+  },
+  {
+    path: 'supervisor-home',
+    loadChildren: () => import('./Supervisor/supervisor-home/supervisor-home.module').then(m => m.SupervisorHomePageModule)
+  },
+  {
+    path: 'supervisor-blocktimings/:blockId',
+    loadChildren: () => import('./Supervisor/supervisor-blocktimings/supervisor-blocktimings.module').then(m => m.SupervisorBlocktimingsPageModule)
   }
 
 

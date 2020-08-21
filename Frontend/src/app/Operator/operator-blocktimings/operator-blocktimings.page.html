@@ -11,15 +11,7 @@
 
 
 <ion-content>
-  <ion-item>
-    <ion-label>Start time</ion-label>
-    <ion-datetime displayFormat="h:mm a" [(ngModel)]="startTime"></ion-datetime>
-  </ion-item>
 
-  <ion-item>
-    <ion-label>Stop time</ion-label>
-    <ion-datetime displayFormat="h:mm a" [(ngModel)]="stopTime"></ion-datetime>
-  </ion-item>
 
   <div style="text-align: center;margin-top: 10px;">
 
@@ -45,12 +37,42 @@
     </ion-button>
   </div>
 
-  <ion-card *ngIf="valveDetails?.instruction_start_time" style="margin-top: 10px;">
-    <!-- <div style="text-align: center;">
-      <ion-label>Valve Details</ion-label>
-    </div> -->
+  <ion-card style="margin-top: 10px;">
+
     <ion-card-header>
-      <ion-card-title>Valve Details</ion-card-title>
+      <ion-card-title>Valve Status -
+
+        <span *ngIf="!valveDetails?.instruction">
+          Instructions not assigned
+        </span>
+
+        <span *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time">
+          Not started yet
+        </span>
+
+        <span *ngIf="valveDetails?.instruction && valveDetails?.actual_start_time && !valveDetails?.actual_stop_time">
+          In progress
+        </span>
+
+        <span *ngIf="valveDetails?.interruption_reason && !valveDetails?.interruption_resume">
+          On halt
+        </span>
+
+        <span
+          *ngIf="valveDetails?.interruption_reason && valveDetails?.interruption_resume && !valveDetails?.interruption_stop">
+          Resumed, in progress
+        </span>
+
+        <span *ngIf="valveDetails?.interruption_reason && valveDetails?.interruption_stop">
+          Completed
+        </span>
+
+        <span
+          *ngIf="!valveDetails?.interruption_reason && valveDetails?.actual_start_time && valveDetails?.actual_stop_time">
+          Completed
+        </span>
+
+      </ion-card-title>
     </ion-card-header>
 
     <ion-item lines="none">
@@ -81,6 +103,5 @@
       <ion-input type="text" [value]="valveDetails?.interruption_stop ? valveDetails?.interruption_stop : '-'" readonly>
       </ion-input>
     </ion-item>
-
   </ion-card>
 </ion-content>

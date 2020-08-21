@@ -49,7 +49,7 @@ export class SupervisorBlockPage implements OnInit {
   }
 
   viewValves(id) {
-    this.navCtrl.navigateForward([`/supervisor-dashboard/supervisor-blocktimings/${id}`]);
+    this.navCtrl.navigateForward([`/supervisor-blocktimings/${id}`]);
   }
 
   async assignCoordinates(id) {

@@ -1,18 +1,19 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title style="padding:8px;">
-      Dashboard
+      Instructions
     </ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
 
+
     <ion-buttons slot="end">
-      <ion-icon name="power"></ion-icon>
-      <ion-button (click)="logoutAlert()">
-        Logout
+      <ion-button (click)="openProfilePage()">
+        <ion-icon slot="start" name="person-circle-outline"></ion-icon>Profile
       </ion-button>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -54,7 +55,7 @@
         {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td>
 
       <td>
-        <ion-button size="small" fill="clear" (click)="viewValves(block.id, block.latitude, block.longitude)">View
+        <ion-button size="small" fill="clear" (click)="viewValves(block.id)">View
         </ion-button>
       </td>
 

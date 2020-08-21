@@ -9,50 +9,66 @@ import { BaseService } from 'src/app/core/Services/base.service';
   styleUrls: ['./operator-dashboard.page.scss'],
 })
 export class OperatorDashboardPage implements OnInit {
-  farmsList: Array<object>;
   operatorId: any;
+  blocksArray: Array<object>;
+  currentDate: Date;
 
   constructor(public navCtrl: NavController,
     public operatorService: OperatorService,
     public base: BaseService,
-    public alertCtrl: AlertController) { }
+    public alertCtrl: AlertController) {
+    this.currentDate = new Date();
+  }
 
   ngOnInit() {
-    this.getDashboardDetails();
-    this.getOperatorDetails();
   }
 
-  getOperatorDetails() {
-    let operatorData = JSON.parse(localStorage.getItem('myUser'));
-    this.operatorId = operatorData.id;
+  ionViewWillEnter() {
+    this.getBlocks();
   }
 
-  getDashboardDetails() {
-    let data = JSON.parse(localStorage.getItem('myUser'));
+  getBlocks() {
     try {
-      this.operatorService.getFarmDetailsCall({
-        "user_id": data.id,
-        "role": data.role
-      }).subscribe(response => {
+      this.base.getAllBlocks({ role: 3 }).subscribe(response => {
         if (response.status === "success") {
-          this.farmsList = response.data
+          this.blocksArray = response.data;
+          this.blocksArray.forEach(e => {
+            e['expected_stop_time'] = null;
+            if (e['instruction'] && e['actual_start_time']) {
+              const d = new Date();
+              let t = e['actual_start_time'].split(":");
+              let endTime = new Date(d.getFullYear(), d.getMonth(), d.getDate(), parseInt(t[0]), parseInt(t[1]));
+              let instTime = e['instruction'].split(":")
+              endTime.setHours(endTime.getHours() + parseInt(instTime[0]));
+              endTime.setMinutes(endTime.getMinutes() + parseInt(instTime[1]));
+              e['expected_stop_time'] = `${endTime.getHours()}:${endTime.getMinutes()}:00`;
+              if (e['actual_stop_time']) {
+                let actStop = e['actual_stop_time'].split(":");
+                if (endTime.getHours() === parseInt(actStop[0]) && endTime.getMinutes() === parseInt(actStop[1])) {
+                  e['onTime'] = true;
+                }
+                else {
+                  e['onTime'] = false;
+                }
+              }
+            }
+          });
         }
-        else if (response.status === "error") {
-          alert(response.txt);
-        }
-      });
+      })
     } catch (error) {
       this.base.toastMessage('Something went wrong');
     }
   }
 
-  viewBlocks(id) {
-    this.navCtrl.navigateForward([`/operator-dashboard/operator-block/${id}`]);
-  }
-
-
-  openProfilePage() {
-    this.navCtrl.navigateForward(['/operator-dashboard/operator-profile'])
+  viewValves(id, lat, lng) {
+    if (lat == "" && lng == "") {
+      let lat = null;
+      let lng = null;
+      this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}/${lat}/${lng}`]);
+    }
+    else {
+      this.navCtrl.navigateForward([`/operator-dashboard/operator-blocktimings/${id}/${lat}/${lng}`]);
+    }
   }
 
   async logoutAlert() {
@@ -81,7 +97,6 @@ export class OperatorDashboardPage implements OnInit {
 
   logout() {
     this.base.deletePlayerID(this.operatorId).subscribe(response => {
-      // alert("Deleted player ID : " + response);
       if (response) {
         localStorage.removeItem('myToken');
         localStorage.removeItem('myUser');
