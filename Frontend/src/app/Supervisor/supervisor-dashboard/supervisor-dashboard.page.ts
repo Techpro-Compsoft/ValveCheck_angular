@@ -18,14 +18,6 @@ export class SupervisorDashboardPage implements OnInit {
 
   ngOnInit() {
     this.getDashboardDetails();
-    this.getBlocks();
-  }
-
-
-  getBlocks() {
-    this.supervisorService.getBlocksCall({ role: 2 }).subscribe(response => {
-      console.log(response);
-    })
   }
 
   getDashboardDetails() {
@@ -35,7 +27,6 @@ export class SupervisorDashboardPage implements OnInit {
         "user_id": data.id,
         "role": data.role
       }).subscribe(response => {
-        console.log(response);
         if (response.status === 'success') {
           this.farmsList = response.data;
           this.companyId = response.data[0]['company'];

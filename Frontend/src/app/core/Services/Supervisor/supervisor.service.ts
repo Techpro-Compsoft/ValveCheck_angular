@@ -50,9 +50,6 @@ export class SupervisorService {
     return this.http.get(`${environment.base}/getProfile`);
   }
 
-  getBlocksCall(data): Observable<any> {
-    return this.http.post(`${environment.base}/getBlocksTable`, data);
-  }
 
 
 
