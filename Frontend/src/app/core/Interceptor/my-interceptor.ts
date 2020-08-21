@@ -47,7 +47,7 @@ export class AppInterceptor implements HttpInterceptor {
     async presentLoading() {
         const loading = await this.load.create({
             message: 'Please wait...',
-            duration: 3000
+            duration: 4000
         });
         await loading.present();
     }

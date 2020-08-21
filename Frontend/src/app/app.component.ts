@@ -95,7 +95,7 @@ export class AppComponent {
         // alert('in admin');
         try {
           // this.nav.navigateForward([`/home/companies/farms/${notificationData['farm_id']}/blocks/${notificationData['block_id']}/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
-          this.nav.navigateForward([`/home/instructions/blocktimings/${notificationData['block_id']}`]);
+          this.nav.navigateForward([`/home/instructions/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
         } catch (error) {
           // alert(JSON.stringify(error));
         }

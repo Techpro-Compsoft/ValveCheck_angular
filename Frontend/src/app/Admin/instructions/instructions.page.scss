@@ -8,6 +8,10 @@
   height: 40px;
   border: 1px solid;
   padding: 10px;
+
+  ion-label{
+    font-weight: 600;
+  }
 }
 
 table{
@@ -43,4 +47,22 @@ table th {
   top: 40px;
   border-collapse: collapse;
   z-index: 999999;
+}
+
+table tr {
+   
+  .danger{
+    background: red;
+    padding: 5px;
+  }
+
+  .success{
+    background: #3efa00c7;
+    padding: 5px;
+  }
+
+  .progress{
+    background: yellow;
+    padding: 5px;
+  }
 }
