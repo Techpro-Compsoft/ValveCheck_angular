@@ -30,7 +30,6 @@ export class SupervisorBlocktimingsPage implements OnInit {
       this.supervisorService.getCycleCall({
         "block": this.blockId
       }).subscribe(response => {
-        console.log(response);
         if (response.status === 'success') {
           if (response.data == "") {
             this.base.toastMessage('No data available');

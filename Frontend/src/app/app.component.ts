@@ -103,7 +103,7 @@ export class AppComponent {
       else if (user && user['role'] === '2') {
         // alert('in sup');
         try {
-          this.nav.navigateForward([`/supervisor-dashboard/supervisor-blocktimings/${notificationData['block_id']}`]);
+          this.nav.navigateForward([`/supervisor-blocktimings/${notificationData['block_id']}`]);
         } catch (error) {
           // alert(JSON.stringify(error));
         }

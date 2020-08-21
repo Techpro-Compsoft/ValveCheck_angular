@@ -1,32 +1,3 @@
-table{
-    width: 100%;
-    text-align: center;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-}
-
-table td, table th {
-    border: 1px solid #ddd;
-    padding: 8px;
-
-    ion-button{
-      background: #1f4e79;
-      color:white;
-    }
-}
-
-table tr:nth-child(even){background-color: #f2f2f2;}
-
-table tr:hover {background-color: #ddd;}
-
-table th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #8080808c;
-  color: black;
-}
-
 #topDiv{
   text-align: center;
   position: sticky;
@@ -37,4 +8,61 @@ table th {
   height: 40px;
   border: 1px solid;
   padding: 10px;
+
+  ion-label{
+    font-weight: 600;
+  }
+}
+
+table{
+  width: 100%;
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+}
+
+table td, table th {
+  border: 1px solid #000000;
+  padding: 8px;
+
+  ion-button{
+    background: #1f4e79;
+    color:white;
+  }
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+  border: none;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #808080;
+  color: black;
+  border-left: 1px solid #000000;
+  position: sticky;
+  top: 40px;
+  border-collapse: collapse;
+  z-index: 999999;
+}
+
+table tr {
+   
+  .danger{
+    background: red;
+    padding: 5px;
+  }
+
+  .success{
+    background: #3efa00c7;
+    padding: 5px;
+  }
+
+  .progress{
+    background: yellow;
+    padding: 5px;
+  }
 }
