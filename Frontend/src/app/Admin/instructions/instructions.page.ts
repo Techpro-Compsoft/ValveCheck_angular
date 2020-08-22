@@ -35,47 +35,51 @@ export class InstructionsPage implements OnInit {
   }
 
   loadData(event?) {
-    if (this.endIndex > this.arr2.length) {
-      this.endIndex = this.arr2.length;
-    }
-    if (this.startIndex != this.endIndex) {
-      for (let i = this.startIndex; i < this.endIndex; i++) {
-        if (this.arr2[i]) {
-          this.arr2[i]['expected_stop_time'] = null;
-          if (this.arr2[i]['instruction'] && this.arr2[i]['actual_start_time']) {
-            const d = new Date();
-            let t = this.arr2[i]['actual_start_time'].split(":");
-            let endTime = new Date(d.getFullYear(), d.getMonth(), d.getDate(), parseInt(t[0]), parseInt(t[1]));
-            let instTime = this.arr2[i]['instruction'].split(":")
-            endTime.setHours(endTime.getHours() + parseInt(instTime[0]));
-            endTime.setMinutes(endTime.getMinutes() + parseInt(instTime[1]));
-            this.arr2[i]['expected_stop_time'] = `${endTime.getHours()}:${endTime.getMinutes()}:00`;
-            if (this.arr2[i]['actual_stop_time']) {
-              let actStop = this.arr2[i]['actual_stop_time'].split(":");
-              if (endTime.getHours() === parseInt(actStop[0]) && endTime.getMinutes() === parseInt(actStop[1])) {
-                this.arr2[i]['onTime'] = true;
-              }
-              else {
-                this.arr2[i]['onTime'] = false;
+    try {
+      if (this.endIndex > this.arr2.length) {
+        this.endIndex = this.arr2.length;
+      }
+      if (this.startIndex != this.endIndex) {
+        for (let i = this.startIndex; i < this.endIndex; i++) {
+          if (this.arr2[i]) {
+            this.arr2[i]['expected_stop_time'] = null;
+            if (this.arr2[i]['instruction'] && this.arr2[i]['actual_start_time']) {
+              const d = new Date();
+              let t = this.arr2[i]['actual_start_time'].split(":");
+              let endTime = new Date(d.getFullYear(), d.getMonth(), d.getDate(), parseInt(t[0]), parseInt(t[1]));
+              let instTime = this.arr2[i]['instruction'].split(":")
+              endTime.setHours(endTime.getHours() + parseInt(instTime[0]));
+              endTime.setMinutes(endTime.getMinutes() + parseInt(instTime[1]));
+              this.arr2[i]['expected_stop_time'] = `${endTime.getHours()}:${endTime.getMinutes()}`;
+              if (this.arr2[i]['actual_stop_time']) {
+                let actStop = this.arr2[i]['actual_stop_time'].split(":");
+                if (endTime.getHours() === parseInt(actStop[0]) && endTime.getMinutes() === parseInt(actStop[1])) {
+                  this.arr2[i]['onTime'] = true;
+                }
+                else {
+                  this.arr2[i]['onTime'] = false;
+                }
               }
             }
+            this.blocksArray.push(this.arr2[i]);
           }
-          this.blocksArray.push(this.arr2[i]);
+        }
+        this.startIndex = this.endIndex;
+        if (this.endIndex + this.itemCount > this.arr2.length) {
+          this.endIndex = this.endIndex + this.arr2.length - this.endIndex;
+        }
+        else {
+          this.endIndex = this.endIndex + this.itemCount;
+        }
+        if (event) {
+          event.target.complete();
         }
       }
-      this.startIndex = this.endIndex;
-      if (this.endIndex + this.itemCount > this.arr2.length) {
-        this.endIndex = this.endIndex + this.arr2.length - this.endIndex;
-      }
       else {
-        this.endIndex = this.endIndex + this.itemCount;
+        this.infinteLoad = false;
       }
-      if (event) {
-        event.target.complete();
-      }
-    }
-    else {
-      this.infinteLoad = false;
+    } catch (error) {
+      alert('something went wrong while loading data');
     }
   }
 

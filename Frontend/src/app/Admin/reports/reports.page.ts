@@ -90,23 +90,13 @@ export class ReportsPage implements OnInit {
 
   columnsWork(data: Array<object>) {
     data.forEach(ele => {
-      if(ele['Actual Stop'] || ele['Interruption Stop']){
-      let initCycleTime = this.calculateTime(ele['Actual Start'], ele['Actual Stop']);
-      let secondCycleTime = ele['Interruption'] ? this.calculateTime(ele['Resume'], ele['Interruption Stop']) : this.calculateTime("00:00", "00:00");
-      let mins = (60 * +initCycleTime.split(':')[0] + +initCycleTime.split(':')[1]) + (60 * +secondCycleTime.split(':')[0] + +secondCycleTime.split(':')[1]);
-      ele['Actual Hours'] = Math.floor(mins / 60) + 'h ' + mins % 60 + 'mins';
-      let tempDiff = mins - (+ele['Hours'].split(':')[0] * 60 + +ele['Hours'].split(':')[1]);
-      ele['Deviation'] = `${tempDiff > 0 ? '+' : '-'}${Math.floor(Math.abs(tempDiff) / 60)}h ${Math.abs(tempDiff) % 60}mins`;
-      //console.log(ele['Deviation']);
-      // console.log(Math.floor(Math.abs(tempDiff) / 60) + 'h ' + Math.abs(tempDiff) % 60 + 'mins')
-      // if (ele['Interruption']) {
-      //   let initCycleTime = this.calculateTime(ele['Actual Start'], ele['Actual Stop']);
-      //   let secondCycleTime = this.calculateTime(ele['Resume'], ele['Interruption Stop']);
-      //   let mins = +initCycleTime.split(':')[1] + +secondCycleTime.split(':')[1];
-      //   ele['Actual Hours'] = Math.floor(mins / 60) + 'h ' + mins % 60 + 'mins';
-      //   let tempDiff = mins - (+ele['Hours'].split(':')[0] * 60 + +ele['Hours'].split(':')[1]);
-      //   ele['Deviation'] = tempDiff > 0 ? '+' : '-' + Math.floor(Math.abs(tempDiff) / 60) + 'h ' + Math.abs(tempDiff) % 60 + 'mins';
-      // }
+      if (ele['Stop'] || ele['Interruption Stop']) {
+        let initCycleTime = this.calculateTime(ele['Start'], ele['Stop']);
+        let secondCycleTime = ele['Interruption'] && ele['Interruption Stop'] ? this.calculateTime(ele['Resume'], ele['Interruption Stop']) : this.calculateTime("00:00", "00:00");
+        let mins = (60 * +initCycleTime.split(':')[0] + +initCycleTime.split(':')[1]) + (60 * +secondCycleTime.split(':')[0] + +secondCycleTime.split(':')[1]);
+        ele['Actual Hours'] = Math.floor(mins / 60) + 'h ' + mins % 60 + 'm';
+        let tempDiff = mins - (+ele['Hours'].split(':')[0] * 60 + +ele['Hours'].split(':')[1]);
+        ele['Deviation'] = `${tempDiff > 0 ? '+' : '-'}${Math.floor(Math.abs(tempDiff) / 60)}h ${Math.abs(tempDiff) % 60}m`;
       }
     });
   }
@@ -129,6 +119,7 @@ export class ReportsPage implements OnInit {
   }
 
   exportCSV(header, csvData) {
+    console.log('in export');
     let csv = this.papa.unparse({
       fields: header,
       data: csvData

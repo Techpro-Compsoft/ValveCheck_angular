@@ -27,41 +27,47 @@
         <th>Action</th>
       </tr>
       <tr *ngFor="let block of blocksArray; trackBy: testFn">
-  
+
         <td>{{block?.block_name | titlecase}}</td>
-  
+
         <td>
           <div *ngIf="!block?.instruction">-</div>
-  
+
           <div *ngIf="block?.instruction" class="progress">
             {{block?.instruction}}
           </div>
         </td>
-  
+
         <td>
           <div *ngIf="!block?.actual_start_time" class="danger">-</div>
-  
+
           <div *ngIf="block?.actual_start_time" class="success">
             {{block?.actual_start_time}}
           </div>
         </td>
-  
+
         <td>
-  
+
           <div *ngIf="!block?.actual_start_time && !block?.actual_stop_time" class="danger">-</div>
-  
+
           <div *ngIf="block?.actual_start_time && !block?.actual_stop_time" class="progress">
             {{block?.expected_stop_time}}
           </div>
-  
-          <div *ngIf="block?.actual_start_time && block?.actual_stop_time && block?.onTime" class="success">
+
+          <div *ngIf="block?.actual_start_time && block?.actual_stop_time && block?.onTime && !block?.interruption_stop"
+            class="success">
             {{block?.actual_stop_time}}
           </div>
-  
-          <div *ngIf="block?.actual_start_time && block?.actual_stop_time && !block?.onTime" class="danger">
+
+          <div
+            *ngIf="block?.actual_start_time && block?.actual_stop_time && !block?.onTime && !block?.interruption_stop"
+            class="danger">
             {{block?.actual_stop_time}}
           </div>
-  
+
+          <div *ngIf="block?.actual_stop_time && block?.interruption_reason && block?.interruption_stop" class="danger">
+            {{block?.interruption_stop}}
+          </div>
           <!--
           <div *ngIf="block?.actual_start_time && !block?.actual_stop_time" [ngStyle]="{'background': 'yellow'}">
             {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}
@@ -71,7 +77,7 @@
             {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}
           </div> -->
         </td>
-  
+
         <!-- <td [ngStyle]="{'background': block?.actual_start_time ? '#3efa00c7' : 'red'}">
           {{block?.actual_start_time ? block?.actual_start_time : '-'}}</td>
   
@@ -87,21 +93,21 @@
   
         <td *ngIf="block?.actual_stop_time && block?.onTime === false" [ngStyle]="{'background': 'red'}">
           {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td> -->
-  
+
         <td>
           <div *ngIf="block?.interruption_reason" class="progress">
             {{block?.interruption_reason}}
           </div>
-  
+
           <div *ngIf="!block?.interruption_reason">- </div>
         </td>
-  
+
         <td>
           <ion-button [disabled]="!block?.operator" size="small" fill="clear"
             [routerLink]="['/home/instructions/blocktimings/', block?.id, block?.operator]">View
           </ion-button>
         </td>
-  
+
       </tr>
     </table>
   </div>

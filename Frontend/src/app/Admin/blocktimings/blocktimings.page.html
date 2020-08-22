@@ -104,7 +104,7 @@
       </ion-card-title>
     </ion-card-header>
 
-    <ion-item lines="none">
+    <!-- <ion-item lines="none">
       <ion-label>Started at:</ion-label>
       <ion-input type="text" [value]="valveDetails?.actual_start_time ? valveDetails?.actual_start_time : '-'" readonly>
       </ion-input>
@@ -117,7 +117,8 @@
 
     <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">
       <ion-label>Interruption Reason:</ion-label>
-      <ion-input type="text" readonly [value]="valveDetails?.interruption_reason | titlecase"></ion-input>
+      <ion-input type="text" readonly value="Heavy RainHeavy Rain Heavy RainHeavy RainHeavy Rain Heavy Rain Heavy Rain">
+      </ion-input>
     </ion-item>
 
     <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">
@@ -131,6 +132,64 @@
       <ion-label>Stopped at:</ion-label>
       <ion-input type="text" [value]="valveDetails?.interruption_stop ? valveDetails?.interruption_stop : '-'" readonly>
       </ion-input>
-    </ion-item>
+    </ion-item> -->
+
+    <table>
+      <tr>
+        <td>
+          <ion-label>Started at:</ion-label>
+        </td>
+        <td>
+          <ion-input type="text" [value]="valveDetails?.actual_start_time ? valveDetails?.actual_start_time : '-'"
+            readonly>
+          </ion-input>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <ion-label>Stopped at:</ion-label>
+        </td>
+        <td>
+          <ion-input type="text" [value]="valveDetails?.actual_stop_time ? valveDetails?.actual_stop_time : '-'"
+            readonly>
+          </ion-input>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <ion-label>Interruption Reason:</ion-label>
+        </td>
+        <td>
+          <!-- <ion-input type="text" readonly
+            value="Heavy RainHeavy Rain Heavy RainHeavy RainHeavy Rain Heavy Rain Heavy Rain">
+          </ion-input> -->
+          <p>{{valveDetails?.interruption_reason | titlecase}}
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <ion-label>Resumed at:</ion-label>
+        </td>
+        <td>
+          <ion-input type="text" [value]="valveDetails?.interruption_resume ? valveDetails?.interruption_resume : '-'"
+            readonly>
+          </ion-input>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <ion-label>Stopped at:</ion-label>
+        </td>
+        <td>
+          <ion-input type="text" [value]="valveDetails?.interruption_stop ? valveDetails?.interruption_stop : '-'"
+            readonly></ion-input>
+        </td>
+      </tr>
+    </table>
   </ion-card>
 </ion-content>
