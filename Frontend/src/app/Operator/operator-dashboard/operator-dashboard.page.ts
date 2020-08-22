@@ -90,7 +90,6 @@ export class OperatorDashboardPage implements OnInit {
   getBlocks() {
     try {
       this.base.getAllBlocks({ role: 3 }).subscribe(response => {
-        console.log(response);
         if (response.status === "success" && response.data.length > 0) {
           this.infinteLoad = true;
           this.zone.run(() => {

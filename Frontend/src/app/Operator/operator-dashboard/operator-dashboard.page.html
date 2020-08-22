@@ -20,89 +20,96 @@
 
   <div id="topDiv">
     <ion-label>Instruction {{currentDate | date}}</ion-label>
-    <!-- <ion-button style="float: right;" size="small">
-      <ion-icon name="refresh" slot="icon-only"></ion-icon>
-    </ion-button> -->
   </div>
+  <div id="tblDiv">
+    <table>
+      <tr>
+        <th>Block</th>
+        <th>Hours</th>
+        <th>Open</th>
+        <th>Close</th>
+        <th>Interruption</th>
+        <th>Action</th>
+      </tr>
+      <tr *ngFor="let block of blocksArray; trackBy: testFn">
 
-  <table>
-    <tr>
-      <th>Block</th>
-      <th>Hours</th>
-      <th>Open</th>
-      <th>Close</th>
-      <th>Action</th>
-    </tr>
-    <tr *ngFor="let block of blocksArray; trackBy: testFn">
+        <td>{{block?.block_name | titlecase}}</td>
 
-      <td>{{block?.block_name | titlecase}}</td>
+        <td>
+          <div *ngIf="!block?.instruction">-</div>
 
-      <td>
-        <div *ngIf="!block?.instruction">-</div>
+          <div *ngIf="block?.instruction" class="progress">
+            {{block?.instruction}}
+          </div>
+        </td>
 
-        <div *ngIf="block?.instruction" class="progress">
-          {{block?.instruction}}
-        </div>
-      </td>
+        <td>
+          <div *ngIf="!block?.actual_start_time" class="danger">-</div>
 
-      <td>
-        <div *ngIf="!block?.actual_start_time" class="danger">-</div>
+          <div *ngIf="block?.actual_start_time" class="success">
+            {{block?.actual_start_time}}
+          </div>
+        </td>
 
-        <div *ngIf="block?.actual_start_time" class="success">
-          {{block?.actual_start_time}}
-        </div>
-      </td>
+        <td>
 
-      <td>
+          <div *ngIf="!block?.actual_start_time && !block?.actual_stop_time" class="danger">-</div>
 
-        <div *ngIf="!block?.actual_start_time && !block?.actual_stop_time" class="danger">-</div>
+          <div *ngIf="block?.actual_start_time && !block?.actual_stop_time" class="progress">
+            {{block?.expected_stop_time}}
+          </div>
 
-        <div *ngIf="block?.actual_start_time && !block?.actual_stop_time" class="progress">
-          {{block?.expected_stop_time}}
-        </div>
+          <div *ngIf="block?.actual_start_time && block?.actual_stop_time && block?.onTime" class="success">
+            {{block?.actual_stop_time}}
+          </div>
 
-        <div *ngIf="block?.actual_start_time && block?.actual_stop_time && block?.onTime" class="success">
-          {{block?.actual_stop_time}}
-        </div>
+          <div *ngIf="block?.actual_start_time && block?.actual_stop_time && !block?.onTime" class="danger">
+            {{block?.actual_stop_time}}
+          </div>
 
-        <div *ngIf="block?.actual_start_time && block?.actual_stop_time && !block?.onTime" class="danger">
-          {{block?.actual_stop_time}}
-        </div>
+          <!--
+          <div *ngIf="block?.actual_start_time && !block?.actual_stop_time" [ngStyle]="{'background': 'yellow'}">
+            {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}
+          </div>
+  
+          <div *ngIf="!block?.actual_start_time" [ngStyle]="{'background': 'red', 'padding': '5px'}">
+            {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}
+          </div> -->
+        </td>
 
-        <!--
-        <div *ngIf="block?.actual_start_time && !block?.actual_stop_time" [ngStyle]="{'background': 'yellow'}">
-          {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}
-        </div>
+        <!-- <td [ngStyle]="{'background': block?.actual_start_time ? '#3efa00c7' : 'red'}">
+          {{block?.actual_start_time ? block?.actual_start_time : '-'}}</td>
+  
+        <td *ngIf="!block?.actual_start_time && !block?.actual_stop_time" [ngStyle]="{'background': 'red'}">
+          {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}
+        </td>
+  
+        <td *ngIf="!block?.actual_stop_time && block?.expected_stop_time" [ngStyle]="{'background': 'yellow'}">
+          {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}</td>
+  
+        <td *ngIf="block?.actual_stop_time && block?.onTime === true" [ngStyle]="{'background': '#3efa00c7'}">
+          {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td>
+  
+        <td *ngIf="block?.actual_stop_time && block?.onTime === false" [ngStyle]="{'background': 'red'}">
+          {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td> -->
 
-        <div *ngIf="!block?.actual_start_time" [ngStyle]="{'background': 'red', 'padding': '5px'}">
-          {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}
-        </div> -->
-      </td>
+        <td>
+          <div *ngIf="block?.interruption_reason" class="progress">
+            {{block?.interruption_reason}}
+          </div>
 
-      <!-- <td [ngStyle]="{'background': block?.actual_start_time ? '#3efa00c7' : 'red'}">
-        {{block?.actual_start_time ? block?.actual_start_time : '-'}}</td>
+          <div *ngIf="!block?.interruption_reason">- </div>
+        </td>
 
-      <td *ngIf="!block?.actual_start_time && !block?.actual_stop_time" [ngStyle]="{'background': 'red'}">
-        {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}
-      </td>
+        <td>
+          <ion-button [disabled]="!block?.operator" size="small" fill="clear"
+            (click)="viewValves(block.id, block.latitude, block.longitude)">View
+          </ion-button>
+        </td>
 
-      <td *ngIf="!block?.actual_stop_time && block?.expected_stop_time" [ngStyle]="{'background': 'yellow'}">
-        {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}</td>
-
-      <td *ngIf="block?.actual_stop_time && block?.onTime === true" [ngStyle]="{'background': '#3efa00c7'}">
-        {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td>
-
-      <td *ngIf="block?.actual_stop_time && block?.onTime === false" [ngStyle]="{'background': 'red'}">
-        {{block?.actual_stop_time ? block?.actual_stop_time : '-'}}</td> -->
-
-      <td>
-        <ion-button [disabled]="!block?.operator" size="small" fill="clear"
-          (click)="viewValves(block.id, block.latitude, block.longitude)">View
-        </ion-button>
-      </td>
-
-    </tr>
-  </table>
+      </tr>
+    </table>
+  </div>
 
   <ion-infinite-scroll *ngIf="infinteLoad" (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">

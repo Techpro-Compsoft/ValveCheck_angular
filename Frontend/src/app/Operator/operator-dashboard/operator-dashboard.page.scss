@@ -14,14 +14,18 @@
   }
 }
 
-table{
+#tblDiv{
+  overflow-x: auto;
+}
+
+#tblDiv table{
   width: 100%;
   text-align: center;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
 }
 
-table td, table th {
+#tblDiv table td, table th {
   border: 1px solid #000000;
   padding: 8px;
 
@@ -31,11 +35,11 @@ table td, table th {
   }
 }
 
-table tr:nth-child(even){background-color: #f2f2f2;}
+#tblDiv table tr:nth-child(even){background-color: #f2f2f2;}
 
-table tr:hover {background-color: #ddd;}
+#tblDiv table tr:hover {background-color: #ddd;}
 
-table th {
+#tblDiv table th {
   border: none;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -44,12 +48,12 @@ table th {
   color: black;
   border-left: 1px solid #000000;
   position: sticky;
-  top: 40px;
+  top: 0px;
   border-collapse: collapse;
   z-index: 999999;
 }
 
-table tr {
+#tblDiv table tr {
    
   .danger{
     background: red;
