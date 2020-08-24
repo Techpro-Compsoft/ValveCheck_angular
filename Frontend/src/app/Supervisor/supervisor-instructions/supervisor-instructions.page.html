@@ -60,14 +60,20 @@
             {{block?.expected_stop_time}}
           </div>
 
-          <div *ngIf="block?.actual_start_time && block?.actual_stop_time && block?.onTime" class="success">
+          <div *ngIf="block?.actual_start_time && block?.actual_stop_time && block?.onTime && !block?.interruption_stop"
+            class="success">
             {{block?.actual_stop_time}}
           </div>
 
-          <div *ngIf="block?.actual_start_time && block?.actual_stop_time && !block?.onTime" class="danger">
+          <div
+            *ngIf="block?.actual_start_time && block?.actual_stop_time && !block?.onTime && !block?.interruption_stop"
+            class="danger">
             {{block?.actual_stop_time}}
           </div>
 
+          <div *ngIf="block?.actual_stop_time && block?.interruption_reason && block?.interruption_stop" class="danger">
+            {{block?.interruption_stop}}
+          </div>
           <!--
           <div *ngIf="block?.actual_start_time && !block?.actual_stop_time" [ngStyle]="{'background': 'yellow'}">
             {{block?.expected_stop_time ? block?.expected_stop_time : '-'}}

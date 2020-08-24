@@ -30,6 +30,7 @@ export class LoginPage implements OnInit {
       try {
         this.base.login(this.loginForm.value).subscribe(response => {
           if (response.status === "success") {
+            response.data.user.companyId = response.data.company.id;
             this.event.publish('ULS', '1Up')
             this.base.toastMessage('Login successful');
             localStorage.setItem('myToken', response.data.token);
