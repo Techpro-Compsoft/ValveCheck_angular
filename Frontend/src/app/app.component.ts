@@ -26,12 +26,15 @@ export class AppComponent {
     const user = JSON.parse(localStorage.getItem('myUser'));
     if (user) {
       if (user && user['role'] === "1") {
-        this.nav.navigateRoot('/home');
+        this.nav.navigateRoot('/admin-home');
       } else if (user && user['role'] === "2") {
         this.nav.navigateRoot('/supervisor-home');
       }
       else if (user && user['role'] === "3") {
         this.nav.navigateRoot('/operator-dashboard');
+      }
+      else if (user && user['role'] === "4") {
+        this.nav.navigateRoot('/home');
       }
       if (this.platform.is('cordova')) {
         this.push_Notification_Init(false);

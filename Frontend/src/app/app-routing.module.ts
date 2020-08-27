@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('../app/Admin/home/home.module').then(m => m.HomePageModule)
+    loadChildren: () => import('../app/Company Pages/home/home.module').then(m => m.HomePageModule)
   },
   {
     path: 'reset-password',
@@ -25,7 +25,7 @@ const routes: Routes = [
   },
   {
     path: 'adminprofile',
-    loadChildren: () => import('./Admin/adminprofile/adminprofile.module').then(m => m.AdminprofilePageModule)
+    loadChildren: () => import('./Admin Pages/adminprofile/adminprofile.module').then(m => m.AdminprofilePageModule)
   },
   {
     path: 'supervisor-report',
@@ -33,11 +33,11 @@ const routes: Routes = [
   },
   {
     path: 'interruptions',
-    loadChildren: () => import('./Admin/interruptions/interruptions.module').then(m => m.InterruptionsPageModule)
+    loadChildren: () => import('./Company Pages/interruptions/interruptions.module').then(m => m.InterruptionsPageModule)
   },
   {
     path: 'instructions',
-    loadChildren: () => import('./Admin/instructions/instructions.module').then(m => m.InstructionsPageModule)
+    loadChildren: () => import('./Company Pages/instructions/instructions.module').then(m => m.InstructionsPageModule)
   },
   {
     path: 'supervisor-profile',
@@ -50,9 +50,11 @@ const routes: Routes = [
   {
     path: 'supervisor-blocktimings/:blockId',
     loadChildren: () => import('./Supervisor/supervisor-blocktimings/supervisor-blocktimings.module').then(m => m.SupervisorBlocktimingsPageModule)
+  },
+  {
+    path: 'admin-home',
+    loadChildren: () => import('./Admin Pages/companies/companies.module').then(m => m.CompaniesPageModule)
   }
-
-
 ];
 
 @NgModule({

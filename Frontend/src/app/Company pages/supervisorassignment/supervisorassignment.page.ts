@@ -63,7 +63,7 @@ export class SupervisorassignmentPage implements OnInit {
 
   assignSupervisor(vl) {
     try {
-      this.supService.assignOperator({
+      this.supService.assignRole({
         "company": this.compId,
         "user_id": vl.value,
         "role": this.modeId === 1 ? 2 : 3

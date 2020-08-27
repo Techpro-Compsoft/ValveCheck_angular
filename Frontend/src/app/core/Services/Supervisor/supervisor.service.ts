@@ -14,7 +14,7 @@ export class SupervisorService {
     return this.http.post(`${environment.base}/getEmptyUsersCompany`, data);
   }
 
-  assignOperator(data): Observable<any> {
+  assignRole(data): Observable<any> {
     return this.http.post(`${environment.base}/assignCompany`, data);
   }
 

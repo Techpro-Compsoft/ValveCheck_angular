@@ -22,7 +22,7 @@ export class BlocksPage implements OnInit {
 
   ngOnInit() {
     this.farmID = +this.activatedRoute.snapshot.paramMap.get('selectedId');
-    this.companyId = +this.activatedRoute.snapshot.paramMap.get('compId');
+    // this.companyId = +this.activatedRoute.snapshot.paramMap.get('compId');
   }
 
   ionViewWillEnter() {
@@ -135,11 +135,11 @@ export class BlocksPage implements OnInit {
         try {
           this.farmService.createBlock({
             "farm": this.farmID,
-            "block_name": data.name,
-            "hectares": data.hectare,
-            "latitude": data.latitude,
-            "longitude": data.longitude,
-            "irrigation": data.type,
+            "block_name": data.name.trim().replace(/\s\s+/g, ' '),
+            "hectares": data.hectare.trim().replace(/\s\s+/g, ''),
+            "latitude": data.latitude.trim().replace(/\s\s+/g, ''),
+            "longitude": data.longitude.trim().replace(/\s\s+/g, ''),
+            "irrigation": data.type.trim().replace(/\s\s+/g, ' '),
             "ltr_hr": parseFloat(data.lthr).toFixed(1)
           }).subscribe(response => {
             if (response.status === "success") {
@@ -174,11 +174,11 @@ export class BlocksPage implements OnInit {
           this.farmService.updateBlock({
             "id": id,
             "farm": this.farmID,
-            "block_name": data.name,
-            "hectares": data.hectare,
-            "latitude": data.latitude,
-            "longitude": data.longitude,
-            "irrigation": data.type,
+            "block_name": data.name.trim().replace(/\s\s+/g, ' '),
+            "hectares": data.hectare.trim().replace(/\s\s+/g, ''),
+            "latitude": data.latitude.trim().replace(/\s\s+/g, ''),
+            "longitude": data.longitude.trim().replace(/\s\s+/g, ''),
+            "irrigation": data.type.trim().replace(/\s\s+/g, ' '),
             "ltr_hr": parseFloat(data.lthr).toFixed(1)
           }).subscribe(response => {
             if (response.status === "success") {

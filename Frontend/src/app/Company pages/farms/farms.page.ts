@@ -21,8 +21,13 @@ export class FarmsPage implements OnInit {
     private base : BaseService) { }
 
   ngOnInit() {
-    this.companyId = +this.activatedRoute.snapshot.paramMap.get('selectedId');
-    this.getCompanyFarms();
+    const user = JSON.parse(localStorage.getItem('myUser'));
+    this.companyId = +user.id;
+    console.log(this.companyId);
+  }       
+
+  ionViewWillEnter(){
+   this.getCompanyFarms();
   }
 
   getCompanyFarms() {
@@ -76,7 +81,7 @@ export class FarmsPage implements OnInit {
       try {
         this.farmService.createFarm({
           "company": this.companyId,
-          "farm_name": name.trim()
+          "farm_name": name.trim().replace(/\s\s+/g, ' ')
         }).subscribe(response => {
           if (response.status === "success") {
             this.base.toastMessage('Farm added');
@@ -101,7 +106,7 @@ export class FarmsPage implements OnInit {
         this.farmService.updateFarm({
           "id": id,
           "company": this.companyId,
-          "farm_name": name
+          "farm_name": name.trim().replace(/\s\s+/g, ' ')
         }).subscribe(response => {
           if (response.status === "success") {
             this.base.toastMessage('Farm updated');
@@ -121,7 +126,7 @@ export class FarmsPage implements OnInit {
   }
 
   viewBlocks(id) {
-    this.navCtrl.navigateForward([`/home/companies/farms/${this.companyId}/blocks/${id}`]);
+    this.navCtrl.navigateForward([`/blocks/${id}`]);
   }
 
   viewFarmDetails(farmId, mode) {

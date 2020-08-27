@@ -35,13 +35,16 @@ export class LoginPage implements OnInit {
             localStorage.setItem('myToken', response.data.token);
             localStorage.setItem('myUser', JSON.stringify(response.data.user));
             if (response.data.user.role === "1") {
-              this.nav.navigateRoot('/home');
+              this.nav.navigateRoot('/admin-home');
             }
             else if (response.data.user.role === "2") {
               this.nav.navigateRoot('/supervisor-home');
             }
             else if (response.data.user.role === "3") {
               this.nav.navigateRoot('/operator-dashboard');
+            }
+            else if (response.data.user.role === "4") {
+              this.nav.navigateRoot('/home');
             }
           }
           else if (response.status === "error") {
