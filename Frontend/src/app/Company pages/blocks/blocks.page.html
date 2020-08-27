@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blocks
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openBlockDialog()">
+        <ion-icon slot="start" name="add-outline"></ion-icon>Block
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let block of blocksList">
+    <ion-card-header>
+      <ion-card-title>{{block.block_name}}</ion-card-title>
+      <ion-card-subtitle>Irrigation type: {{block.irrigation}}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      Assigned operator: {{block?.operator_name ? block?.operator_name : '-'}}
+    </ion-card-content>
+
+    <div style="text-align: center;">
+      <ion-button *ngIf="block.operator" size="small" fill="clear" (click)="presentAlertConfirm(block.id)">Remove
+        Operator
+      </ion-button>
+      <ion-button *ngIf="!block.operator" size="small" fill="clear" (click)="assignOperator(block.id)">Assign Operator
+      </ion-button>
+
+      <ion-button size="small" fill="clear" (click)="blockTimings(block.id,block.operator)">
+        View
+      </ion-button>
+
+      <ion-button (click)="openBlockDialog(block)" size="small" fill="clear">
+        Edit
+      </ion-button>
+    </div>
+  </ion-card>
+
+</ion-content>

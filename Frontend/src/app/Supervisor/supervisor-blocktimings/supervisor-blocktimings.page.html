@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Block Timings
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item *ngIf="valveDetails?.actual_start_time === null">Valve Status : Not started</ion-item>
+
+  <ion-item *ngIf="valveDetails?.actual_stop_time !== null  && valveDetails?.interruption_stop !== null">Valve Status :
+    Already stopped
+  </ion-item>
+
+  <ion-item *ngIf="valveDetails?.actual_stop_time !== null  && valveDetails?.interruption_reason === null">Valve Status
+    : Already
+    stopped
+  </ion-item>
+
+  <ion-item
+    *ngIf="valveDetails?.actual_stop_time !== null && valveDetails?.interruption_reason !== null && valveDetails?.interruption_resume === null">
+    Valve Status :
+    Interrupted
+  </ion-item>
+
+
+  <ion-item *ngIf="valveDetails?.actual_start_time !== null && valveDetails?.actual_stop_time === null">
+    <ion-button class="stpBtn" (click)=presentAlertConfirm(valveDetails.id)>Valve Status : Stop</ion-button>
+  </ion-item>
+
+  <ion-item
+    *ngIf="valveDetails?.actual_start_time !== null && valveDetails?.actual_stop_time !== null && valveDetails?.interruption_stop === null && valveDetails?.interruption_resume !== null">
+    <ion-button class="stpBtn" (click)=presentAlertConfirm(valveDetails.id)>Valve Status : Stop</ion-button>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label>Started at:</ion-label>
+    <ion-input type="text" [value]="valveDetails?.actual_start_time ? valveDetails?.actual_start_time : '-'" readonly>
+    </ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label>Stopped at:</ion-label>
+    <ion-input type="text" [value]="valveDetails?.actual_stop_time ? valveDetails?.actual_stop_time : '-'" readonly>
+    </ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label>Interruption Reason:</ion-label>
+    <ion-textarea [value]="valveDetails?.interruption_reason ? valveDetails?.interruption_reason : '-'" readonly>
+    </ion-textarea>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label>Interruption Resume:</ion-label>
+    <ion-input type="text" [value]="valveDetails?.interruption_resume ? valveDetails?.interruption_resume : '-'"
+      readonly>
+    </ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <ion-label>Interruption Stop:</ion-label>
+    <ion-input type="text" [value]="valveDetails?.interruption_stop ? valveDetails?.interruption_stop : '-'" readonly>
+    </ion-input>
+  </ion-item>
+
+
+
+</ion-content>

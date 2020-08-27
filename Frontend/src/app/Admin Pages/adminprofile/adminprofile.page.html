@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="profileForm">
+    <ion-item>
+      <ion-label>Name: </ion-label>
+      <ion-input type="text" readonly formControlName="name" [readonly]="isReadOnly"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Email: </ion-label>
+      <ion-input type="text" readonly formControlName="email" readonly></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Phone: </ion-label>
+      <ion-input type="number" readonly formControlName="phone" [readonly]="isReadOnly"></ion-input>
+    </ion-item>
+  </form>
+
+  <div style="text-align: center; margin-top: 10px;display: block;" >
+
+    <ion-button *ngIf="isReadOnly" (click)="toggleRead()" fill="clear" class="logout-btn">
+      Edit
+    </ion-button>
+
+    <ion-button *ngIf="!isReadOnly" (click)="updateProfile()" fill="clear" class="logout-btn">
+      Save
+    </ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,29 @@
+ion-item{
+    --background:#eaeaea;
+    color:#1f4e79;
+    height: 60px;
+    line-height: 40px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+ion-item ion-icon{
+    color:#1f4e79;
+    margin-right:5px;
+}
+
+.header-title{
+    font-weight: 600;
+    font-size: 22px;
+    width: 95%;
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    color: #1f4e79;
+    margin-bottom: 10px;
+
+}
+
+
+.reportBtn{
+    background-color:#1f4e79;
+    color:white;
+}

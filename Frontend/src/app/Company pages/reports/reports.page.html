@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Report</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">Select Date</ion-label>
+      <ion-datetime displayFormat="YYYY/MM/DD" (ionChange)="myChange($event)"></ion-datetime>
+    </ion-item>
+
+    <div style="text-align: center;">
+      <ion-button size="large" fill="clear" (click)="reportSubmit()">Get Report</ion-button>
+    </div>
+  </ion-card>
+
+  <ion-card style="margin-top: 10px;" *ngIf="availableFiles?.length > 0">
+    <ion-card-header>
+      <ion-card-title>Available Files</ion-card-title>
+    </ion-card-header>
+    <ion-item lines="none" *ngFor="let file of availableFiles">
+      <ion-label>{{file?.name | titlecase}}</ion-label>
+      <ion-button slot="end" fill="clear" size="small" (click)="openFile(file?.fullPath)">view
+      </ion-button>
+    </ion-item>
+  </ion-card>
+
+</ion-content>

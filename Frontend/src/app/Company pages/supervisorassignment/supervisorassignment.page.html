@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Assign {{ modeId === 1 ? 'Supervisor' : "Operator"}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item class="header">
+      <ion-icon name="business-outline" slot="start"></ion-icon>
+      <ion-label>Company Name: {{companyDetails?.company_name | titlecase}}</ion-label>
+      <!-- <ion-button fill="outline" slot="end">View</ion-button> -->
+    </ion-item>
+
+    <ion-card-content>
+      <!-- <span *ngIf="companyDetails?.supervisor">Current Supervisor - {{companyDetails?.supervisor_name}}</span> -->
+      <!-- To be managed for multiple -->
+
+      <div>
+        <ion-item lines="none">
+          <ion-label>{{ modeId === 1 ? 'Select supervisor' : "Select operator"}}</ion-label>
+          <ion-select #val multiple style="margin-right: 10px;" [disabled]="usersList?.length === 0">
+            <ion-select-option *ngFor="let user of usersList" [value]="user.id">{{user?.fullname}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <div style="text-align: center;">
+          <ion-button *ngIf="usersList?.length > 0" (click)="assignSupervisor(val)" size="small" fill="outline"
+            class="asign">
+            Assign
+          </ion-button>
+
+          <ion-label *ngIf="usersList?.length === 0">No more {{ modeId === 1 ? 'supervisors' : "operators"}} available
+            to assign.</ion-label>
+        </div>
+
+        <!-- <ion-button *ngIf="supervisorsList?.length > 0 && companyDetails?.supervisor" (click)="changeSupervisor(val.value)">
+          Change
+        </ion-button> -->
+      </div>
+
+      <ion-item-group>
+        <ion-item-divider>
+          <ion-label>{{ modeId === 1 ? 'Supervisors' : "Operators"}}</ion-label>
+        </ion-item-divider>
+
+        <ion-item lines="none" *ngFor="let user of assignedUsers">
+          <ion-label>{{user.fullname | titlecase}} - {{user.email}}</ion-label>
+          <ion-button size="small" (click)="presentAlertConfirm(user.id)" fill="clear" class="delete-btn">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+          <!-- <ion-label></ion-label> -->
+        </ion-item>
+
+      </ion-item-group>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

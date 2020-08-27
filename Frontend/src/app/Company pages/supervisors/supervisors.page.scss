@@ -1,0 +1,51 @@
+#supList {
+
+  ion-card{
+      box-shadow:none;
+      background: #f3f3f3;
+  }
+    ion-item {
+      --background:#eaeaea;
+    }
+  
+    ion-label{
+      margin-left: 10px;
+    }
+  }
+  .footer-btn ion-button{
+    height:40px;
+    border-radius:2px;
+    text-align:center;
+    color:#ffffff;
+    font-size:12px;
+    font-weight:600px;
+    background:#1f4e79;
+  }
+  span.company-name {
+    font-size: 16px;
+    color: #000000;
+}
+ion-card-content{
+  padding:10px;
+}
+ion-fab-button{
+  --background:#1f4e79;
+}
+
+.noData{
+  text-align: center;
+  font-weight: 600;
+  margin-top: 20px;
+  padding: 10px;
+
+  ion-button{
+  background:#1f4e79;
+  color: #c9ced2;
+  border-radius: 2px;
+  height: 35px;
+  font-weight: 600;
+  font-size: 12px;
+  --border-color: transparent;
+  margin-top: 10px;
+  }
+}

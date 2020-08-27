@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Assign Company</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item lines="none" class="header">
+      <ion-label>Select Company</ion-label>
+      <ion-select #val>
+        <ion-select-option *ngFor="let company of companiesList" [value]="company.id"
+          [disabled]="companiesList?.length === 0">{{company?.company_name}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-card-content>
+      <div style="text-align: center; margin-top: 5px;">
+        <ion-button (click)="assignCompany(val.value)" size="small" fill="clear" class="assign">
+          Assign
+        </ion-button>
+
+        <ion-label *ngIf="companiesList?.length === 0">No more companies available.</ion-label>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

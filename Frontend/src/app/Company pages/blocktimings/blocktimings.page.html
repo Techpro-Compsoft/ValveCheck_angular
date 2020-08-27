@@ -1,0 +1,195 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Block Timings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-label>Select hours</ion-label>
+    <ion-select [(ngModel)]="valveHour">
+      <ion-select-option *ngFor="let hour of hoursArr" [value]="hour">{{hour}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Select Minutes</ion-label>
+    <ion-select [(ngModel)]="valveMins">
+      <ion-select-option *ngFor="let min of minsArray" [value]="min">{{min}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- <ion-item>
+    <ion-label>Start time</ion-label>
+    <ion-datetime displayFormat="h:mm a" [(ngModel)]="startTime"></ion-datetime>
+  </ion-item>
+
+  <ion-item *ngIf="valveDetails?.instruction">
+    <ion-label>Stop time</ion-label>
+    <ion-datetime displayFormat="h:mm a" [(ngModel)]="stopTime" readonly></ion-datetime>
+  </ion-item> -->
+
+  <!-- <ion-item>
+    <ion-label>Stop time</ion-label>
+    <ion-datetime displayFormat="h:mm a" [(ngModel)]="endTime" readonly></ion-datetime>
+  </ion-item> -->
+
+  <div style="text-align: center;margin-top: 10px;">
+    <ion-button *ngIf="!valveDetails?.instruction" size="small" fill="clear" (click)="assignTime()">Assign
+      time</ion-button>
+    <ion-button *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time" size="small" fill="clear"
+      (click)="presentAlertConfirm()">Update
+      time</ion-button>
+
+    <ion-button *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time" size="small" fill="clear"
+      (click)="startValve()">Start
+      Valve</ion-button>
+
+    <ion-button *ngIf="valveDetails?.instruction && valveDetails?.actual_start_time && !valveDetails?.actual_stop_time"
+      size="small" fill="clear" (click)="stopValve()">Stop
+      Valve</ion-button>
+
+    <ion-button *ngIf="valveDetails?.instruction && valveDetails?.actual_start_time && !valveDetails?.actual_stop_time"
+      size="small" fill="clear" (click)="confirmReport()">Report</ion-button>
+
+    <ion-button *ngIf="valveDetails?.interruption_reason && !valveDetails?.interruption_resume" size="small"
+      fill="clear" color="secondary" (click)="resumeValve()">Resume Valve
+    </ion-button>
+
+    <ion-button
+      *ngIf="valveDetails?.interruption_reason && valveDetails?.interruption_resume && !valveDetails?.interruption_stop"
+      size="small" fill="clear" (click)="stopValve()">Stop Valve
+    </ion-button>
+  </div>
+
+  <ion-card style="margin-top: 10px;">
+
+    <ion-card-header>
+      <ion-card-title>Valve Status -
+
+        <span *ngIf="!valveDetails?.instruction">
+          Instructions not assigned
+        </span>
+
+        <span *ngIf="valveDetails?.instruction && !valveDetails?.actual_start_time">
+          Not started yet
+        </span>
+
+        <span *ngIf="valveDetails?.instruction && valveDetails?.actual_start_time && !valveDetails?.actual_stop_time">
+          In progress
+        </span>
+
+        <span *ngIf="valveDetails?.interruption_reason && !valveDetails?.interruption_resume">
+          On halt
+        </span>
+
+        <span
+          *ngIf="valveDetails?.interruption_reason && valveDetails?.interruption_resume && !valveDetails?.interruption_stop">
+          Resumed, in progress
+        </span>
+
+        <span *ngIf="valveDetails?.interruption_reason && valveDetails?.interruption_stop">
+          Completed
+        </span>
+
+        <span
+          *ngIf="!valveDetails?.interruption_reason && valveDetails?.actual_start_time && valveDetails?.actual_stop_time">
+          Completed
+        </span>
+
+      </ion-card-title>
+    </ion-card-header>
+
+    <!-- <ion-item lines="none">
+      <ion-label>Started at:</ion-label>
+      <ion-input type="text" [value]="valveDetails?.actual_start_time ? valveDetails?.actual_start_time : '-'" readonly>
+      </ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label>Stopped at:</ion-label>
+      <ion-input type="text" [value]="valveDetails?.actual_stop_time ? valveDetails?.actual_stop_time : '-'" readonly>
+      </ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">
+      <ion-label>Interruption Reason:</ion-label>
+      <ion-input type="text" readonly value="Heavy RainHeavy Rain Heavy RainHeavy RainHeavy Rain Heavy Rain Heavy Rain">
+      </ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">
+      <ion-label>Resumed at:</ion-label>
+      <ion-input type="text" [value]="valveDetails?.interruption_resume ? valveDetails?.interruption_resume : '-'"
+        readonly>
+      </ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="valveDetails?.interruption_reason" lines="none">
+      <ion-label>Stopped at:</ion-label>
+      <ion-input type="text" [value]="valveDetails?.interruption_stop ? valveDetails?.interruption_stop : '-'" readonly>
+      </ion-input>
+    </ion-item> -->
+
+    <table>
+      <tr>
+        <td>
+          <ion-label>Started at:</ion-label>
+        </td>
+        <td>
+          <ion-input type="text" [value]="valveDetails?.actual_start_time ? valveDetails?.actual_start_time : '-'"
+            readonly>
+          </ion-input>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <ion-label>Stopped at:</ion-label>
+        </td>
+        <td>
+          <ion-input type="text" [value]="valveDetails?.actual_stop_time ? valveDetails?.actual_stop_time : '-'"
+            readonly>
+          </ion-input>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <ion-label>Interruption Reason:</ion-label>
+        </td>
+        <td>
+          <!-- <ion-input type="text" readonly
+            value="Heavy RainHeavy Rain Heavy RainHeavy RainHeavy Rain Heavy Rain Heavy Rain">
+          </ion-input> -->
+          <p>{{valveDetails?.interruption_reason | titlecase}}
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <ion-label>Resumed at:</ion-label>
+        </td>
+        <td>
+          <ion-input type="text" [value]="valveDetails?.interruption_resume ? valveDetails?.interruption_resume : '-'"
+            readonly>
+          </ion-input>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <ion-label>Stopped at:</ion-label>
+        </td>
+        <td>
+          <ion-input type="text" [value]="valveDetails?.interruption_stop ? valveDetails?.interruption_stop : '-'"
+            readonly></ion-input>
+        </td>
+      </tr>
+    </table>
+  </ion-card>
+</ion-content>

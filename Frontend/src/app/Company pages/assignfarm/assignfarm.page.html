@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{farmName}} - {{modeId === 1 ? 'Supervisor' : 'Operator'}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- <div *ngIf="availableUsers?.length === 0">
+    Oops... You don't have any {{modeId === 1 ? 'supervisor(s)' : 'operator(s)'}} assigned for this company.
+  </div> -->
+
+  <div>
+
+    <ion-item lines="none" class="select-header">
+      <ion-label>Select {{modeId === 1 ? 'Supervisor' : 'Operator'}}</ion-label>
+      <ion-select #sl multiple [disabled]="availableUsers?.length === 0">
+        <ion-select-option *ngFor="let user of availableUsers" [value]="user.id">{{user?.fullname}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <div style="text-align: center;margin-top: 10px;">
+
+      <ion-button *ngIf="availableUsers?.length > 0" size="small" fill="outline" (click)="assignToFarm(sl)"
+        class="assign">Assign</ion-button>
+
+      <ion-label *ngIf="availableUsers?.length === 0">No more {{ modeId === 1 ? 'supervisors' : "operators"}} available
+        to assign.</ion-label>
+    </div>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Assigned {{modeId === 1 ? 'Supervisors' : 'Operators'}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list *ngIf="assignedUsers?.length > 0">
+          <ion-item lines="none" *ngFor="let user of assignedUsers">
+            <ion-label>{{user.fullname}} - {{user.email}}</ion-label>
+            <ion-button size="small" (click)="presentAlertConfirm(user.id)" fill="clear">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

@@ -14,16 +14,45 @@ export class SupervisorService {
     return this.http.post(`${environment.base}/getEmptyUsersCompany`, data);
   }
 
-  assignOperator(data): Observable<any> {
+  assignRole(data): Observable<any> {
     return this.http.post(`${environment.base}/assignCompany`, data);
   }
 
-  removeRole(data): Observable<any>{
+  removeRole(data): Observable<any> {
     return this.http.post(`${environment.base}/deleteAssignCompany`, data);
   }
 
   editSupervisorProfileCall(data): Observable<any> {
     return this.http.put(`${environment.base}/updateUser`, data);
   }
-  
+
+  getFarmDetailsCall(data): Observable<any> {
+    return this.http.post(`${environment.base}/getFarmForUsers`, data);
+  }
+
+  getBlockDetailsCall(data): Observable<any> {
+    return this.http.post(`${environment.base}/getBlockForUsers`, data);
+  }
+
+  getCycleCall(data): Observable<any> {
+    return this.http.post(`${environment.base}/getCycle`, data);
+  }
+
+  closeBlockCall(data): Observable<any> {
+    return this.http.put(`${environment.base}/closeBlock`, data);
+  }
+
+  updateCoordinatesCall(data): Observable<any> {
+    return this.http.post(`${environment.base}/updateCoordinates`, data);
+  }
+
+  getProfile(): Observable<any> {
+    return this.http.get(`${environment.base}/getProfile`);
+  }
+
+
+
+
+
+
 }

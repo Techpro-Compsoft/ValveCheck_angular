@@ -1,10 +1,10 @@
 .supContainer{
-    border-radius: 0;
-    padding: 10px;
-    // display: flex;
-    margin-bottom:0px;
-    background: #ffffff;
-    overflow: auto;
+  border-radius: 0;
+  padding: 10px;
+  margin-bottom: 0px;
+  background: #f3f3f3;
+  overflow: auto;
+  box-shadow: none;
 }
 
 table{
@@ -24,19 +24,24 @@ table{
   }
   
   .editBtn{
-    background: #4c8dff;
-    padding:4px 0px;
-    height: 40px;
+    padding: 0px 0px;
+    border-radius: 3px;
+    border: 2px solid #1f4e79;
   }
   
   .editBtn ion-label{
-    color:#ffffff;
+    color:#1f4e79;
     font-size:14px;
   }
-
+.footerBtn{
+  display:flex;
+  padding: 0 8px;
+}
   .rstBtn{
     text-transform: none;
-    width: 100%;
+    width: 50%;
     height: 40px;
-    font-size: 17px;
+    background: #1f4e79;
+    font-size: 13px;
+    color: #ffffff;
   }

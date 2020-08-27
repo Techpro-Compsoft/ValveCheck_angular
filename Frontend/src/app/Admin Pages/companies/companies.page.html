@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Companies
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openCompanyDialog()">
+        <ion-icon slot="start" name="add-outline"></ion-icon>Company
+      </ion-button>
+
+      <ion-button slot="end" (click)="confirmLogout()">
+        <ion-icon slot="icon-only" name="power"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div *ngIf="companiesList?.length > 0" id="compList">
+    <ion-card *ngFor="let company of companiesList">
+      <ion-item lines="none" class="business-outline">
+        <ion-icon name="business-outline"></ion-icon>
+        <ion-label>{{company.fullname}}</ion-label>
+        <ion-button (click)="openCompanyDialog(company, company.id)" fill="clear">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+        <!-- <ion-button (click)="viewCompany(company.id)" size="small" fill="clear">
+          <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+        </ion-button> -->
+      </ion-item>
+
+      <!--   <ion-card-content class="footer-btn">
+
+        <ion-button (click)="assignUser(company.id,1)" size="small" fill="outline" class="supervisor-btn">
+          Supervisors
+        </ion-button>
+
+        <ion-button (click)="assignUser(company.id,2)" size="small" fill="outline" class="operator-btn">
+          Operators
+        </ion-button> -->
+
+      <!-- <ion-button (click)="viewReport(company.id, company.fullname)" size="small" fill="outline">
+          Report
+        </ion-button>
+      </ion-card-content> -->
+    </ion-card>
+
+  </div>
+
+  <div *ngIf="companiesList?.length === 0" class="noData">
+    <ion-label>No companies available. Click the button below to register a new company.</ion-label>
+    <div>
+      <ion-button fill="clear" (click)="openCompanyDialog()">New company</ion-button>
+    </div>
+  </div>
+</ion-content>

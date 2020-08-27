@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Farms
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="openFarmDialog()">
+        <ion-icon slot="start" name="add-outline"></ion-icon>Farm
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Farms</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div *ngIf="farmsList?.length > 0" id="farmList">
+    <ion-card *ngFor="let farm of farmsList">
+      <ion-item lines="none">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>{{farm.farm_name}}</ion-label>
+        <ion-button (click)="openFarmDialog(farm.farm_name, farm.id)" fill="clear">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-card-content class="footer-btn">
+        <div style="text-align: center;">
+          <ion-button size="small" fill="outline" (click)="viewFarmDetails(farm.id,1)">
+            Supervisor
+          </ion-button>
+
+          <ion-button size="small" fill="outline" (click)="viewFarmDetails(farm.id,2)">
+            Operator
+          </ion-button>
+
+          <ion-button (click)="viewBlocks(farm.id)" size="small" fill="outline">
+            Blocks
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="farmsList?.length === 0" class="noData">
+    <ion-label>No farms available. Click the button below to register a new farm.</ion-label>
+    <div>
+      <ion-button fill="clear" (click)="addOperator()">New Farm</ion-button>
+    </div>
+  </div>
+</ion-content>

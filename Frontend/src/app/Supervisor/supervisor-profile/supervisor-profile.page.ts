@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseService } from 'src/app/core/Services/base.service';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, NavController } from '@ionic/angular';
 import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
 import { ResetPasswordPage } from 'src/app/reset-password/reset-password.page';
 
@@ -10,32 +10,50 @@ import { ResetPasswordPage } from 'src/app/reset-password/reset-password.page';
   styleUrls: ['./supervisor-profile.page.scss'],
 })
 export class SupervisorProfilePage implements OnInit {
-  fullName: any;
-  phone: any;
+  fullName: string;
+  phone: string;
   supervisorId: any;
+  supervisorData: any;
   constructor(public base: BaseService,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController,
-    public supervisorService: SupervisorService) {
+    public supervisorService: SupervisorService,
+    public nav: NavController) {
   }
 
   ngOnInit() {
-    this.getSupervisorDetails();
+    this.getProfile();
+  }
+
+  getProfile() {
+    try {
+      this.supervisorService.getProfile().subscribe(response => {
+        if (response.status == 'success') {
+          this.supervisorData = response.data;
+          this.fullName = response.data['fullname'];
+          this.phone = response.data['phone'];
+          this.supervisorId = response.data['id'];
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
   }
 
   getSupervisorDetails() {
-    this.base.userData.subscribe((data) => {
-      console.log(data);
-      this.fullName = data['fullname']
-      this.phone = data['phone']
-      this.supervisorId = data['id']
-    });
+    this.supervisorData = JSON.parse(localStorage.getItem('myUser'));
+    this.fullName = this.supervisorData.fullname;
+    this.phone = this.supervisorData.phone;
+    this.supervisorId = this.supervisorData.id;
   }
 
   async openSupervisorDialog() {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Edit Farm',
+      header: 'Update Profile',
       inputs: [
         {
           name: 'name',
@@ -57,10 +75,10 @@ export class SupervisorProfilePage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            // console.log('Confirm Cancel');
           }
         }, {
-          text: 'EDIT',
+          text: 'UPDATE',
           handler: (data) => {
             this.editSupervisorProfile(data)
           }
@@ -70,18 +88,52 @@ export class SupervisorProfilePage implements OnInit {
     await alert.present();
   }
 
+  checkValidation(name: string): boolean {
+    if (name.trim().length === 0) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+
   editSupervisorProfile(data) {
-    try {
-      const supObj = {
-        "id": this.supervisorId,
-        "fullname": data.name,
-        "phone": data.phone
+    let patt = /^[0-9]{8,12}$/g;
+    let result = patt.test(data.phone);
+    if (this.checkValidation(data.name)) {
+      if (data.name.length > 50) {
+        this.base.toastMessage('Name can not be more than 50 characters');
       }
-      this.supervisorService.editSupervisorProfileCall(supObj).subscribe(response => {
-        this.base.setUser(supObj)
-      });
-    } catch (error) {
-      console.log(error)
+      else if (result === false) {
+        this.base.toastMessage('Phone Number must contain 8 digits to maximum 12 digits');
+      } else {
+        try {
+          const supObj = {
+            "id": this.supervisorId,
+            "fullname": data.name,
+            "phone": data.phone
+          }
+          this.supervisorService.editSupervisorProfileCall(supObj).subscribe(response => {
+            if (response.status === 'success') {
+              this.supervisorData.fullname = data.name;
+              this.supervisorData.phone = data.phone
+              localStorage.setItem('myUser', JSON.stringify(this.supervisorData));
+              this.getSupervisorDetails();
+              this.base.toastMessage('Profile updated successfully');
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
+
+          });
+        } catch (error) {
+          this.base.toastMessage('Something went wrong');
+        }
+      }
+    }
+    else {
+      this.base.toastMessage('Please enter valid details');
     }
   }
 
@@ -92,6 +144,19 @@ export class SupervisorProfilePage implements OnInit {
     modal.onDidDismiss().then(res => {
     });
     return await modal.present();
+  }
+
+
+  logout() {
+    this.base.deletePlayerID(this.supervisorId).subscribe(response => {
+      // alert("Deleted player ID : " + response);
+      if (response) {
+        localStorage.removeItem('myToken');
+        localStorage.removeItem('myUser');
+        this.nav.navigateRoot(['/login']);
+        this.base.toastMessage('Logged out successfully');
+      }
+    });
   }
 
 

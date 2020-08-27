@@ -16,5 +16,22 @@
 </ion-header>
 
 <ion-content>
+  <ion-item lines="none">
+    <ion-label class="header-title">Farms List</ion-label>
+
+    <ion-button fill="clear" class="reportBtn" (click)="getReport()">Report</ion-button>
+  </ion-item>
+
+  <div id="compList">
+    <ion-card *ngFor="let farm of farmsList">
+      <ion-item lines="none">
+
+        <ion-label>Farm Name :{{farm.farm_name}}</ion-label>
+        <ion-button (click)="viewBlocks(farm.id)" size="small" fill="clear">
+          <ion-icon slot="icon-only" name="eye-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
+  </div>
 
 </ion-content>

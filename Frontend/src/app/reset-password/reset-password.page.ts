@@ -14,7 +14,7 @@ export class ResetPasswordPage implements OnInit {
   resetPasswordForm: FormGroup;
   fullName: any;
   phone: any;
-  roleId: any;
+  userId: any;
 
   constructor(public formBuilder: FormBuilder,
     public modalCtrl: ModalController,
@@ -22,16 +22,25 @@ export class ResetPasswordPage implements OnInit {
     public base: BaseService) { }
 
   ngOnInit() {
+    this.getProfile();
     this.initResetPasswordForm();
-    this.getUserDetails();
   }
 
-  getUserDetails() {
-    this.base.userData.subscribe((data) => {
-      this.fullName = data['fullname']
-      this.phone = data['phone']
-      this.roleId = data['id']
-    });
+  getProfile() {
+    try {
+      this.base.getProfile().subscribe(response => {
+        if (response.status == 'success') {
+          this.fullName = response.data['fullname'];
+          this.phone = response.data['phone'];
+          this.userId = response.data['id'];
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
   }
 
   initResetPasswordForm() {
@@ -46,17 +55,19 @@ export class ResetPasswordPage implements OnInit {
   async resetPasswordSubmit() {
     try {
       this.base.resetPasswordCall({
-        "id": this.roleId,
+        "id": this.userId,
         "fullname": this.fullName,
         "password": this.resetPasswordForm.value.password,
         "phone": this.phone
       }).subscribe(response => {
-        console.log(response);
-        this.modalCtrl.dismiss();
+        if (response.status == "success") {
+          this.base.toastMessage('Password reset successfully');
+          this.modalCtrl.dismiss();
+        }
       });
     }
     catch (error) {
-      console.log(error);
+      this.base.toastMessage('Something went wrong');
     }
   }
 

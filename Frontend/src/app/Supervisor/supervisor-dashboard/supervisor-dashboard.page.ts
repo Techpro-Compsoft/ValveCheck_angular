@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { SupervisorService } from 'src/app/core/Services/Supervisor/supervisor.service';
+import { BaseService } from 'src/app/core/Services/base.service';
 
 @Component({
   selector: 'app-supervisor-dashboard',
@@ -7,14 +9,49 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./supervisor-dashboard.page.scss'],
 })
 export class SupervisorDashboardPage implements OnInit {
+  farmsList: Array<object>;
+  companyId: any;
 
-  constructor(public navCtrl: NavController) { }
+  constructor(public navCtrl: NavController,
+    public supervisorService: SupervisorService,
+    public base: BaseService) { }
 
   ngOnInit() {
+    let data = JSON.parse(localStorage.getItem('myUser'));
+    this.companyId = data.companyId;
+    this.getDashboardDetails();
+  }
+
+  getDashboardDetails() {
+    try {
+      let data = JSON.parse(localStorage.getItem('myUser'));
+      this.supervisorService.getFarmDetailsCall({
+        "user_id": data.id,
+        "role": data.role
+      }).subscribe(response => {
+        if (response.status === 'success') {
+          this.farmsList = response.data;
+          // this.companyId = response.data[0]['company'];
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.base.toastMessage('Something went wrong');
+    }
+  }
+
+  viewBlocks(id) {
+    this.navCtrl.navigateForward([`supervisor-home/supervisor-dashboard/supervisor-block/${id}`]);
   }
 
   openProfilePage() {
     this.navCtrl.navigateForward(['/supervisor-profile'])
+  }
+
+  getReport() {
+    this.navCtrl.navigateForward([`supervisor-home/supervisor-dashboard/supervisor-report/${this.companyId}`]);
   }
 
 }

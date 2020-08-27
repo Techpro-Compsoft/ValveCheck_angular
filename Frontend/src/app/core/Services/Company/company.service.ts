@@ -26,8 +26,25 @@ export class CompanyService {
     return this.http.post(`${environment.base}/getCompanyDetails`, data);
   }
 
-  getCompanies(data):Observable<any>{
+  getCompanies(data): Observable<any> {
     return this.http.post(`${environment.base}/getEmptyCompanies`, data);
   }
- 
+
+  getReports(data): Observable<any> {
+    return this.http.post(`${environment.base}/getReport`, data);
+  }
+
+  getReasons(): Observable<any> {
+    return this.http.get(`${environment.base}/getReason`);
+  }
+
+  addReason(data): Observable<any> {
+    return this.http.post(`${environment.base}/addReason`, data);
+  }
+
+  deleteReason(id): Observable<any> {
+    return this.http.post(`${environment.base}/delReason`, id);
+  }
+  
+
 }
