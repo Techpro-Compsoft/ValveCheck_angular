@@ -32,3 +32,21 @@
     font-size: 12px;
     --border-color: transparent;
   }
+
+  .noData{
+    text-align: center;
+    font-weight: 600;
+    margin-top: 20px;
+    padding: 10px;
+  
+    ion-button{
+    background:#1f4e79;
+    color: #c9ced2;
+    border-radius: 2px;
+    height: 35px;
+    font-weight: 600;
+    font-size: 12px;
+    --border-color: transparent;
+    margin-top: 10px;
+    }
+  }

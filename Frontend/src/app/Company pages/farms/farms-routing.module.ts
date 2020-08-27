@@ -12,10 +12,10 @@ const routes: Routes = [
     path: 'blocks/:selectedId',
     loadChildren: () => import('../blocks/blocks.module').then(m => m.BlocksPageModule)
   },
-  // {
-  //   path:'assigntofarm/:farmId/:mode/:compId',
-  //   loadChildren: () => import('../assignfarm/assignfarm.module').then( m => m.AssignfarmPageModule)
-  // }
+  {
+    path:'assigntofarm/:farmId/:mode/:compId',
+    loadChildren: () => import('../assignfarm/assignfarm.module').then( m => m.AssignfarmPageModule)
+  }
 ];
 
 @NgModule({

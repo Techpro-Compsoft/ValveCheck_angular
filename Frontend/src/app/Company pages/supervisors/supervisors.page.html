@@ -28,7 +28,7 @@
     </ion-fab-button>
   </ion-fab> -->
 
-  <div id="supList">
+  <div *ngIf="usersList?.length > 0" id="supList">
     <ion-card *ngFor="let user of usersList">
       <ion-item lines="none">
         <ion-icon name="person-circle-outline"></ion-icon>
@@ -38,7 +38,7 @@
         </ion-button>
       </ion-item>
 
-      <ion-card-content class="footer-btn">
+      <!-- <ion-card-content class="footer-btn">
         Company: {{user?.company_name ? user?.company_name : '-' | titlecase}}
         <div style="text-align: center;">
           <ion-button *ngIf="!user?.company_name" (click)="openDetails(user.id, 1)" size="small" fill="clear">
@@ -49,8 +49,14 @@
             Remove
           </ion-button>
         </div>
-      </ion-card-content>
+      </ion-card-content> -->
     </ion-card>
+  </div>
 
+  <div *ngIf="usersList?.length === 0" class="noData">
+    <ion-label>No supervisors available. Click the button below to register a new supervisors.</ion-label>
+    <div>
+      <ion-button fill="clear" (click)="addOperator()">New supervisors</ion-button>
+    </div>
   </div>
 </ion-content>

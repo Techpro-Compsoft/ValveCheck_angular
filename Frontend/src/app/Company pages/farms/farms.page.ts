@@ -23,7 +23,6 @@ export class FarmsPage implements OnInit {
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('myUser'));
     this.companyId = +user.id;
-    console.log(this.companyId);
   }       
 
   ionViewWillEnter(){
@@ -126,11 +125,11 @@ export class FarmsPage implements OnInit {
   }
 
   viewBlocks(id) {
-    this.navCtrl.navigateForward([`/blocks/${id}`]);
+    this.navCtrl.navigateForward([`/home/farms/blocks/${id}`]);
   }
 
   viewFarmDetails(farmId, mode) {
-    this.navCtrl.navigateForward([`/home/companies/farms/${this.companyId}/assigntofarm/${farmId}/${mode}/${this.companyId}`]);
+    this.navCtrl.navigateForward([`/home/farms/assigntofarm/${farmId}/${mode}/${this.companyId}`]);
   }
 
 }

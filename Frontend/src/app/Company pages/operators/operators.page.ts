@@ -12,12 +12,19 @@ import { PopoverComponent } from '../popover/popover.component';
 export class OperatorsPage implements OnInit {
 
   usersList: Array<object>;
+  companyId: number;
 
   constructor(private alertCtrl: AlertController, private baseService: BaseService,
     private navCtr: NavController, private supService: SupervisorService,
     private pop: PopoverController) { }
 
   ngOnInit() {
+    const user = JSON.parse(localStorage.getItem('myUser'));
+    this.companyId = +user.id;
+  }
+
+  ionViewWillEnter() {
+    this.getUsers();
   }
 
   getUsers() {
@@ -37,7 +44,7 @@ export class OperatorsPage implements OnInit {
     }
   }
 
-  async addSupervisor(value?, id?) {
+  async addOperator(value?, id?) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
       header: value ? 'Update Operator' : 'New Operator',
@@ -92,6 +99,24 @@ export class OperatorsPage implements OnInit {
     await alert.present();
   }
 
+  assignOperator(uid) {
+    try {
+      this.supService.assignRole({
+        "company": this.companyId,
+        "user_id": uid,
+        "role": 3
+      }).subscribe(response => {
+        if (response.status === "success") {
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.baseService.toastMessage('Something went wrong');
+    }
+  }
+
   checkValidation(name: string, username: string, password: string, num: string): boolean {
     if (name.trim().length === 0) {
       return false;
@@ -131,6 +156,7 @@ export class OperatorsPage implements OnInit {
             if (response.status === "success") {
               this.baseService.toastMessage('Operator added successfully');
               this.getUsers();
+              this.assignOperator(response.data);
             }
             else if (response.status === "error") {
               alert(response.txt);
@@ -185,10 +211,6 @@ export class OperatorsPage implements OnInit {
     else {
       this.baseService.toastMessage('Please enter valid details');
     }
-  }
-
-  ionViewWillEnter() {
-    this.getUsers();
   }
 
   openDetails(uid, mode) {

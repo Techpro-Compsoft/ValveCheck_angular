@@ -12,12 +12,19 @@ import { PopoverComponent } from '../popover/popover.component';
 export class SupervisorsPage implements OnInit {
 
   usersList: Array<object>;
+  companyId: number;
 
   constructor(private baseService: BaseService,
     private navCtr: NavController, private supService: SupervisorService,
     private alertCtrl: AlertController, private pop: PopoverController) { }
 
   ngOnInit() {
+    const user = JSON.parse(localStorage.getItem('myUser'));
+    this.companyId = +user.id;
+  }
+
+  ionViewWillEnter() {
+    this.getUsers();
   }
 
   getUsers() {
@@ -130,6 +137,7 @@ export class SupervisorsPage implements OnInit {
             if (response.status === "success") {
               this.baseService.toastMessage('Supervisor created successfully');
               this.getUsers();
+              this.assignSupervisor(response.data)
             }
             else if (response.status === "error") {
               alert(response.txt);
@@ -142,6 +150,24 @@ export class SupervisorsPage implements OnInit {
     }
     else {
       this.baseService.toastMessage('Please enter valid details');
+    }
+  }
+
+  assignSupervisor(uid) {
+    try {
+      this.supService.assignRole({
+        "company": this.companyId,
+        "user_id": uid,
+        "role": 2
+      }).subscribe(response => {
+        if (response.status === "success") {
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+      });
+    } catch (error) {
+      this.baseService.toastMessage('Something went wrong');
     }
   }
 
@@ -188,10 +214,6 @@ export class SupervisorsPage implements OnInit {
 
   openDetails(uid, mode) {
     this.navCtr.navigateForward([`/home/supervisors/assigncompany/${uid}/${mode}`]);
-  }
-
-  ionViewWillEnter() {
-    this.getUsers();
   }
 
   async presentAlertConfirm(companyId, userId) {
