@@ -17,6 +17,8 @@ export class SupervisorDashboardPage implements OnInit {
     public base: BaseService) { }
 
   ngOnInit() {
+    let data = JSON.parse(localStorage.getItem('myUser'));
+    this.companyId = data.companyId;
     this.getDashboardDetails();
   }
 
@@ -29,7 +31,7 @@ export class SupervisorDashboardPage implements OnInit {
       }).subscribe(response => {
         if (response.status === 'success') {
           this.farmsList = response.data;
-          this.companyId = response.data[0]['company'];
+          // this.companyId = response.data[0]['company'];
         }
         else if (response.status === "error") {
           alert(response.txt);

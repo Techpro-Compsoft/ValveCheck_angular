@@ -52,9 +52,8 @@
 
   <ion-item lines="none">
     <ion-label>Interruption Reason:</ion-label>
-    <ion-input type="text" [value]="valveDetails?.interruption_reason ? valveDetails?.interruption_reason : '-'"
-      readonly>
-    </ion-input>
+    <ion-textarea [value]="valveDetails?.interruption_reason ? valveDetails?.interruption_reason : '-'" readonly>
+    </ion-textarea>
   </ion-item>
 
   <ion-item lines="none">
