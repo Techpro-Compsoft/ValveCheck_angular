@@ -107,6 +107,7 @@ export class OperatorsPage implements OnInit {
         "role": 3
       }).subscribe(response => {
         if (response.status === "success") {
+          this.getUsers();
         }
         else if (response.status === "error") {
           alert(response.txt);
@@ -155,7 +156,6 @@ export class OperatorsPage implements OnInit {
           this.baseService.createUser(data).subscribe(response => {
             if (response.status === "success") {
               this.baseService.toastMessage('Operator added successfully');
-              this.getUsers();
               this.assignOperator(response.data);
             }
             else if (response.status === "error") {

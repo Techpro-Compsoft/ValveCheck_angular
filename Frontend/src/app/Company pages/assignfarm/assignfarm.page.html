@@ -44,6 +44,9 @@
             </ion-button>
           </ion-item>
         </ion-list>
+        <ion-item *ngIf="assignedUsers?.length === 0">
+          <ion-label>No {{modeId === 1 ? 'supervisors' : 'operators'}} assigned to this farm.</ion-label>
+        </ion-item>
       </ion-card-content>
     </ion-card>
 

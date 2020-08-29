@@ -33,15 +33,20 @@ export class ReportsPage implements OnInit {
   }
 
   fetchFiles() {
-    this.file.checkDir(this.file.externalRootDirectory, 'valveCheck reports').then(res => {
+    const root = this.file.externalRootDirectory;
+    const dirName = 'ValveCheck reports';
+    this.file.checkDir(`${root}`, dirName).then(res => {
       if (res) {
-        this.file.listDir(this.file.externalRootDirectory, 'valveCheck reports').then(
+        this.file.listDir(`${root}/${dirName}`, this.companyName).then(
           res => {
+            // alert(JSON.stringify(res));
             if (res) {
               this.availableFiles = res;
             }
           }
-        );
+        ).catch((err) => {
+          // alert(JSON.stringify(err));
+        });
       }
     });
   }
@@ -125,23 +130,50 @@ export class ReportsPage implements OnInit {
       fields: header,
       data: csvData
     });
+    // if (this.plt.is('cordova')) {
+    //   let path = this.file.externalRootDirectory;
+    //   this.file.checkDir(path, 'valveCheck reports').then(_ => {
+    //     this.writeFileNow(path, csv);
+    //   }).catch(() => {
+    //     this.file.createDir(path, 'valveCheck reports', true).then(
+    //       () => {
+    //         this.writeFileNow(path, csv);
+    //       },
+    //       err => this.base.toastMessage('Error in directory')
+    //     );
+    //   });
+    // }
+
     if (this.plt.is('cordova')) {
-      let path = this.file.externalRootDirectory;
-      this.file.checkDir(path, 'valveCheck reports').then(_ => {
-        this.writeFileNow(path, csv);
+      const root = this.file.externalRootDirectory;
+      const dirName = 'ValveCheck reports';
+      this.file.checkDir(root, dirName).then(() => {
+        // if exists
+        this.file.checkDir(`${root}/${dirName}`, this.companyName).then(() => {
+          this.writeFileNow(`${root}/${dirName}/${this.companyName}`, csv);
+        }).catch(() => {
+          this.file.createDir(`${root}/${dirName}`, this.companyName, true).then(() => {
+            this.writeFileNow(`${root}/${dirName}/${this.companyName}`, csv);
+          }).catch(() => {
+            this.base.toastMessage('Something went wrong');
+          });
+        })
       }).catch(() => {
-        this.file.createDir(path, 'valveCheck reports', true).then(
-          () => {
-            this.writeFileNow(path, csv);
-          },
-          err => this.base.toastMessage('Error in directory')
-        );
+        // if does not exists
+        this.file.createDir(root, dirName, true).then(() => {
+          this.file.createDir(`${root}/${dirName}`, this.companyName, true).then(() => {
+            this.writeFileNow(`${root}/${dirName}/${this.companyName}`, csv);
+          }).catch(() => {
+            this.base.toastMessage('Something went wrong');
+          });
+        });
       });
     }
   }
 
   writeFileNow(path, csv) {
-    this.file.writeFile(`${path}/valveCheck reports`, `${this.companyName}_${this.selectedDate}.csv`, csv, { replace: true }).then(res => {
+    // alert(path);
+    this.file.writeFile(path, `${this.selectedDate}.csv`, csv, { replace: true }).then(res => {
       if (res) {
         this.base.toastMessage('File saved successfully');
         this.fetchFiles();

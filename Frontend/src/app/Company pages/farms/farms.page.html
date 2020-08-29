@@ -54,9 +54,9 @@
   </div>
 
   <div *ngIf="farmsList?.length === 0" class="noData">
-    <ion-label>No farms available. Click the button below to register a new farm.</ion-label>
+    <ion-label>No farms available. Click the button below to create a new farm.</ion-label>
     <div>
-      <ion-button fill="clear" (click)="addOperator()">New Farm</ion-button>
+      <ion-button fill="clear" (click)="openFarmDialog()">New Farm</ion-button>
     </div>
   </div>
 </ion-content>

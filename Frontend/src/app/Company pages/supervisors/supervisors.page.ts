@@ -136,7 +136,6 @@ export class SupervisorsPage implements OnInit {
           this.baseService.createUser(data).subscribe(response => {
             if (response.status === "success") {
               this.baseService.toastMessage('Supervisor created successfully');
-              this.getUsers();
               this.assignSupervisor(response.data)
             }
             else if (response.status === "error") {
@@ -161,6 +160,7 @@ export class SupervisorsPage implements OnInit {
         "role": 2
       }).subscribe(response => {
         if (response.status === "success") {
+          this.getUsers();
         }
         else if (response.status === "error") {
           alert(response.txt);
