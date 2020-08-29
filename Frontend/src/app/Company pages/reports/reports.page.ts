@@ -24,8 +24,9 @@ export class ReportsPage implements OnInit {
     private fileOpener: FileOpener, private base: BaseService) { }
 
   ngOnInit() {
-    this.companyId = +this.activatedRoute.snapshot.paramMap.get('compId');
-    this.companyName = this.activatedRoute.snapshot.paramMap.get('compName');
+    const user = JSON.parse(localStorage.getItem('myUser'));
+    this.companyId = +user.id;
+    this.companyName = user.fullname;
     if (this.plt.is('cordova')) {
       this.fetchFiles();
     }
@@ -119,7 +120,7 @@ export class ReportsPage implements OnInit {
   }
 
   exportCSV(header, csvData) {
-    console.log('in export');
+    // console.log('in export');
     let csv = this.papa.unparse({
       fields: header,
       data: csvData

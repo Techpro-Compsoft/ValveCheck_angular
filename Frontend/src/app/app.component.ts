@@ -47,8 +47,8 @@ export class AppComponent {
 
   backbuttonSubscribeMethod() {
     this.platform.backButton.subscribe(() => {
-      if (this.route.url == '/login' || this.route.url == '/home/companies' || this.route.url == '/home/supervisors' || this.route.url == '/home/operators' || this.route.url == "/operator-dashboard" ||
-        this.route.url == "/supervisor-home/supervisor-dashboard" || this.route.url == '/supervisor-home/supervisor-instructions') {
+      if (this.route.url == '/login' || this.route.url == '/home/instructions' || this.route.url == '/home/farms' || this.route.url == '/home/supervisors' || this.route.url == '/home/operators' || this.route.url == "/operator-dashboard" ||
+        this.route.url == "/supervisor-home/supervisor-dashboard" || this.route.url == '/supervisor-home/supervisor-instructions' || this.route.url == '/admin-home') {
         navigator['app'].exitApp();
       }
     });
@@ -94,8 +94,8 @@ export class AppComponent {
       const user = JSON.parse(localStorage.getItem('myUser'));
       // alert(JSON.stringify(notificationData));
       // alert(JSON.stringify(user));
-      if (user && user['role'] === '1') {
-        // alert('in admin');
+      if (user && user['role'] === '4') {
+        // alert('in company');
         try {
           // this.nav.navigateForward([`/home/companies/farms/${notificationData['farm_id']}/blocks/${notificationData['block_id']}/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);
           this.nav.navigateForward([`/home/instructions/blocktimings/${notificationData['block_id']}/${notificationData['operator_id']}`]);

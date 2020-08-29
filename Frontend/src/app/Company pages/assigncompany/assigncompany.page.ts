@@ -45,23 +45,23 @@ export class AssigncompanyPage implements OnInit {
   }
 
   assignCompany(val) {
-    try {
-      this.supService.assignOperator({
-        "company": val,
-        "user_id": [this.userId],
-        "role": this.modeType === 1 ? 2 : 3
-      }).subscribe(response => {
-        if (response.status === "success") {
-          this.base.toastMessage('Assigned successfully');
-          this.nav.pop();
-        }
-        else if (response.status === "error") {
-          alert(response.txt);
-        }
-      });
-    } catch (error) {
-      this.base.toastMessage('Something went wrong');
-    }
+    // try {
+    //   this.supService.assignOperator({
+    //     "company": val,
+    //     "user_id": [this.userId],
+    //     "role": this.modeType === 1 ? 2 : 3
+    //   }).subscribe(response => {
+    //     if (response.status === "success") {
+    //       this.base.toastMessage('Assigned successfully');
+    //       this.nav.pop();
+    //     }
+    //     else if (response.status === "error") {
+    //       alert(response.txt);
+    //     }
+    //   });
+    // } catch (error) {
+    //   this.base.toastMessage('Something went wrong');
+    // }
   }
 
 }

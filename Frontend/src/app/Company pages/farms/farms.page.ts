@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CompanyService } from '../../core/Services/Company/company.service';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, PopoverController } from '@ionic/angular';
 import { FarmService } from '../../core/Services/Farm/farm.service';
 import { BaseService } from 'src/app/core/Services/base.service';
+import { PopoverComponent } from '../popover/popover.component';
 
 @Component({
   selector: 'app-farms',
@@ -15,10 +16,9 @@ export class FarmsPage implements OnInit {
   companyId: number;
   farmsList: Array<object>;
 
-  constructor(private activatedRoute: ActivatedRoute,
-    private companyService: CompanyService, private alertCtlr: AlertController,
+  constructor(private companyService: CompanyService, private alertCtlr: AlertController,
     private farmService: FarmService, public navCtrl: NavController,
-    private base : BaseService) { }
+    private base : BaseService, private pop: PopoverController) { }
 
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('myUser'));
@@ -130,6 +130,16 @@ export class FarmsPage implements OnInit {
 
   viewFarmDetails(farmId, mode) {
     this.navCtrl.navigateForward([`/home/farms/assigntofarm/${farmId}/${mode}/${this.companyId}`]);
+  }
+
+  async presentPopover(ev: any) {
+    const popover = await this.pop.create({
+      component: PopoverComponent,
+      cssClass: 'testPop',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
   }
 
 }

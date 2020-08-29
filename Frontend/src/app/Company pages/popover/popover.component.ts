@@ -25,6 +25,11 @@ export class PopoverComponent implements OnInit {
     this.pop.dismiss();
   }
 
+  toReport() {
+    this.navCtrl.navigateForward([`/reports`]);
+    this.pop.dismiss();
+  }
+
   async confirmLogout() {
     const alert = await this.alert.create({
       header: 'Confirm',

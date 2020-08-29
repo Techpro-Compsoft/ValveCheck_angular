@@ -157,7 +157,7 @@
         </td>
       </tr>
 
-      <tr>
+      <tr *ngIf="valveDetails?.interruption_reason">
         <td>
           <ion-label>Interruption Reason:</ion-label>
         </td>
@@ -165,12 +165,12 @@
           <!-- <ion-input type="text" readonly
             value="Heavy RainHeavy Rain Heavy RainHeavy RainHeavy Rain Heavy Rain Heavy Rain">
           </ion-input> -->
-          <p>{{valveDetails?.interruption_reason | titlecase}}
+          <p>{{valveDetails?.interruption_reason ? valveDetails?.interruption_reason : '-' | titlecase}}
           </p>
         </td>
       </tr>
 
-      <tr>
+      <tr *ngIf="valveDetails?.interruption_reason">
         <td>
           <ion-label>Resumed at:</ion-label>
         </td>
@@ -181,7 +181,7 @@
         </td>
       </tr>
 
-      <tr>
+      <tr *ngIf="valveDetails?.interruption_reason">
         <td>
           <ion-label>Stopped at:</ion-label>
         </td>
