@@ -75,11 +75,14 @@ export class AppComponent {
   }
 
   push_Notification_Init(bool) {
+    //previous working app id d1613e76-96f6-4b7c-a9a7-cf76811a62df
+    // previous working firebase sender id  172278637990
+
     if (this.platform.is('android')) {
-      this.oneSignal.startInit('d1613e76-96f6-4b7c-a9a7-cf76811a62df', '172278637990');
+      this.oneSignal.startInit('6abd063b-aa8c-4d71-b466-7a037c6faaaa', '906150775561');
     }
     else if (this.platform.is('ios')) {
-      this.oneSignal.startInit('d1613e76-96f6-4b7c-a9a7-cf76811a62df');
+      this.oneSignal.startInit('6abd063b-aa8c-4d71-b466-7a037c6faaaa');
     }
 
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
