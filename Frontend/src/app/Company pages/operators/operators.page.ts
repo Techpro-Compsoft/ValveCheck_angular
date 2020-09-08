@@ -139,6 +139,7 @@ export class OperatorsPage implements OnInit {
   createOperator(data) {
     data.role = 3;
     if (this.checkValidation(data.fullname, data.username, data.password, data.phone)) {
+      const regEx = new RegExp(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
       if (data.fullname.length > 50) {
         alert('Name can not be more than 50 characters');
       }
@@ -150,6 +151,9 @@ export class OperatorsPage implements OnInit {
       }
       else if (data.phone.length <= 7 || data.phone.length > 12) {
         alert('Phone number length should be between 8-12');
+      }
+      else if (!regEx.test(data.email)) {
+        alert('Email pattern is not correct');
       }
       else {
         try {

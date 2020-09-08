@@ -18,15 +18,15 @@ export class FarmsPage implements OnInit {
 
   constructor(private companyService: CompanyService, private alertCtlr: AlertController,
     private farmService: FarmService, public navCtrl: NavController,
-    private base : BaseService, private pop: PopoverController) { }
+    private base: BaseService, private pop: PopoverController) { }
 
   ngOnInit() {
     const user = JSON.parse(localStorage.getItem('myUser'));
     this.companyId = +user.id;
-  }       
+  }
 
-  ionViewWillEnter(){
-   this.getCompanyFarms();
+  ionViewWillEnter() {
+    this.getCompanyFarms();
   }
 
   getCompanyFarms() {
@@ -77,21 +77,26 @@ export class FarmsPage implements OnInit {
 
   createFarm(name: string) {
     if (name != null && name.trim().length > 0) {
-      try {
-        this.farmService.createFarm({
-          "company": this.companyId,
-          "farm_name": name.trim().replace(/\s\s+/g, ' ')
-        }).subscribe(response => {
-          if (response.status === "success") {
-            this.base.toastMessage('Farm added');
-            this.getCompanyFarms();
-          }
-          else if (response.status === "error") {
-            alert(response.txt);
-          }
-        });
-      } catch (error) {
-        this.base.toastMessage('Something went wrong');
+      if (name.length > 50) {
+        this.base.toastMessage('Farm name can not be more than 50');
+      }
+      else {
+        try {
+          this.farmService.createFarm({
+            "company": this.companyId,
+            "farm_name": name.trim().replace(/\s\s+/g, ' ')
+          }).subscribe(response => {
+            if (response.status === "success") {
+              this.base.toastMessage('Farm added');
+              this.getCompanyFarms();
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
+          });
+        } catch (error) {
+          this.base.toastMessage('Something went wrong');
+        }
       }
     }
     else {
@@ -101,22 +106,26 @@ export class FarmsPage implements OnInit {
 
   editFarm(name, id) {
     if (name != null && name.trim().length > 0) {
-      try {
-        this.farmService.updateFarm({
-          "id": id,
-          "company": this.companyId,
-          "farm_name": name.trim().replace(/\s\s+/g, ' ')
-        }).subscribe(response => {
-          if (response.status === "success") {
-            this.base.toastMessage('Farm updated');
-            this.getCompanyFarms();
-          }
-          else if (response.status === "error") {
-            alert(response.txt);
-          }
-        });
-      } catch (error) {
-        this.base.toastMessage('Something went wrong');
+      if (name.length > 50) {
+        this.base.toastMessage('Farm name can not be more than 50');
+      } else {
+        try {
+          this.farmService.updateFarm({
+            "id": id,
+            "company": this.companyId,
+            "farm_name": name.trim().replace(/\s\s+/g, ' ')
+          }).subscribe(response => {
+            if (response.status === "success") {
+              this.base.toastMessage('Farm updated');
+              this.getCompanyFarms();
+            }
+            else if (response.status === "error") {
+              alert(response.txt);
+            }
+          });
+        } catch (error) {
+          this.base.toastMessage('Something went wrong');
+        }
       }
     }
     else {
