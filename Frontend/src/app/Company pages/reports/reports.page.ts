@@ -96,6 +96,7 @@ export class ReportsPage implements OnInit {
 
   columnsWork(data: Array<object>) {
     data.forEach(ele => {
+      ele['Date'] = new Date(ele['Date']).toDateString();
       if (ele['Stop'] || ele['Interruption Stop']) {
         let initCycleTime = this.calculateTime(ele['Start'], ele['Stop']);
         let secondCycleTime = ele['Interruption'] && ele['Interruption Stop'] ? this.calculateTime(ele['Resume'], ele['Interruption Stop']) : this.calculateTime("00:00", "00:00");

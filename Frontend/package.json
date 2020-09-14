@@ -32,7 +32,7 @@
     "cordova-plugin-file-opener2": "^3.0.4",
     "cordova-plugin-geolocation": "^4.0.2",
     "ngx-papaparse": "^3.0.4",
-    "onesignal-cordova-plugin": "^2.11.0",
+    "onesignal-cordova-plugin": "^2.11.1",
     "rxjs": "~6.5.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

@@ -86,6 +86,7 @@ export class FarmsPage implements OnInit {
             "company": this.companyId,
             "farm_name": name.trim().replace(/\s\s+/g, ' ')
           }).subscribe(response => {
+            this.base.toastMessage(response.status)
             if (response.status === "success") {
               this.base.toastMessage('Farm added');
               this.getCompanyFarms();
@@ -116,6 +117,9 @@ export class FarmsPage implements OnInit {
             "farm_name": name.trim().replace(/\s\s+/g, ' ')
           }).subscribe(response => {
             if (response.status === "success") {
+
+              this.base.toastMessage(response.status)
+
               this.base.toastMessage('Farm updated');
               this.getCompanyFarms();
             }

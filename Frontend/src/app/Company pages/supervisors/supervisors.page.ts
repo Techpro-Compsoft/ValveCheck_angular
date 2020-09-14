@@ -132,7 +132,7 @@ export class SupervisorsPage implements OnInit {
       else if (data.phone.length <= 7 || data.phone.length > 12) {
         alert('Phone number length should be between 8-12');
       }
-      else if (!regEx.test(data.email)) {
+      else if (data.email.length > 0 && !regEx.test(data.email)) {
         alert('Email pattern is not correct');
       }
       else {
