@@ -25,33 +25,33 @@ export class LoginPage implements OnInit {
 
   ngOnInit() { }
 
-  attemptLogin() {
+  async attemptLogin() {
     if (this.loginForm.valid) {
       try {
-        this.base.login(this.loginForm.value).subscribe(response => {
-          if (response.status === "success") {
-            response.data.user.companyId = response.data.company.id;
-            this.event.publish('ULS', '1Up')
-            this.base.toastMessage('Login successful');
-            localStorage.setItem('myToken', response.data.token);
-            localStorage.setItem('myUser', JSON.stringify(response.data.user));
-            if (response.data.user.role === "1") {
-              this.nav.navigateRoot('/admin-home');
-            }
-            else if (response.data.user.role === "2") {
-              this.nav.navigateRoot('/supervisor-home');
-            }
-            else if (response.data.user.role === "3") {
-              this.nav.navigateRoot('/operator-dashboard');
-            }
-            else if (response.data.user.role === "4") {
-              this.nav.navigateRoot('/home');
-            }
+        let response = await this.base.login(this.loginForm.value).toPromise();
+        if (response.status === "success") {
+          response.data.user.companyId = response.data.company.id;
+          this.event.publish('ULS', '1Up')
+          this.base.toastMessage('Login successful');
+          localStorage.setItem('myToken', response.data.token);
+          localStorage.setItem('myUser', JSON.stringify(response.data.user));
+          if (response.data.user.role === "1") {
+            this.nav.navigateRoot('/admin-home');
           }
-          else if (response.status === "error") {
-            alert(response.txt);
+          else if (response.data.user.role === "2") {
+            this.nav.navigateRoot('/supervisor-home');
           }
-        });
+          else if (response.data.user.role === "3") {
+            this.nav.navigateRoot('/operator-dashboard');
+          }
+          else if (response.data.user.role === "4") {
+            this.nav.navigateRoot('/home');
+          }
+        }
+        else if (response.status === "error") {
+          alert(response.txt);
+        }
+
       } catch (error) {
         this.base.toastMessage('Something went wrong');
       }

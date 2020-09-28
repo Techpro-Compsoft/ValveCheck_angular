@@ -23,6 +23,8 @@ export class AppInterceptor implements HttpInterceptor {
             });
             req = req.clone({ headers });
             this.presentLoading();
+        } else {
+            this.presentLoading();
         }
 
         return next.handle(req).pipe(
