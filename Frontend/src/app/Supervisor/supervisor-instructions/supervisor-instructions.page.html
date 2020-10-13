@@ -47,8 +47,11 @@
         <td>
           <div *ngIf="!block?.actual_start_time" class="danger">-</div>
 
-          <div *ngIf="block?.actual_start_time" class="success">
+          <div *ngIf="block?.actual_start_time && !block?.interruption_resume" class="success">
             {{block?.actual_start_time}}
+          </div>
+          <div *ngIf="block?.actual_start_time && block?.interruption_resume" class="success">
+            {{block?.interruption_resume}}
           </div>
         </td>
 
